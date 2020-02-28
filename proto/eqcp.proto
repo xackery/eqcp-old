@@ -1,0 +1,55 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+import "proto/npc_service.proto";
+
+package pb;
+
+option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
+	info: {
+		title: "EQEmu Control Panel API";
+		version: "0.0.1";
+		description: "Used for identifying EQEmu stuff";
+		contact: {
+			name: "support";
+			url: "https://github.com/xackery/eqcp";
+		};
+	};
+};
+
+service EQCP {
+	rpc NpcSearch(NpcSearchRequest) returns (NpcSearchResponse) {
+		option (google.api.http) = {
+			get: "/v1/npc/search/{name}"
+		};
+	}
+	rpc NpcCreate(NpcCreateRequest) returns (NpcCreateResponse) {
+		option (google.api.http) = {
+			post: "/v1/npc"
+			body: "*"
+		};
+	}
+	rpc NpcRead(NpcReadRequest) returns (NpcReadResponse) {
+		option (google.api.http) = {
+			get: "/v1/npc/{id}"
+		};
+	}
+	rpc NpcUpdate(NpcUpdateRequest) returns (NpcUpdateResponse) {
+		option (google.api.http) = {
+			put: "/v1/npc/{id}"
+			body: "*"
+		};
+	}
+	rpc NpcDelete(NpcDeleteRequest) returns (NpcDeleteResponse) {
+		option (google.api.http) = {
+			delete: "/v1/npc/{id}"
+		};
+	}
+	rpc NpcPatch(NpcPatchRequest) returns (NpcPatchResponse) {
+		option (google.api.http) = {
+			patch: "/v1/npc/{id}"
+			body: "*"
+		};
+	}
+}
