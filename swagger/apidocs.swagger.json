@@ -38,7 +38,7 @@
           }
         ],
         "tags": [
-          "EQCP"
+          "NpcService"
         ]
       }
     },
@@ -89,7 +89,7 @@
           }
         ],
         "tags": [
-          "EQCP"
+          "NpcService"
         ]
       }
     },
@@ -114,7 +114,7 @@
           }
         ],
         "tags": [
-          "EQCP"
+          "NpcService"
         ]
       },
       "delete": {
@@ -137,7 +137,7 @@
           }
         ],
         "tags": [
-          "EQCP"
+          "NpcService"
         ]
       },
       "put": {
@@ -168,7 +168,7 @@
           }
         ],
         "tags": [
-          "EQCP"
+          "NpcService"
         ]
       },
       "patch": {
@@ -199,7 +199,7 @@
           }
         ],
         "tags": [
-          "EQCP"
+          "NpcService"
         ]
       }
     }
@@ -230,446 +230,493 @@
     "pbNpc": {
       "type": "object",
       "properties": {
-        "ID": {
+        "id": {
           "type": "string",
           "format": "int64"
         },
-        "Name": {
+        "name": {
           "type": "string"
         },
-        "LastName": {
+        "lastname": {
           "type": "string"
         },
-        "Level": {
+        "level": {
           "type": "string",
           "format": "int64"
         },
-        "RaceID": {
+        "raceid": {
           "type": "string",
           "format": "int64"
         },
-        "ClassID": {
+        "classid": {
           "type": "string",
           "format": "int64"
         },
-        "BodyTypeID": {
+        "bodytypeid": {
           "type": "string",
           "format": "int64"
         },
-        "Hitpoints": {
+        "hp": {
           "type": "string",
           "format": "int64"
         },
-        "Mana": {
+        "mana": {
           "type": "string",
           "format": "int64"
         },
-        "Gender": {
+        "gender": {
           "type": "string",
           "format": "int64"
         },
-        "Texture": {
+        "texture": {
           "type": "string",
           "format": "int64"
         },
-        "HelmTexture": {
+        "helmtexture": {
           "type": "string",
           "format": "int64"
         },
-        "HerosForgeModel": {
+        "herosforgemodel": {
           "type": "string",
           "format": "int64"
         },
-        "Size": {
+        "size": {
           "type": "number",
           "format": "float"
         },
-        "HpRegenRate": {
+        "hpregenrate": {
           "type": "string",
           "format": "int64"
         },
-        "ManaRegenRate": {
+        "manaregenrate": {
           "type": "string",
           "format": "int64"
         },
-        "LootID": {
+        "loottableid": {
           "type": "string",
           "format": "int64"
         },
-        "MerchantID": {
+        "merchantid": {
           "type": "string",
           "format": "int64"
         },
-        "AltCurrencyID": {
+        "altcurrencyid": {
           "type": "string",
           "format": "int64"
         },
-        "NpcSpellsID": {
+        "npcspellsid": {
           "type": "string",
           "format": "int64"
         },
-        "NpcSpellsEffectsID": {
+        "npcspellseffectsid": {
           "type": "string",
           "format": "int64"
         },
-        "NpcFactionID": {
+        "npcfactionid": {
           "type": "string",
           "format": "int64"
         },
-        "AdventureTemplateID": {
+        "adventuretemplateid": {
           "type": "string",
           "format": "int64"
         },
-        "TrapTemplate": {
+        "traptemplate": {
           "type": "string",
           "format": "int64"
         },
-        "MininumDamage": {
+        "mindmg": {
           "type": "string",
           "format": "int64"
         },
-        "MaximumDamage": {
+        "maxdmg": {
           "type": "string",
           "format": "int64"
         },
-        "AttackCount": {
+        "attackcount": {
           "type": "string",
           "format": "int64"
         },
-        "NpcSpecialAttacks": {
+        "Npcspecialattks": {
           "type": "string"
         },
-        "SpecialAbilitiesRaw": {
+        "Specialabilities": {
           "type": "string"
         },
-        "AggroRadius": {
+        "aggroradius": {
           "type": "string",
           "format": "int64"
         },
-        "AssistRadius": {
+        "assistradius": {
           "type": "string",
           "format": "int64"
         },
-        "Face": {
+        "face": {
           "type": "string",
           "format": "int64"
         },
-        "LuclinHairStyle": {
+        "luclinhairstyle": {
           "type": "string",
           "format": "int64"
         },
-        "LuclinHairColor": {
+        "luclinhaircolor": {
           "type": "string",
           "format": "int64"
         },
-        "LuclinEyeColor": {
+        "luclineyecolor": {
           "type": "string",
           "format": "int64"
         },
-        "LuclinEyeColor2": {
+        "luclineyecolor2": {
           "type": "string",
           "format": "int64"
         },
-        "LuclinBeardColor": {
+        "luclinbeardcolor": {
           "type": "string",
           "format": "int64"
         },
-        "LuclinBeard": {
+        "luclinbeard": {
           "type": "string",
           "format": "int64"
         },
-        "DrakkinHeritage": {
+        "drakkinheritage": {
           "type": "string",
           "format": "int64"
         },
-        "DrakkinTattoo": {
+        "drakkintattoo": {
           "type": "string",
           "format": "int64"
         },
-        "DrakkinDetails": {
+        "drakkindetails": {
           "type": "string",
           "format": "int64"
         },
-        "ArmorTintID": {
+        "armortintid": {
           "type": "string",
           "format": "int64"
         },
-        "ArmorTintRed": {
+        "armortintred": {
           "type": "string",
           "format": "int64"
         },
-        "ArmorTintGreen": {
+        "armortintgreen": {
           "type": "string",
           "format": "int64"
         },
-        "ArmorTintBlue": {
+        "armortintblue": {
           "type": "string",
           "format": "int64"
         },
-        "DMeleeTexture1": {
+        "dmeleetexture1": {
           "type": "string",
           "format": "int64"
         },
-        "DMeleeTexture2": {
+        "dmeleetexture2": {
           "type": "string",
           "format": "int64"
         },
-        "AmmoIDFile": {
+        "ammoidfile": {
           "type": "string"
         },
-        "PrimaryMeleeTypeID": {
+        "primmeleetypeid": {
           "type": "string",
           "format": "int64"
         },
-        "SecondaryMeleeTypeID": {
+        "secmeleetypeid": {
           "type": "string",
           "format": "int64"
         },
-        "RangedTypeID": {
+        "rangedtypeid": {
           "type": "string",
           "format": "int64"
         },
-        "Runspeed": {
+        "runspeed": {
           "type": "number",
           "format": "float"
         },
-        "MagicResistance": {
+        "mr": {
           "type": "string",
           "format": "int64"
         },
-        "ColdResistance": {
+        "cr": {
           "type": "string",
           "format": "int64"
         },
-        "DiseaseResistance": {
+        "dr": {
           "type": "string",
           "format": "int64"
         },
-        "FireResistance": {
+        "fr": {
           "type": "string",
           "format": "int64"
         },
-        "PoisonResistance": {
+        "pr": {
           "type": "string",
           "format": "int64"
         },
-        "CorruptionResistance": {
+        "corrup": {
           "type": "string",
           "format": "int64"
         },
-        "PhysicalResistance": {
+        "phr": {
           "type": "string",
           "format": "int64"
         },
-        "SeeInvisible": {
+        "seeinvis": {
           "type": "string",
           "format": "int64"
         },
-        "SeeInvisibleUndead": {
+        "seeinvisundead": {
           "type": "string",
           "format": "int64"
         },
-        "QuestGlobal": {
+        "qglobal": {
           "type": "string",
           "format": "int64"
         },
-        "ArmorClass": {
+        "ac": {
           "type": "string",
           "format": "int64"
         },
-        "NpcAggro": {
+        "npcaggro": {
           "type": "string",
           "format": "int64"
         },
-        "SpawnLimit": {
+        "spawnlimit": {
           "type": "string",
           "format": "int64"
         },
-        "AttackSpeed": {
+        "attackspeed": {
           "type": "number",
           "format": "float"
         },
-        "AttackDelay": {
+        "attackdelay": {
           "type": "string",
           "format": "int64"
         },
-        "Findable": {
+        "findable": {
           "type": "string",
           "format": "int64"
         },
-        "Strength": {
+        "str": {
           "type": "string",
           "format": "int64"
         },
-        "Stamina": {
+        "sta": {
           "type": "string",
           "format": "int64"
         },
-        "Dexterity": {
+        "dex": {
           "type": "string",
           "format": "int64"
         },
-        "Agility": {
+        "agi": {
           "type": "string",
           "format": "int64"
         },
-        "Intelligence": {
+        "int": {
           "type": "string",
           "format": "int64"
         },
-        "Wisdom": {
+        "wis": {
           "type": "string",
           "format": "int64"
         },
-        "Charisma": {
+        "cha": {
           "type": "string",
           "format": "int64"
         },
-        "SeeHide": {
+        "seehide": {
           "type": "string",
           "format": "int64"
         },
-        "SeeImprovedHide": {
+        "seeimprovedhide": {
           "type": "string",
           "format": "int64"
         },
-        "Trackable": {
+        "trackable": {
           "type": "string",
           "format": "int64"
         },
-        "IsBot": {
+        "isbot": {
           "type": "string",
           "format": "int64"
         },
-        "Exclude": {
+        "exclude": {
           "type": "string",
           "format": "int64"
         },
-        "Attack": {
+        "atk": {
           "type": "string",
           "format": "int64"
         },
-        "Accuracy": {
+        "accuracy": {
           "type": "string",
           "format": "int64"
         },
-        "Avoidance": {
+        "avoidance": {
           "type": "string",
           "format": "int64"
         },
-        "SlowMitigation": {
+        "slowmitigation": {
           "type": "string",
           "format": "int64"
         },
-        "Version": {
+        "version": {
           "type": "string",
           "format": "int64"
         },
-        "MaxLevel": {
+        "maxlevel": {
           "type": "string",
           "format": "int64"
         },
-        "ScaleRate": {
+        "scalerate": {
           "type": "string",
           "format": "int64"
         },
-        "PrivateCorpse": {
+        "privatecorpse": {
           "type": "string",
           "format": "int64"
         },
-        "UniqueSpawnByName": {
+        "uniquespawnbyname": {
           "type": "string",
           "format": "int64"
         },
-        "Underwater": {
+        "underwater": {
           "type": "string",
           "format": "int64"
         },
-        "IsQuest": {
+        "isquest": {
           "type": "string",
           "format": "int64"
         },
-        "EmoteID": {
+        "emoteid": {
           "type": "string",
           "format": "int64"
         },
-        "SpellScale": {
+        "spellscale": {
           "type": "number",
           "format": "float"
         },
-        "HealScale": {
+        "healscale": {
           "type": "number",
           "format": "float"
         },
-        "NoTargetHotkey": {
+        "notargethotkey": {
           "type": "string",
           "format": "int64"
         },
-        "RaidTarget": {
+        "raidtarget": {
           "type": "string",
           "format": "int64"
         },
-        "ArmTexture": {
+        "armtexture": {
           "type": "string",
           "format": "int64"
         },
-        "BracerTexture": {
+        "bracertexture": {
           "type": "string",
           "format": "int64"
         },
-        "HandTexture": {
+        "handtexture": {
           "type": "string",
           "format": "int64"
         },
-        "LegTexture": {
+        "legtexture": {
           "type": "string",
           "format": "int64"
         },
-        "FeetTexture": {
+        "feettexture": {
           "type": "string",
           "format": "int64"
         },
-        "Light": {
+        "light": {
           "type": "string",
           "format": "int64"
         },
-        "WalkSpeed": {
+        "walkspeed": {
           "type": "string",
           "format": "int64"
         },
-        "PeqID": {
+        "peqid": {
           "type": "string",
           "format": "int64"
         },
-        "Unique": {
+        "unique": {
           "type": "string",
           "format": "int64"
         },
-        "Fixed": {
+        "fixed": {
           "type": "string",
           "format": "int64"
         },
-        "IgnoreDespawn": {
+        "ignoredespawn": {
           "type": "string",
           "format": "int64"
         },
-        "ShowName": {
+        "showname": {
           "type": "string",
           "format": "int64"
         },
-        "Untargetable": {
+        "untargetable": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charmac": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charmmindmg": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charmmaxdmg": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charmattackdelay": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charmaccuracyrating": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charmavoidancerating": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charmatk": {
+          "type": "string",
+          "format": "int64"
+        },
+        "skipgloballoot": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rarespawn": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stuckbehavior": {
           "type": "string",
           "format": "int64"
         },
         "race": {
-          "$ref": "#/definitions/pbRace",
-          "title": "New, non-field mapped identified elements"
+          "$ref": "#/definitions/pbRace"
         },
         "class": {
           "$ref": "#/definitions/pbClass"
         },
-        "clean_name": {
+        "cleanname": {
           "type": "string"
+        },
+        "model": {
+          "type": "string",
+          "format": "int64"
+        },
+        "flymode": {
+          "type": "string",
+          "format": "int64"
         }
       }
     },

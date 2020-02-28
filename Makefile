@@ -2,8 +2,28 @@
 VERSION := v0.0.1
 NAME := eqcp
 
+.PHONY: init
+init:
+	@echo "Priming a fresh database"
+	-docker-compose down
+	-rm -rf db/
+	-docker-compose up -d
+	@echo "Waiting ~10 seconds for DB to be up..."
+	sleep 10
+	-mkdir tmp
+	wget http://edit.projecteq.net/weekly/peq_beta.zip -O tmp/peq_beta.zip
+	cd tmp/
+	cd tmp && unzip -o peq_beta.zip
+	mysql -h 127.0.0.1 -uroot -e "drop database eqemu;"
+	mysql -h 127.0.0.1 -uroot -e "CREATE DATABASE eqemu;"
+	mysql -h 127.0.0.1 -uroot eqemu < tmp/peqbeta.sql
+	mysql -h 127.0.0.1 -uroot eqemu < tmp/player_tables.sql
+	rm -rf tmp/
+.PHONY: up
+up:
+	@docker-compose up -d
 .PHONY: build-all
-build-all: sanitize
+build-all: proto sanitize
 	@echo "Preparing talkeq ${VERSION}"
 	@rm -rf bin/*
 	@-mkdir -p bin/

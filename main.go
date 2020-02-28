@@ -12,6 +12,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
 	"github.com/xackery/eqcp/server"
+	"github.com/xackery/eqemuconfig"
 )
 
 var (
@@ -78,16 +79,19 @@ func run() error {
 
 	log.Info().Msgf("starting eqcp %s", Version)
 
-	s, err := server.New(ctx, cancel, "localhost:9090")
+	emucfg, err := eqemuconfig.GetConfig()
+	if err != nil {
+		return err
+	}
+
+	s, err := server.New(ctx, cancel, ":9090", emucfg)
 	if err != nil {
 		return errors.Wrap(err, "server")
-	}
-	if s == nil {
-
 	}
 
 	select {
 	case <-ctx.Done():
+		s.Close()
 	}
 	return nil
 }

@@ -1,0 +1,67 @@
+{
+	"server": {		
+		"chatserver": {
+		"host": "127.0.0.1",
+				"port": "7778"
+			},
+			"nats": {
+				"host": "127.0.0.1",
+				"port": "4222"
+			},
+			"world": {
+				"locked": "true",
+				"localaddress": "127.0.0.1",
+				"shortname": "eqemu",
+				"loginserver": {
+					"password": "",
+					"host": "login.eqemulator.net",
+					"legacy": "1",
+					"port": "5998",
+					"account": ""
+				},
+				"telnet": {
+					"host": "world",
+					"port": "9000",
+					"telnet": "enabled"
+				},
+				"http": {
+					"port": "9080",
+					"enabled": "false",
+					"mimefile": "mime.types"
+				},
+				"longname": "eqcp test",
+				"tcp": {
+					"host": "world",
+					"port": "9000",
+					"telnet": "enabled"
+				},
+				"key": "randomKeyGoesHere"
+			},
+			"mailserver": {
+				"host": "127.0.0.1",
+				"port": "7778"
+			},
+			"zones": {
+				"defaultstatus": "20",
+				"ports": {
+					"low": "7000",
+					"high": "7400"
+				}
+			},
+			"database": {
+				"host": "127.0.0.1",
+				"port": "3306",
+				"username": "eqemu",
+				"password": "eqemupass",
+				"db": "eqemu"
+			},
+			"qsdatabase": {
+				"host": "127.0.0.1",
+				"port": "3306",
+				"username": "eqemu",
+				"password": "eqemupass",
+				"db": "eqemu"
+			}
+		}
+	}
+	

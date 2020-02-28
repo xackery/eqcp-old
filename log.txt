@@ -1,2 +1,6 @@
-2020-02-28 00:08:58 INFO starting eqcp 
-2020-02-28 00:08:59 INFO read request
+2020-02-28 04:26:20 INFO starting eqcp 
+2020-02-28 04:26:20 DEBUG connected to 127.0.0.1:3306 eqemu
+2020-02-28 04:26:20 DEBUG grpc listening on :9090
+2020-02-28 04:26:20 DEBUG rest listening on :8081 url: http://127.0.0.1:8081
+2020-02-28 04:26:30 DEBUG query: SELECT * FROM npc_types WHERE id = :id args: {"id":1000}
+2020-02-28 04:26:44 DEBUG query: SELECT * FROM npc_types WHERE name LIKE :name LIMIT :limit OFFSET :offset args: {"limit":1,"name":"%foo%","offset":0}
