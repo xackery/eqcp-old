@@ -75,13 +75,13 @@
             "format": "int64"
           },
           {
-            "name": "order_by",
+            "name": "orderby",
             "in": "query",
             "required": false,
             "type": "string"
           },
           {
-            "name": "order_desc",
+            "name": "orderdesc",
             "in": "query",
             "required": false,
             "type": "boolean",
@@ -205,28 +205,6 @@
     }
   },
   "definitions": {
-    "pbClass": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        },
-        "icon": {
-          "type": "string"
-        },
-        "bit": {
-          "type": "string",
-          "format": "int64"
-        },
-        "short_name": {
-          "type": "string"
-        }
-      }
-    },
     "pbNpc": {
       "type": "object",
       "properties": {
@@ -244,15 +222,15 @@
           "type": "string",
           "format": "int64"
         },
-        "raceid": {
+        "race": {
           "type": "string",
           "format": "int64"
         },
-        "classid": {
+        "class": {
           "type": "string",
           "format": "int64"
         },
-        "bodytypeid": {
+        "bodytype": {
           "type": "string",
           "format": "int64"
         },
@@ -417,15 +395,15 @@
         "ammoidfile": {
           "type": "string"
         },
-        "primmeleetypeid": {
+        "primmeleetype": {
           "type": "string",
           "format": "int64"
         },
-        "secmeleetypeid": {
+        "secmeleetype": {
           "type": "string",
           "format": "int64"
         },
-        "rangedtypeid": {
+        "rangedtype": {
           "type": "string",
           "format": "int64"
         },
@@ -701,12 +679,6 @@
           "type": "string",
           "format": "int64"
         },
-        "race": {
-          "$ref": "#/definitions/pbRace"
-        },
-        "class": {
-          "$ref": "#/definitions/pbClass"
-        },
         "cleanname": {
           "type": "string"
         },
@@ -738,7 +710,13 @@
       }
     },
     "pbNpcDeleteResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
     },
     "pbNpcPatchRequest": {
       "type": "object",
@@ -756,7 +734,13 @@
       }
     },
     "pbNpcPatchResponse": {
-      "type": "object"
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
     },
     "pbNpcReadResponse": {
       "type": "object",
@@ -775,24 +759,9 @@
             "$ref": "#/definitions/pbNpc"
           }
         },
-        "limit": {
-          "type": "string",
-          "format": "int64"
-        },
-        "offset": {
-          "type": "string",
-          "format": "int64"
-        },
         "total": {
           "type": "string",
           "format": "int64"
-        },
-        "order_by": {
-          "type": "string"
-        },
-        "order_desc": {
-          "type": "boolean",
-          "format": "boolean"
         }
       }
     },
@@ -803,39 +772,20 @@
           "type": "string",
           "format": "int64"
         },
-        "npc": {
-          "$ref": "#/definitions/pbNpc"
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       }
     },
     "pbNpcUpdateResponse": {
-      "type": "object"
-    },
-    "pbRace": {
       "type": "object",
       "properties": {
-        "id": {
+        "rowsaffected": {
           "type": "string",
           "format": "int64"
-        },
-        "name": {
-          "type": "string"
-        },
-        "icon": {
-          "type": "string"
-        },
-        "bit": {
-          "type": "string",
-          "format": "int64"
-        },
-        "male": {
-          "type": "string"
-        },
-        "female": {
-          "type": "string"
-        },
-        "neutral": {
-          "type": "string"
         }
       }
     }

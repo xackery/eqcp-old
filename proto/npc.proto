@@ -2,8 +2,6 @@ syntax = "proto3";
 
 import "google/api/annotations.proto"; 
 //import "google/api/timestamp.proto";
-import "proto/race.proto";
-import "proto/class.proto";
 
 package pb;
 
@@ -12,9 +10,9 @@ message Npc {
 	string name = 2;
 	string lastname = 3;
 	int64 level = 4;
-	int64 raceid = 5;
-	int64 classid = 6; 
-	int64 bodytypeid = 7;
+	int64 race = 5;
+	int64 class = 6; 
+	int64 bodytype = 7;
 	int64 hp = 8;
 	int64 mana = 9;
 	int64 gender = 10;
@@ -56,9 +54,9 @@ message Npc {
 	int64 dmeleetexture1 = 46;
 	int64 dmeleetexture2 = 47;
 	string ammoidfile = 48;
-	int64 primmeleetypeid = 49;
-	int64 secmeleetypeid = 50;
-	int64 rangedtypeid = 51;
+	int64 primmeleetype = 49;
+	int64 secmeleetype = 50;
+	int64 rangedtype = 51;
 	float runspeed = 52;
 	int64 mr = 53;
 	int64 cr = 54;
@@ -127,8 +125,7 @@ message Npc {
 	int64 skipgloballoot = 117;
 	int64 rarespawn = 118;
 	int64 stuckbehavior = 119;
-	Race race = 120;
-	Class class = 121;
+
 	string cleanname = 122;
 	int64 model = 123;
 	int64 flymode = 124;

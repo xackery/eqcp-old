@@ -4,6 +4,8 @@ import (
 	"context"
 	"database/sql"
 	"fmt"
+	"reflect"
+	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
@@ -29,14 +31,37 @@ func (s *Server) NpcSearch(ctx context.Context, req *pb.NpcSearchRequest) (*pb.N
 		req.Offset = 0
 	}
 
-	resp.Limit = req.Limit
+	req.Orderby = strings.ToLower(req.Orderby)
+	if req.Orderby == "" {
+		req.Orderby = "name"
+	}
+	orderByFields := []string{"name"}
 
-	query := "SELECT * FROM npc_types WHERE "
+	query := "SELECT count(id) as total, npc_types.* FROM npc_types WHERE "
 
 	args := map[string]interface{}{}
 	if len(req.Name) > 0 {
 		query += "name LIKE :name"
 		args["name"] = fmt.Sprintf("%%%s%%", req.Name)
+	}
+
+	isValid := false
+	for _, field := range orderByFields {
+		if req.Orderby != field {
+			continue
+		}
+		isValid = true
+	}
+	if !isValid {
+		return nil, fmt.Errorf("invalid orderby. Valid options are: %s", strings.Join(orderByFields, ","))
+	}
+
+	args["orderby"] = req.Orderby
+	query += " ORDER BY :orderby"
+	if req.Orderdesc {
+		query += " DESC"
+	} else {
+		query += " ASC"
 	}
 
 	args["limit"] = req.Limit
@@ -56,6 +81,7 @@ func (s *Server) NpcSearch(ctx context.Context, req *pb.NpcSearchRequest) (*pb.N
 			return nil, errors.Wrap(err, "structscan")
 		}
 		resp.Npcs = append(resp.Npcs, npc.ToProto())
+		resp.Total = npc.Total
 	}
 
 	return resp, nil
@@ -103,17 +129,130 @@ func (s *Server) NpcRead(ctx context.Context, req *pb.NpcReadRequest) (*pb.NpcRe
 
 // NpcUpdate implements SCRUD endpoints
 func (s *Server) NpcUpdate(ctx context.Context, req *pb.NpcUpdateRequest) (*pb.NpcUpdateResponse, error) {
-	return &pb.NpcUpdateResponse{}, nil
+	npc := new(Npc)
+
+	st := reflect.TypeOf(*npc)
+
+	args := map[string]interface{}{
+		"id": req.Id,
+	}
+	query := "UPDATE npc_types SET"
+
+	comma := ""
+	for i := 0; i < st.NumField(); i++ {
+		field := st.Field(i)
+
+		tag, ok := field.Tag.Lookup("db")
+		if !ok {
+			continue
+		}
+
+		for key, value := range req.Values {
+			if strings.ToLower(tag) != strings.ToLower(key) {
+				continue
+			}
+			args[tag] = value
+
+			query += fmt.Sprintf("%s %s = :%s", comma, tag, tag)
+			comma = ","
+		}
+	}
+	if len(args) == 1 {
+		return nil, fmt.Errorf("no valid fields provided")
+	}
+
+	query += " WHERE id = :id LIMIT 1"
+
+	log.Debug().Interface("args", args).Msgf("query: %s", query)
+
+	result, err := s.db.NamedExecContext(ctx, query, args)
+	if err != nil {
+		return nil, errors.Wrap(err, "query")
+	}
+
+	rowCount, err := result.RowsAffected()
+	if err != nil {
+		return nil, errors.Wrap(err, "rowsaffected")
+	}
+	resp := new(pb.NpcUpdateResponse)
+	resp.Rowsaffected = rowCount
+
+	return resp, nil
 }
 
 // NpcDelete implements SCRUD endpoints
 func (s *Server) NpcDelete(ctx context.Context, req *pb.NpcDeleteRequest) (*pb.NpcDeleteResponse, error) {
-	return &pb.NpcDeleteResponse{}, nil
+	query := "DELETE FROM npc_types WHERE id = :id LIMIT 1"
+
+	args := map[string]interface{}{
+		"id": req.Id,
+	}
+
+	log.Debug().Interface("args", args).Msgf("query: %s", query)
+
+	result, err := s.db.NamedExecContext(ctx, query, args)
+	if err != nil {
+		return nil, errors.Wrap(err, "query")
+	}
+
+	rowCount, err := result.RowsAffected()
+	if err != nil {
+		return nil, errors.Wrap(err, "rowsaffected")
+	}
+	resp := new(pb.NpcDeleteResponse)
+
+	resp.Rowsaffected = rowCount
+	return resp, nil
 }
 
 // NpcPatch implements SCRUD endpoints
 func (s *Server) NpcPatch(ctx context.Context, req *pb.NpcPatchRequest) (*pb.NpcPatchResponse, error) {
-	return &pb.NpcPatchResponse{}, nil
+	npc := new(Npc)
+
+	st := reflect.TypeOf(*npc)
+
+	args := map[string]interface{}{
+		"id": req.Id,
+	}
+	query := "UPDATE npc_types SET"
+
+	comma := ""
+	for i := 0; i < st.NumField(); i++ {
+		field := st.Field(i)
+
+		tag, ok := field.Tag.Lookup("db")
+		if !ok {
+			continue
+		}
+
+		if strings.ToLower(tag) != strings.ToLower(req.Key) {
+			continue
+		}
+		args[tag] = req.Value
+
+		query += fmt.Sprintf("%s %s = :%s", comma, tag, tag)
+		comma = ","
+	}
+	if len(args) == 1 {
+		return nil, fmt.Errorf("no valid fields provided")
+	}
+
+	query += " WHERE id = :id LIMIT 1"
+	log.Debug().Interface("args", args).Msgf("query: %s", query)
+
+	result, err := s.db.NamedExecContext(ctx, query, args)
+	if err != nil {
+		return nil, errors.Wrap(err, "query")
+	}
+
+	rowCount, err := result.RowsAffected()
+	if err != nil {
+		return nil, errors.Wrap(err, "rowsaffected")
+	}
+	resp := new(pb.NpcPatchResponse)
+	resp.Rowsaffected = rowCount
+
+	return resp, nil
 }
 
 // Npc represents an NPC DB binding
@@ -239,6 +378,7 @@ type Npc struct {
 	Stuckbehavior        int64          `db:"stuck_behavior"`         //tinyint(4) NOT NULL DEFAULT '0',
 	Model                int64          `db:"model"`                  //smallint(5) NOT NULL DEFAULT '0',
 	Flymode              int64          `db:"flymode"`                //tinyint(4) NOT NULL DEFAULT '-1',
+	Total                int64          `db:"total"`
 }
 
 // ToProto converts the npc type struct to protobuf
@@ -248,9 +388,9 @@ func (n *Npc) ToProto() *pb.Npc {
 	npc.Name = n.Name
 	npc.Lastname = n.Lastname.String
 	npc.Level = n.Level
-	npc.Raceid = n.Race
-	npc.Classid = n.Class
-	npc.Bodytypeid = n.Bodytype
+	npc.Race = n.Race
+	npc.Class = n.Class
+	npc.Bodytype = n.Bodytype
 	npc.Hp = n.Hp
 	npc.Mana = n.Mana
 	npc.Gender = n.Gender
@@ -292,9 +432,9 @@ func (n *Npc) ToProto() *pb.Npc {
 	npc.Dmeleetexture1 = n.Dmeleetexture1
 	npc.Dmeleetexture2 = n.Dmeleetexture2
 	npc.Ammoidfile = n.Ammoidfile
-	npc.Primmeleetypeid = n.Primmeleetype
-	npc.Secmeleetypeid = n.Secmeleetype
-	npc.Rangedtypeid = n.Rangedtype
+	npc.Primmeleetype = n.Primmeleetype
+	npc.Secmeleetype = n.Secmeleetype
+	npc.Rangedtype = n.Rangedtype
 	npc.Runspeed = n.Runspeed
 	npc.Mr = n.MR
 	npc.Cr = n.CR

@@ -41,21 +41,18 @@ service NpcService {
 		};
 	}
 }
+
 message NpcSearchRequest {
 	string name = 1;
 	int64 limit = 2;
 	int64 offset = 3;
-	string order_by = 4;
-	bool order_desc = 5;
+    string orderby = 4; //name
+	bool orderdesc = 5;
 }
 
 message NpcSearchResponse {
 	repeated Npc Npcs = 1;
-	int64 limit = 2;
-	int64 offset = 3;
-	int64 total = 4;
-	string order_by = 5;
-	bool order_desc = 6;
+	int64 total = 2;
 }
 
 message NpcCreateRequest {
@@ -76,11 +73,11 @@ message NpcReadResponse {
 
 message NpcUpdateRequest {
 	int64 id = 1;
-	Npc npc = 2;
-
+	map<string,string> values = 2;
 }
 
 message NpcUpdateResponse {
+	int64 rowsaffected = 1;
 }
 
 message NpcDeleteRequest {
@@ -88,6 +85,7 @@ message NpcDeleteRequest {
 }
 
 message NpcDeleteResponse {
+	int64 rowsaffected = 1;
 }
 
 message NpcPatchRequest {
@@ -97,4 +95,5 @@ message NpcPatchRequest {
 }
 
 message NpcPatchResponse {
+	int64 rowsaffected = 1;
 }
