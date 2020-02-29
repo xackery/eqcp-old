@@ -56,6 +56,7 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 	pb.RegisterItemServiceServer(s.gserver, s)
 	pb.RegisterNpcServiceServer(s.gserver, s)
 	pb.RegisterPetitionServiceServer(s.gserver, s)
+	pb.RegisterPlayerSpeechServiceServer(s.gserver, s)
 	pb.RegisterTradeServiceServer(s.gserver, s)
 	pb.RegisterZoneServiceServer(s.gserver, s)
 	s.mux = runtime.NewServeMux()
@@ -79,6 +80,10 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 	err = pb.RegisterPetitionServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle petition")
+	}
+	err = pb.RegisterPlayerSpeechServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	if err != nil {
+		return nil, errors.Wrap(err, "handle playerspeech")
 	}
 	err = pb.RegisterTradeServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
 	if err != nil {

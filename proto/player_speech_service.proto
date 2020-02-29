@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+//import "google/api/timestamp.proto";
+import "proto/player_speech.proto";
+
+package pb;
+
+service PlayerSpeechService {
+    rpc PlayerSpeechSearch(PlayerSpeechSearchRequest) returns (PlayerSpeechSearchResponse) {
+		option (google.api.http) = {
+			get: "/v1/playerspeech/search"
+		};
+	}
+	rpc PlayerSpeechCreate(PlayerSpeechCreateRequest) returns (PlayerSpeechCreateResponse) {
+		option (google.api.http) = {
+			post: "/v1/playerspeech"
+			body: "*"
+		}; 
+	}
+	rpc PlayerSpeechRead(PlayerSpeechReadRequest) returns (PlayerSpeechReadResponse) {
+		option (google.api.http) = {
+			get: "/v1/playerspeech/{id}"
+		};
+	}
+	rpc PlayerSpeechUpdate(PlayerSpeechUpdateRequest) returns (PlayerSpeechUpdateResponse) {
+		option (google.api.http) = {
+			put: "/v1/playerspeech/{id}"
+			body: "*"
+		};
+	}
+	rpc PlayerSpeechDelete(PlayerSpeechDeleteRequest) returns (PlayerSpeechDeleteResponse) {
+		option (google.api.http) = {
+			delete: "/v1/playerspeech/{id}"
+		};
+	}
+	rpc PlayerSpeechPatch(PlayerSpeechPatchRequest) returns (PlayerSpeechPatchResponse) {
+		option (google.api.http) = {
+			patch: "/v1/playerspeech/{id}"
+			body: "*"
+		};
+	}
+}
+
+message PlayerSpeechSearchRequest {
+	map<string,string> values = 1;
+	int64 limit = 2;
+	int64 offset = 3;
+    string orderby = 4; //charname
+	bool orderdesc = 5;
+}
+
+message PlayerSpeechSearchResponse {
+	repeated PlayerSpeech PlayerSpeechs = 1;
+	int64 total = 2;
+}
+
+message PlayerSpeechCreateRequest {
+	map<string,string> values = 2;
+}
+
+message PlayerSpeechCreateResponse {
+	int64 id = 1;
+}
+
+message PlayerSpeechReadRequest {
+	int64 id = 1;
+}
+
+message PlayerSpeechReadResponse {
+	PlayerSpeech playerSpeech = 1;
+}
+
+message PlayerSpeechUpdateRequest {
+	int64 id = 1;
+	map<string,string> values = 2;
+}
+
+message PlayerSpeechUpdateResponse {
+	int64 rowsaffected = 1;
+}
+
+message PlayerSpeechDeleteRequest {
+	int64 id = 1;
+}
+
+message PlayerSpeechDeleteResponse {
+	int64 rowsaffected = 1;
+}
+
+message PlayerSpeechPatchRequest {
+	int64 id = 1;
+	string key = 2;
+	string value = 3;
+}
+
+message PlayerSpeechPatchResponse {
+	int64 rowsaffected = 1;
+}

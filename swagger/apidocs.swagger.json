@@ -921,6 +921,187 @@
         ]
       }
     },
+    "/v1/playerspeech": {
+      "post": {
+        "operationId": "PlayerSpeechCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbPlayerSpeechCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbPlayerSpeechCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PlayerSpeechService"
+        ]
+      }
+    },
+    "/v1/playerspeech/search": {
+      "get": {
+        "operationId": "PlayerSpeechSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbPlayerSpeechSearchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderdesc",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "PlayerSpeechService"
+        ]
+      }
+    },
+    "/v1/playerspeech/{id}": {
+      "get": {
+        "operationId": "PlayerSpeechRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbPlayerSpeechReadResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "PlayerSpeechService"
+        ]
+      },
+      "delete": {
+        "operationId": "PlayerSpeechDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbPlayerSpeechDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "PlayerSpeechService"
+        ]
+      },
+      "put": {
+        "operationId": "PlayerSpeechUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbPlayerSpeechUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbPlayerSpeechUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PlayerSpeechService"
+        ]
+      },
+      "patch": {
+        "operationId": "PlayerSpeechPatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbPlayerSpeechPatchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbPlayerSpeechPatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PlayerSpeechService"
+        ]
+      }
+    },
     "/v1/trade": {
       "post": {
         "operationId": "TradeCreate",
@@ -3640,6 +3821,140 @@
       }
     },
     "pbPetitionUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbPlayerSpeech": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "from": {
+          "type": "string"
+        },
+        "to": {
+          "type": "string"
+        },
+        "frommessage": {
+          "type": "string"
+        },
+        "minstatus": {
+          "type": "string",
+          "format": "int64"
+        },
+        "guilddbid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "type": {
+          "type": "string",
+          "format": "int64"
+        },
+        "timerecorded": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbPlayerSpeechCreateRequest": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbPlayerSpeechCreateResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbPlayerSpeechDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbPlayerSpeechPatchRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "pbPlayerSpeechPatchResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbPlayerSpeechReadResponse": {
+      "type": "object",
+      "properties": {
+        "playerSpeech": {
+          "$ref": "#/definitions/pbPlayerSpeech"
+        }
+      }
+    },
+    "pbPlayerSpeechSearchResponse": {
+      "type": "object",
+      "properties": {
+        "PlayerSpeechs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbPlayerSpeech"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbPlayerSpeechUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbPlayerSpeechUpdateResponse": {
       "type": "object",
       "properties": {
         "rowsaffected": {

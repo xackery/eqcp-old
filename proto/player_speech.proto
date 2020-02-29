@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+package pb;
+
+message PlayerSpeech {
+   int64 id = 1;
+   string from = 2;
+   string to = 3;
+   string frommessage = 4;
+   int64 minstatus = 5;
+   int64 guilddbid = 6;
+   int64 type = 7;
+   int64 timerecorded = 8;
+}
