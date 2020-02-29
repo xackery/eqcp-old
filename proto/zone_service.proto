@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+//import "google/api/timestamp.proto";
+import "proto/zone.proto";
+
+package pb;
+
+service ZoneService {
+    rpc ZoneSearch(ZoneSearchRequest) returns (ZoneSearchResponse) {
+		option (google.api.http) = {
+			get: "/v1/zone/search"
+		};
+	}
+	rpc ZoneCreate(ZoneCreateRequest) returns (ZoneCreateResponse) {
+		option (google.api.http) = {
+			post: "/v1/zone"
+			body: "*"
+		}; 
+	}
+	rpc ZoneRead(ZoneReadRequest) returns (ZoneReadResponse) {
+		option (google.api.http) = {
+			get: "/v1/zone/{id}"
+		};
+	}
+	rpc ZoneUpdate(ZoneUpdateRequest) returns (ZoneUpdateResponse) {
+		option (google.api.http) = {
+			put: "/v1/zone/{id}"
+			body: "*"
+		};
+	}
+	rpc ZoneDelete(ZoneDeleteRequest) returns (ZoneDeleteResponse) {
+		option (google.api.http) = {
+			delete: "/v1/zone/{id}"
+		};
+	}
+	rpc ZonePatch(ZonePatchRequest) returns (ZonePatchResponse) {
+		option (google.api.http) = {
+			patch: "/v1/zone/{id}"
+			body: "*"
+		};
+	}
+}
+
+message ZoneSearchRequest {
+	map<string,string> values = 1;
+	int64 limit = 2;
+	int64 offset = 3;
+    string orderby = 4; //name
+	bool orderdesc = 5;
+}
+
+message ZoneSearchResponse {
+	repeated Zone Zones = 1;
+	int64 total = 2;
+}
+
+message ZoneCreateRequest {
+	map<string,string> values = 2;
+}
+
+message ZoneCreateResponse {
+	int64 id = 1;
+}
+
+message ZoneReadRequest {
+	int64 id = 1;
+}
+
+message ZoneReadResponse {
+	Zone zone = 1;
+}
+
+message ZoneUpdateRequest {
+	int64 id = 1;
+	map<string,string> values = 2;
+}
+
+message ZoneUpdateResponse {
+	int64 rowsaffected = 1;
+}
+
+message ZoneDeleteRequest {
+	int64 id = 1;
+}
+
+message ZoneDeleteResponse {
+	int64 rowsaffected = 1;
+}
+
+message ZonePatchRequest {
+	int64 id = 1;
+	string key = 2;
+	string value = 3;
+}
+
+message ZonePatchResponse {
+	int64 rowsaffected = 1;
+}

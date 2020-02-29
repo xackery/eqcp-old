@@ -378,6 +378,187 @@
         ]
       }
     },
+    "/v1/item": {
+      "post": {
+        "operationId": "ItemCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbItemCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbItemCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ItemService"
+        ]
+      }
+    },
+    "/v1/item/search": {
+      "get": {
+        "operationId": "ItemSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbItemSearchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderdesc",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "ItemService"
+        ]
+      }
+    },
+    "/v1/item/{id}": {
+      "get": {
+        "operationId": "ItemRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbItemReadResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "ItemService"
+        ]
+      },
+      "delete": {
+        "operationId": "ItemDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbItemDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "ItemService"
+        ]
+      },
+      "put": {
+        "operationId": "ItemUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbItemUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbItemUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ItemService"
+        ]
+      },
+      "patch": {
+        "operationId": "ItemPatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbItemPatchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbItemPatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ItemService"
+        ]
+      }
+    },
     "/v1/npc": {
       "post": {
         "operationId": "NpcCreate",
@@ -926,6 +1107,187 @@
           "TradeService"
         ]
       }
+    },
+    "/v1/zone": {
+      "post": {
+        "operationId": "ZoneCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbZoneCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbZoneCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ZoneService"
+        ]
+      }
+    },
+    "/v1/zone/search": {
+      "get": {
+        "operationId": "ZoneSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbZoneSearchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderdesc",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "ZoneService"
+        ]
+      }
+    },
+    "/v1/zone/{id}": {
+      "get": {
+        "operationId": "ZoneRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbZoneReadResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "ZoneService"
+        ]
+      },
+      "delete": {
+        "operationId": "ZoneDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbZoneDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "ZoneService"
+        ]
+      },
+      "put": {
+        "operationId": "ZoneUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbZoneUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbZoneUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ZoneService"
+        ]
+      },
+      "patch": {
+        "operationId": "ZonePatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbZonePatchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbZonePatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "ZoneService"
+        ]
+      }
     }
   },
   "definitions": {
@@ -1308,6 +1670,1226 @@
       }
     },
     "pbHandinUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbItem": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "minstatus": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "aagi": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ac": {
+          "type": "string",
+          "format": "int64"
+        },
+        "accuracy": {
+          "type": "string",
+          "format": "int64"
+        },
+        "acha": {
+          "type": "string",
+          "format": "int64"
+        },
+        "adex": {
+          "type": "string",
+          "format": "int64"
+        },
+        "aint": {
+          "type": "string",
+          "format": "int64"
+        },
+        "artifactflag": {
+          "type": "string",
+          "format": "int64"
+        },
+        "asta": {
+          "type": "string",
+          "format": "int64"
+        },
+        "astr": {
+          "type": "string",
+          "format": "int64"
+        },
+        "attack": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augrestrict": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot1type": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot1visible": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot2type": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot2visible": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot3type": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot3visible": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot4type": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot4visible": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot5type": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot5visible": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot6type": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot6visible": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augtype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "avoidance": {
+          "type": "string",
+          "format": "int64"
+        },
+        "awis": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bagsize": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bagslots": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bagtype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bagwr": {
+          "type": "string",
+          "format": "int64"
+        },
+        "banedmgamt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "banedmgraceamt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "banedmgbody": {
+          "type": "string",
+          "format": "int64"
+        },
+        "banedmgrace": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bardtype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bardvalue": {
+          "type": "string",
+          "format": "int64"
+        },
+        "book": {
+          "type": "string",
+          "format": "int64"
+        },
+        "casttime": {
+          "type": "string",
+          "format": "int64"
+        },
+        "casttime2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charmfile": {
+          "type": "string"
+        },
+        "charmfileid": {
+          "type": "string"
+        },
+        "classes": {
+          "type": "string",
+          "format": "int64"
+        },
+        "color": {
+          "type": "string",
+          "format": "int64"
+        },
+        "combateffects": {
+          "type": "string"
+        },
+        "extradmgskill": {
+          "type": "string",
+          "format": "int64"
+        },
+        "extradmgamt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "price": {
+          "type": "string",
+          "format": "int64"
+        },
+        "cr": {
+          "type": "string",
+          "format": "int64"
+        },
+        "damage": {
+          "type": "string",
+          "format": "int64"
+        },
+        "damageshield": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deity": {
+          "type": "string",
+          "format": "int64"
+        },
+        "delay": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augdistiller": {
+          "type": "string",
+          "format": "int64"
+        },
+        "dotshielding": {
+          "type": "string",
+          "format": "int64"
+        },
+        "dr": {
+          "type": "string",
+          "format": "int64"
+        },
+        "clicktype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "clicklevel2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "elemdmgtype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "elemdmgamt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "endur": {
+          "type": "string",
+          "format": "int64"
+        },
+        "factionamt1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "factionamt2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "factionamt3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "factionamt4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "factionmod1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "factionmod2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "factionmod3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "factionmod4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "filename": {
+          "type": "string"
+        },
+        "focuseffect": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fr": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fvnodrop": {
+          "type": "string",
+          "format": "int64"
+        },
+        "haste": {
+          "type": "string",
+          "format": "int64"
+        },
+        "clicklevel": {
+          "type": "string",
+          "format": "int64"
+        },
+        "hp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "regen": {
+          "type": "string",
+          "format": "int64"
+        },
+        "icon": {
+          "type": "string",
+          "format": "int64"
+        },
+        "idfile": {
+          "type": "string"
+        },
+        "itemclass": {
+          "type": "string",
+          "format": "int64"
+        },
+        "itemtype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ldonprice": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ldontheme": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ldonsold": {
+          "type": "string",
+          "format": "int64"
+        },
+        "light": {
+          "type": "string",
+          "format": "int64"
+        },
+        "lore": {
+          "type": "string"
+        },
+        "loregroup": {
+          "type": "string",
+          "format": "int64"
+        },
+        "magic": {
+          "type": "string",
+          "format": "int64"
+        },
+        "mana": {
+          "type": "string",
+          "format": "int64"
+        },
+        "manaregen": {
+          "type": "string",
+          "format": "int64"
+        },
+        "enduranceregen": {
+          "type": "string",
+          "format": "int64"
+        },
+        "material": {
+          "type": "string",
+          "format": "int64"
+        },
+        "herosforgemodel": {
+          "type": "string",
+          "format": "int64"
+        },
+        "maxcharges": {
+          "type": "string",
+          "format": "int64"
+        },
+        "mr": {
+          "type": "string",
+          "format": "int64"
+        },
+        "nodrop": {
+          "type": "string",
+          "format": "int64"
+        },
+        "norent": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pendingloreflag": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pr": {
+          "type": "string",
+          "format": "int64"
+        },
+        "procrate": {
+          "type": "string",
+          "format": "int64"
+        },
+        "races": {
+          "type": "string",
+          "format": "int64"
+        },
+        "range": {
+          "type": "string",
+          "format": "int64"
+        },
+        "reclevel": {
+          "type": "string",
+          "format": "int64"
+        },
+        "recskill": {
+          "type": "string",
+          "format": "int64"
+        },
+        "reqlevel": {
+          "type": "string",
+          "format": "int64"
+        },
+        "sellrate": {
+          "type": "string",
+          "format": "int64"
+        },
+        "shielding": {
+          "type": "string",
+          "format": "int64"
+        },
+        "size": {
+          "type": "string",
+          "format": "int64"
+        },
+        "skillmodtype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "skillmodvalue": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slots": {
+          "type": "string",
+          "format": "int64"
+        },
+        "clickeffect": {
+          "type": "string",
+          "format": "int64"
+        },
+        "spellshield": {
+          "type": "string",
+          "format": "int64"
+        },
+        "strikethrough": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stunresist": {
+          "type": "string",
+          "format": "int64"
+        },
+        "summonedflag": {
+          "type": "string",
+          "format": "int64"
+        },
+        "tradeskills": {
+          "type": "string",
+          "format": "int64"
+        },
+        "favor": {
+          "type": "string",
+          "format": "int64"
+        },
+        "weight": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk012": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk013": {
+          "type": "string",
+          "format": "int64"
+        },
+        "benefitflag": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk054": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk059": {
+          "type": "string",
+          "format": "int64"
+        },
+        "booktype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "recastdelay": {
+          "type": "string",
+          "format": "int64"
+        },
+        "recasttype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "guildfavor": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk123": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk124": {
+          "type": "string",
+          "format": "int64"
+        },
+        "attuneable": {
+          "type": "string",
+          "format": "int64"
+        },
+        "nopet": {
+          "type": "string",
+          "format": "int64"
+        },
+        "updated": {
+          "type": "string",
+          "format": "int64"
+        },
+        "comment": {
+          "type": "string"
+        },
+        "unk127": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pointtype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "potionbelt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "potionbeltslots": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stacksize": {
+          "type": "string",
+          "format": "int64"
+        },
+        "notransfer": {
+          "type": "string",
+          "format": "int64"
+        },
+        "stackable": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk134": {
+          "type": "string"
+        },
+        "unk137": {
+          "type": "string",
+          "format": "int64"
+        },
+        "proceffect": {
+          "type": "string",
+          "format": "int64"
+        },
+        "proctype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "proclevel2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "proclevel": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk142": {
+          "type": "string",
+          "format": "int64"
+        },
+        "worneffect": {
+          "type": "string",
+          "format": "int64"
+        },
+        "worntype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "wornlevel2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "wornlevel": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk147": {
+          "type": "string",
+          "format": "int64"
+        },
+        "focustype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "focuslevel2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "focuslevel": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk152": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrolleffect": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrolltype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrolllevel2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrolllevel": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk157": {
+          "type": "string",
+          "format": "int64"
+        },
+        "serialized": {
+          "type": "string",
+          "format": "int64"
+        },
+        "verified": {
+          "type": "string",
+          "format": "int64"
+        },
+        "serialization": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "unk033": {
+          "type": "string",
+          "format": "int64"
+        },
+        "lorefile": {
+          "type": "string"
+        },
+        "unk014": {
+          "type": "string",
+          "format": "int64"
+        },
+        "svcorruption": {
+          "type": "string",
+          "format": "int64"
+        },
+        "skillmodmax": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk060": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot1unk2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot2unk2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot3unk2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot4unk2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot5unk2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot6unk2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk120": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk121": {
+          "type": "string",
+          "format": "int64"
+        },
+        "questitemflag": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk132": {
+          "type": "string"
+        },
+        "clickunk5": {
+          "type": "string",
+          "format": "int64"
+        },
+        "clickunk6": {
+          "type": "string"
+        },
+        "clickunk7": {
+          "type": "string",
+          "format": "int64"
+        },
+        "procunk1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "procunk2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "procunk3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "procunk4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "procunk6": {
+          "type": "string"
+        },
+        "procunk7": {
+          "type": "string",
+          "format": "int64"
+        },
+        "wornunk1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "wornunk2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "wornunk3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "wornunk4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "wornunk5": {
+          "type": "string",
+          "format": "int64"
+        },
+        "wornunk6": {
+          "type": "string"
+        },
+        "wornunk7": {
+          "type": "string",
+          "format": "int64"
+        },
+        "focusunk1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "focusunk2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "focusunk3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "focusunk4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "focusunk5": {
+          "type": "string",
+          "format": "int64"
+        },
+        "focusunk6": {
+          "type": "string"
+        },
+        "focusunk7": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrollunk1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrollunk2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrollunk3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrollunk4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrollunk5": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scrollunk6": {
+          "type": "string"
+        },
+        "scrollunk7": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk193": {
+          "type": "string",
+          "format": "int64"
+        },
+        "purity": {
+          "type": "string",
+          "format": "int64"
+        },
+        "evoitem": {
+          "type": "string",
+          "format": "int64"
+        },
+        "evoid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "evolvinglevel": {
+          "type": "string",
+          "format": "int64"
+        },
+        "evomax": {
+          "type": "string",
+          "format": "int64"
+        },
+        "clickname": {
+          "type": "string"
+        },
+        "procname": {
+          "type": "string"
+        },
+        "wornname": {
+          "type": "string"
+        },
+        "focusname": {
+          "type": "string"
+        },
+        "scrollname": {
+          "type": "string"
+        },
+        "dsmitigation": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heroicstr": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heroicint": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heroicwis": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heroicagi": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heroicdex": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heroicsta": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heroiccha": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heroicpr": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heroicdr": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heroicfr": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heroiccr": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heroicmr": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heroicsvcorrup": {
+          "type": "string",
+          "format": "int64"
+        },
+        "healamt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "spelldmg": {
+          "type": "string",
+          "format": "int64"
+        },
+        "clairvoyance": {
+          "type": "string",
+          "format": "int64"
+        },
+        "backstabdmg": {
+          "type": "string",
+          "format": "int64"
+        },
+        "created": {
+          "type": "string"
+        },
+        "elitematerial": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ldonsellbackrate": {
+          "type": "string",
+          "format": "int64"
+        },
+        "scriptfileid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "expendablearrow": {
+          "type": "string",
+          "format": "int64"
+        },
+        "powersourcecapacity": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bardeffect": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bardeffecttype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bardlevel2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bardlevel": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bardunk1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bardunk2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bardunk3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bardunk4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bardunk5": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bardname": {
+          "type": "string"
+        },
+        "bardunk7": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk214": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk219": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk220": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk221": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heirloom": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk223": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk224": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk225": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk226": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk227": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk228": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk229": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk230": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk231": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk232": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk233": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk234": {
+          "type": "string",
+          "format": "int64"
+        },
+        "placeable": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk236": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk237": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk238": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk239": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk240": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unk241": {
+          "type": "string",
+          "format": "int64"
+        },
+        "epicitem": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbItemCreateRequest": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbItemCreateResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbItemDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbItemPatchRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "pbItemPatchResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbItemReadResponse": {
+      "type": "object",
+      "properties": {
+        "item": {
+          "$ref": "#/definitions/pbItem"
+        }
+      }
+    },
+    "pbItemSearchResponse": {
+      "type": "object",
+      "properties": {
+        "Items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbItem"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbItemUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbItemUpdateResponse": {
       "type": "object",
       "properties": {
         "rowsaffected": {
@@ -2219,6 +3801,449 @@
       }
     },
     "pbTradeUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbZone": {
+      "type": "object",
+      "properties": {
+        "shortname": {
+          "type": "string"
+        },
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "filename": {
+          "type": "string"
+        },
+        "longname": {
+          "type": "string"
+        },
+        "mapfilename": {
+          "type": "string"
+        },
+        "safex": {
+          "type": "number",
+          "format": "float"
+        },
+        "safey": {
+          "type": "number",
+          "format": "float"
+        },
+        "safez": {
+          "type": "number",
+          "format": "float"
+        },
+        "graveyardid": {
+          "type": "number",
+          "format": "float"
+        },
+        "minlevel": {
+          "type": "string",
+          "format": "int64"
+        },
+        "minstatus": {
+          "type": "string",
+          "format": "int64"
+        },
+        "zoneidnumber": {
+          "type": "string",
+          "format": "int64"
+        },
+        "version": {
+          "type": "string",
+          "format": "int64"
+        },
+        "timezone": {
+          "type": "string",
+          "format": "int64"
+        },
+        "maxclients": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ruleset": {
+          "type": "string",
+          "format": "int64"
+        },
+        "note": {
+          "type": "string"
+        },
+        "underworld": {
+          "type": "number",
+          "format": "float"
+        },
+        "minclip": {
+          "type": "number",
+          "format": "float"
+        },
+        "maxclip": {
+          "type": "number",
+          "format": "float"
+        },
+        "fogminclip": {
+          "type": "number",
+          "format": "float"
+        },
+        "fogmaxclip": {
+          "type": "number",
+          "format": "float"
+        },
+        "fogblue": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fogred": {
+          "type": "string",
+          "format": "int64"
+        },
+        "foggreen": {
+          "type": "string",
+          "format": "int64"
+        },
+        "sky": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ztype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "zoneexpmultiplier": {
+          "type": "number",
+          "format": "float"
+        },
+        "walkspeed": {
+          "type": "number",
+          "format": "float"
+        },
+        "timetype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fogred1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "foggreen1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fogblue1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fogminclip1": {
+          "type": "number",
+          "format": "float"
+        },
+        "fogmaxclip1": {
+          "type": "number",
+          "format": "float"
+        },
+        "fogred2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "foggreen2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fogblue2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fogminclip2": {
+          "type": "number",
+          "format": "float"
+        },
+        "fogmaxclip2": {
+          "type": "number",
+          "format": "float"
+        },
+        "fogred3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "foggreen3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fogblue3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fogminclip3": {
+          "type": "number",
+          "format": "float"
+        },
+        "fogmaxclip3": {
+          "type": "number",
+          "format": "float"
+        },
+        "fogred4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "foggreen4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fogblue4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fogminclip4": {
+          "type": "number",
+          "format": "float"
+        },
+        "fogmaxclip4": {
+          "type": "number",
+          "format": "float"
+        },
+        "fogdensity": {
+          "type": "number",
+          "format": "float"
+        },
+        "flagneeded": {
+          "type": "string"
+        },
+        "canbind": {
+          "type": "string",
+          "format": "int64"
+        },
+        "cancombat": {
+          "type": "string",
+          "format": "int64"
+        },
+        "canlevitate": {
+          "type": "string",
+          "format": "int64"
+        },
+        "castoutdoor": {
+          "type": "string",
+          "format": "int64"
+        },
+        "hotzone": {
+          "type": "string",
+          "format": "int64"
+        },
+        "insttype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "shutdowndelay": {
+          "type": "string",
+          "format": "int64"
+        },
+        "peqzone": {
+          "type": "string",
+          "format": "int64"
+        },
+        "expansion": {
+          "type": "string",
+          "format": "int64"
+        },
+        "suspendbuffs": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rainchance1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rainchance2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rainchance3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rainchance4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rainduration1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rainduration2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rainduration3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rainduration4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "snowchance1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "snowchance2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "snowchance3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "snowchance4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "snowduration1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "snowduration2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "snowduration3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "snowduration4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "gravity": {
+          "type": "number",
+          "format": "float"
+        },
+        "type": {
+          "type": "string",
+          "format": "int64"
+        },
+        "skylock": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fastregenhp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fastregenmana": {
+          "type": "string",
+          "format": "int64"
+        },
+        "fastregenendurance": {
+          "type": "string",
+          "format": "int64"
+        },
+        "npcmaxaggrodist": {
+          "type": "string",
+          "format": "int64"
+        },
+        "maxmovementupdaterange": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbZoneCreateRequest": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbZoneCreateResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbZoneDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbZonePatchRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "pbZonePatchResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbZoneReadResponse": {
+      "type": "object",
+      "properties": {
+        "zone": {
+          "$ref": "#/definitions/pbZone"
+        }
+      }
+    },
+    "pbZoneSearchResponse": {
+      "type": "object",
+      "properties": {
+        "Zones": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbZone"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbZoneUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbZoneUpdateResponse": {
       "type": "object",
       "properties": {
         "rowsaffected": {

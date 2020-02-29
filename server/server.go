@@ -53,9 +53,11 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 	s.gserver = grpc.NewServer()
 	pb.RegisterBugServiceServer(s.gserver, s)
 	pb.RegisterHandinServiceServer(s.gserver, s)
+	pb.RegisterItemServiceServer(s.gserver, s)
 	pb.RegisterNpcServiceServer(s.gserver, s)
 	pb.RegisterPetitionServiceServer(s.gserver, s)
 	pb.RegisterTradeServiceServer(s.gserver, s)
+	pb.RegisterZoneServiceServer(s.gserver, s)
 	s.mux = runtime.NewServeMux()
 
 	err = pb.RegisterBugServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
@@ -65,6 +67,10 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 	err = pb.RegisterHandinServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle handin")
+	}
+	err = pb.RegisterItemServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	if err != nil {
+		return nil, errors.Wrap(err, "handle item")
 	}
 	err = pb.RegisterNpcServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
 	if err != nil {
@@ -77,6 +83,10 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 	err = pb.RegisterTradeServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle trade")
+	}
+	err = pb.RegisterZoneServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	if err != nil {
+		return nil, errors.Wrap(err, "handle zone")
 	}
 
 	go s.httpServe()

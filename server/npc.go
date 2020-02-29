@@ -128,7 +128,6 @@ func (s *Server) NpcSearch(ctx context.Context, req *pb.NpcSearchRequest) (*pb.N
 // NpcCreate implements SCRUD endpoints
 func (s *Server) NpcCreate(ctx context.Context, req *pb.NpcCreateRequest) (*pb.NpcCreateResponse, error) {
 
-	fmt.Println(req)
 	npc := new(Npc)
 
 	st := reflect.TypeOf(*npc)

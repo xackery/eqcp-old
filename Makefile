@@ -11,6 +11,7 @@ init:
 	wget http://edit.projecteq.net/weekly/peq_beta.zip -O tmp/peq_beta.zip
 	cd tmp && unzip -o peq_beta.zip	
 	cd tmp && rm drop*.sql *.zip data_tables.sql load_* source_views.sql
+	wget https://raw.githubusercontent.com/EQEmu/Server/master/loginserver/login_util/login_schema.sql -O tmp/login_schema.sql
 	docker-compose up -d
 	@docker-compose logs mariadb
 	@echo "Wait a bit for database to be injected." 

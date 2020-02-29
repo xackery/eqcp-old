@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+//import "google/api/timestamp.proto";
+import "proto/item.proto";
+
+package pb;
+
+service ItemService {
+    rpc ItemSearch(ItemSearchRequest) returns (ItemSearchResponse) {
+		option (google.api.http) = {
+			get: "/v1/item/search"
+		};
+	}
+	rpc ItemCreate(ItemCreateRequest) returns (ItemCreateResponse) {
+		option (google.api.http) = {
+			post: "/v1/item"
+			body: "*"
+		}; 
+	}
+	rpc ItemRead(ItemReadRequest) returns (ItemReadResponse) {
+		option (google.api.http) = {
+			get: "/v1/item/{id}"
+		};
+	}
+	rpc ItemUpdate(ItemUpdateRequest) returns (ItemUpdateResponse) {
+		option (google.api.http) = {
+			put: "/v1/item/{id}"
+			body: "*"
+		};
+	}
+	rpc ItemDelete(ItemDeleteRequest) returns (ItemDeleteResponse) {
+		option (google.api.http) = {
+			delete: "/v1/item/{id}"
+		};
+	}
+	rpc ItemPatch(ItemPatchRequest) returns (ItemPatchResponse) {
+		option (google.api.http) = {
+			patch: "/v1/item/{id}"
+			body: "*"
+		};
+	}
+}
+
+message ItemSearchRequest {
+	map<string,string> values = 1;
+	int64 limit = 2;
+	int64 offset = 3;
+    string orderby = 4; //name
+	bool orderdesc = 5;
+}
+
+message ItemSearchResponse {
+	repeated Item Items = 1;
+	int64 total = 2;
+}
+
+message ItemCreateRequest {
+	map<string,string> values = 2;
+}
+
+message ItemCreateResponse {
+	int64 id = 1;
+}
+
+message ItemReadRequest {
+	int64 id = 1;
+}
+
+message ItemReadResponse {
+	Item item = 1;
+}
+
+message ItemUpdateRequest {
+	int64 id = 1;
+	map<string,string> values = 2;
+}
+
+message ItemUpdateResponse {
+	int64 rowsaffected = 1;
+}
+
+message ItemDeleteRequest {
+	int64 id = 1;
+}
+
+message ItemDeleteResponse {
+	int64 rowsaffected = 1;
+}
+
+message ItemPatchRequest {
+	int64 id = 1;
+	string key = 2;
+	string value = 3;
+}
+
+message ItemPatchResponse {
+	int64 rowsaffected = 1;
+}
