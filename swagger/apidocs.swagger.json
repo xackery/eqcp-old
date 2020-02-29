@@ -16,6 +16,193 @@
     "application/json"
   ],
   "paths": {
+    "/v1/bug": {
+      "post": {
+        "operationId": "BugCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbBugCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbBugCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "BugService"
+        ]
+      }
+    },
+    "/v1/bug/search/{charactername}": {
+      "get": {
+        "operationId": "BugSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbBugSearchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "charactername",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderdesc",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "BugService"
+        ]
+      }
+    },
+    "/v1/bug/{id}": {
+      "get": {
+        "operationId": "BugRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbBugReadResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "BugService"
+        ]
+      },
+      "delete": {
+        "operationId": "BugDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbBugDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "BugService"
+        ]
+      },
+      "put": {
+        "operationId": "BugUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbBugUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbBugUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "BugService"
+        ]
+      },
+      "patch": {
+        "operationId": "BugPatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbBugPatchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbBugPatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "BugService"
+        ]
+      }
+    },
     "/v1/npc": {
       "post": {
         "operationId": "NpcCreate",
@@ -202,9 +389,418 @@
           "NpcService"
         ]
       }
+    },
+    "/v1/petition": {
+      "post": {
+        "operationId": "PetitionCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbPetitionCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbPetitionCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PetitionService"
+        ]
+      }
+    },
+    "/v1/petition/search/{charname}": {
+      "get": {
+        "operationId": "PetitionSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbPetitionSearchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "charname",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderdesc",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "PetitionService"
+        ]
+      }
+    },
+    "/v1/petition/{dib}": {
+      "get": {
+        "operationId": "PetitionRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbPetitionReadResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "dib",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "PetitionService"
+        ]
+      },
+      "delete": {
+        "operationId": "PetitionDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbPetitionDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "dib",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "PetitionService"
+        ]
+      },
+      "put": {
+        "operationId": "PetitionUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbPetitionUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "dib",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbPetitionUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PetitionService"
+        ]
+      },
+      "patch": {
+        "operationId": "PetitionPatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbPetitionPatchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "dib",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbPetitionPatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "PetitionService"
+        ]
+      }
     }
   },
   "definitions": {
+    "pbBug": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "zone": {
+          "type": "string"
+        },
+        "clientversionid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "clientversionname": {
+          "type": "string"
+        },
+        "accountid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "characterid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charactername": {
+          "type": "string"
+        },
+        "reporterspoof": {
+          "type": "string",
+          "format": "int64"
+        },
+        "categoryid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "categoryname": {
+          "type": "string"
+        },
+        "reportername": {
+          "type": "string"
+        },
+        "uipath": {
+          "type": "string"
+        },
+        "posx": {
+          "type": "string",
+          "format": "int64"
+        },
+        "posy": {
+          "type": "string",
+          "format": "int64"
+        },
+        "posz": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heading": {
+          "type": "string",
+          "format": "int64"
+        },
+        "timeplayed": {
+          "type": "string",
+          "format": "int64"
+        },
+        "targetid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "targetname": {
+          "type": "string"
+        },
+        "optionalinfomask": {
+          "type": "string",
+          "format": "int64"
+        },
+        "canduplicate": {
+          "type": "string",
+          "format": "int64"
+        },
+        "crashbug": {
+          "type": "string",
+          "format": "int64"
+        },
+        "targetinfo": {
+          "type": "string",
+          "format": "int64"
+        },
+        "characterflags": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unknownvalue": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bugreport": {
+          "type": "string"
+        },
+        "systeminfo": {
+          "type": "string"
+        },
+        "reportdatetime": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bugstatus": {
+          "type": "string",
+          "format": "int64"
+        },
+        "lastreview": {
+          "type": "string",
+          "format": "int64"
+        },
+        "lastreviewer": {
+          "type": "string"
+        },
+        "reviewernotes": {
+          "type": "string"
+        }
+      }
+    },
+    "pbBugCreateRequest": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbBugCreateResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbBugDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbBugPatchRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "pbBugPatchResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbBugReadResponse": {
+      "type": "object",
+      "properties": {
+        "bug": {
+          "$ref": "#/definitions/pbBug"
+        }
+      }
+    },
+    "pbBugSearchResponse": {
+      "type": "object",
+      "properties": {
+        "Bugs": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbBug"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbBugUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbBugUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "pbNpc": {
       "type": "object",
       "properties": {
@@ -695,8 +1291,11 @@
     "pbNpcCreateRequest": {
       "type": "object",
       "properties": {
-        "npc": {
-          "$ref": "#/definitions/pbNpc"
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
         }
       }
     },
@@ -781,6 +1380,169 @@
       }
     },
     "pbNpcUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbPetition": {
+      "type": "object",
+      "properties": {
+        "dib": {
+          "type": "string",
+          "format": "int64"
+        },
+        "petid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charname": {
+          "type": "string"
+        },
+        "accountname": {
+          "type": "string"
+        },
+        "lastgm": {
+          "type": "string"
+        },
+        "petitiontext": {
+          "type": "string"
+        },
+        "gmtext": {
+          "type": "string"
+        },
+        "zone": {
+          "type": "string"
+        },
+        "urgency": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charclass": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charrace": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charlevel": {
+          "type": "string",
+          "format": "int64"
+        },
+        "checkouts": {
+          "type": "string",
+          "format": "int64"
+        },
+        "unavailables": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ischeckedout": {
+          "type": "string",
+          "format": "int64"
+        },
+        "senttime": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbPetitionCreateRequest": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbPetitionCreateResponse": {
+      "type": "object",
+      "properties": {
+        "dib": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbPetitionDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbPetitionPatchRequest": {
+      "type": "object",
+      "properties": {
+        "dib": {
+          "type": "string",
+          "format": "int64"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "pbPetitionPatchResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbPetitionReadResponse": {
+      "type": "object",
+      "properties": {
+        "petition": {
+          "$ref": "#/definitions/pbPetition"
+        }
+      }
+    },
+    "pbPetitionSearchResponse": {
+      "type": "object",
+      "properties": {
+        "Petitions": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbPetition"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbPetitionUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "dib": {
+          "type": "string",
+          "format": "int64"
+        },
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbPetitionUpdateResponse": {
       "type": "object",
       "properties": {
         "rowsaffected": {

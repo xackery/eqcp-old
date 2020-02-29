@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+//import "google/api/timestamp.proto";
+import "proto/bug.proto";
+
+package pb;
+
+service BugService {
+    rpc BugSearch(BugSearchRequest) returns (BugSearchResponse) {
+		option (google.api.http) = {
+			get: "/v1/bug/search/{charactername}"
+		};
+	}
+	rpc BugCreate(BugCreateRequest) returns (BugCreateResponse) {
+		option (google.api.http) = {
+			post: "/v1/bug"
+			body: "*"
+		}; 
+	}
+	rpc BugRead(BugReadRequest) returns (BugReadResponse) {
+		option (google.api.http) = {
+			get: "/v1/bug/{id}"
+		};
+	}
+	rpc BugUpdate(BugUpdateRequest) returns (BugUpdateResponse) {
+		option (google.api.http) = {
+			put: "/v1/bug/{id}"
+			body: "*"
+		};
+	}
+	rpc BugDelete(BugDeleteRequest) returns (BugDeleteResponse) {
+		option (google.api.http) = {
+			delete: "/v1/bug/{id}"
+		};
+	}
+	rpc BugPatch(BugPatchRequest) returns (BugPatchResponse) {
+		option (google.api.http) = {
+			patch: "/v1/bug/{id}"
+			body: "*"
+		};
+	}
+}
+
+message BugSearchRequest {
+	string charactername = 1;
+	int64 limit = 2;
+	int64 offset = 3;
+    string orderby = 4; //charactername
+	bool orderdesc = 5;
+}
+
+message BugSearchResponse {
+	repeated Bug Bugs = 1;
+	int64 total = 2;
+}
+
+message BugCreateRequest {
+	map<string,string> values = 2;
+}
+
+message BugCreateResponse {
+	int64 id = 1;
+}
+
+message BugReadRequest {
+	int64 id = 1;
+}
+
+message BugReadResponse {
+	Bug bug = 1;
+}
+
+message BugUpdateRequest {
+	int64 id = 1;
+	map<string,string> values = 2;
+}
+
+message BugUpdateResponse {
+	int64 rowsaffected = 1;
+}
+
+message BugDeleteRequest {
+	int64 id = 1;
+}
+
+message BugDeleteResponse {
+	int64 rowsaffected = 1;
+}
+
+message BugPatchRequest {
+	int64 id = 1;
+	string key = 2;
+	string value = 3;
+}
+
+message BugPatchResponse {
+	int64 rowsaffected = 1;
+}

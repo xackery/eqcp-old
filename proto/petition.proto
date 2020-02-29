@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto"; 
+//import "google/api/timestamp.proto";
+
+package pb;
+
+message Petition {
+  int64 dib = 1;
+  int64 petid = 2;
+  string charname = 3;
+  string accountname = 4;
+  string lastgm = 5;
+  string petitiontext = 6;
+  string gmtext = 7;
+  string zone = 8;
+  int64 urgency = 9;
+  int64 charclass = 10;
+  int64 charrace = 11;
+  int64 charlevel = 12;
+  int64 checkouts = 13;
+  int64 unavailables = 14;
+  int64 ischeckedout = 15;
+  int64 senttime = 16;
+}

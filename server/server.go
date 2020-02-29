@@ -35,7 +35,7 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 		cfg:    cfg,
 	}
 
-	conn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s", cfg.Database.Username, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port, cfg.Database.Db)
+	conn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", cfg.Database.Username, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port, cfg.Database.Db)
 	s.db, err = sqlx.Open("mysql", conn)
 	if err != nil {
 		return nil, errors.Wrap(err, "sql open")
@@ -51,12 +51,22 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 
 	s.gserver = grpc.NewServer()
+	pb.RegisterBugServiceServer(s.gserver, s)
 	pb.RegisterNpcServiceServer(s.gserver, s)
+	pb.RegisterPetitionServiceServer(s.gserver, s)
 	s.mux = runtime.NewServeMux()
 
 	err = pb.RegisterNpcServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle npc")
+	}
+	err = pb.RegisterBugServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	if err != nil {
+		return nil, errors.Wrap(err, "handle bug")
+	}
+	err = pb.RegisterPetitionServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	if err != nil {
+		return nil, errors.Wrap(err, "handle petition")
 	}
 
 	go s.httpServe()

@@ -56,7 +56,7 @@ message NpcSearchResponse {
 }
 
 message NpcCreateRequest {
-	Npc npc = 1;
+	map<string,string> values = 2;
 }
 
 message NpcCreateResponse {

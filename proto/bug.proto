@@ -1,0 +1,41 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto"; 
+//import "google/api/timestamp.proto";
+
+package pb;
+
+message Bug {
+	int64 id = 1;
+	string zone = 2;
+	int64 clientversionid = 3;
+	string clientversionname = 4;
+	int64 accountid = 5;
+	int64 characterid = 6;
+	string charactername = 7;
+	int64 reporterspoof = 8;
+	int64 categoryid = 9;
+	string categoryname = 10;
+	string reportername = 11;
+	string uipath = 12;
+	int64 posx = 13;
+	int64 posy = 14;
+	int64 posz = 15;
+	int64 heading = 16;
+	int64 timeplayed = 17;
+	int64 targetid = 18;
+	string targetname = 19;
+	int64 optionalinfomask = 20;
+	int64 canduplicate = 21;
+	int64 crashbug = 22;
+	int64 targetinfo = 23;
+	int64 characterflags = 24;
+	int64 unknownvalue = 25;
+	string bugreport = 26;
+	string systeminfo = 27;
+	int64 reportdatetime = 28;
+	int64 bugstatus = 29;
+	int64 lastreview = 30;
+	string lastreviewer = 31;
+	string reviewernotes = 32;
+}

@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+//import "google/api/timestamp.proto";
+import "proto/petition.proto";
+
+package pb;
+
+service PetitionService {
+    rpc PetitionSearch(PetitionSearchRequest) returns (PetitionSearchResponse) {
+		option (google.api.http) = {
+			get: "/v1/petition/search/{charname}"
+		};
+	}
+	rpc PetitionCreate(PetitionCreateRequest) returns (PetitionCreateResponse) {
+		option (google.api.http) = {
+			post: "/v1/petition"
+			body: "*"
+		}; 
+	}
+	rpc PetitionRead(PetitionReadRequest) returns (PetitionReadResponse) {
+		option (google.api.http) = {
+			get: "/v1/petition/{dib}"
+		};
+	}
+	rpc PetitionUpdate(PetitionUpdateRequest) returns (PetitionUpdateResponse) {
+		option (google.api.http) = {
+			put: "/v1/petition/{dib}"
+			body: "*"
+		};
+	}
+	rpc PetitionDelete(PetitionDeleteRequest) returns (PetitionDeleteResponse) {
+		option (google.api.http) = {
+			delete: "/v1/petition/{dib}"
+		};
+	}
+	rpc PetitionPatch(PetitionPatchRequest) returns (PetitionPatchResponse) {
+		option (google.api.http) = {
+			patch: "/v1/petition/{dib}"
+			body: "*"
+		};
+	}
+}
+
+message PetitionSearchRequest {
+	string charname = 1;
+	int64 limit = 2;
+	int64 offset = 3;
+    string orderby = 4; //charname
+	bool orderdesc = 5;
+}
+
+message PetitionSearchResponse {
+	repeated Petition Petitions = 1;
+	int64 total = 2;
+}
+
+message PetitionCreateRequest {
+	map<string,string> values = 2;
+}
+
+message PetitionCreateResponse {
+	int64 dib = 1;
+}
+
+message PetitionReadRequest {
+	int64 dib = 1;
+}
+
+message PetitionReadResponse {
+	Petition petition = 1;
+}
+
+message PetitionUpdateRequest {
+	int64 dib = 1;
+	map<string,string> values = 2;
+}
+
+message PetitionUpdateResponse {
+	int64 rowsaffected = 1;
+}
+
+message PetitionDeleteRequest {
+	int64 dib = 1;
+}
+
+message PetitionDeleteResponse {
+	int64 rowsaffected = 1;
+}
+
+message PetitionPatchRequest {
+	int64 dib = 1;
+	string key = 2;
+	string value = 3;
+}
+
+message PetitionPatchResponse {
+	int64 rowsaffected = 1;
+}

@@ -89,9 +89,58 @@ func (s *Server) NpcSearch(ctx context.Context, req *pb.NpcSearchRequest) (*pb.N
 
 // NpcCreate implements SCRUD endpoints
 func (s *Server) NpcCreate(ctx context.Context, req *pb.NpcCreateRequest) (*pb.NpcCreateResponse, error) {
-	return &pb.NpcCreateResponse{
-		Id: 1234,
-	}, nil
+
+	fmt.Println(req)
+	npc := new(Npc)
+
+	st := reflect.TypeOf(*npc)
+
+	args := map[string]interface{}{}
+	query := "INSERT INTO npc_types"
+
+	comma := ""
+	insertField := ""
+	insertValue := ""
+	for i := 0; i < st.NumField(); i++ {
+		field := st.Field(i)
+
+		tag, ok := field.Tag.Lookup("db")
+		if !ok {
+			continue
+		}
+
+		for key, value := range req.Values {
+			if strings.ToLower(tag) != strings.ToLower(key) {
+				continue
+			}
+			args[tag] = value
+			insertField += fmt.Sprintf("%s %s", comma, tag)
+			insertValue += fmt.Sprintf("%s :%s", comma, tag)
+			comma = ","
+		}
+	}
+	if len(args) == 1 {
+		return nil, fmt.Errorf("no valid fields provided")
+	}
+
+	query += fmt.Sprintf(" (%s) VALUES(%s)", insertField, insertValue)
+
+	log.Debug().Interface("args", args).Msgf("query: %s", query)
+
+	result, err := s.db.NamedExecContext(ctx, query, args)
+	if err != nil {
+		return nil, errors.Wrap(err, "query")
+	}
+
+	lastID, err := result.LastInsertId()
+	if err != nil {
+		return nil, errors.Wrap(err, "lastinsertedid")
+	}
+
+	resp := new(pb.NpcCreateResponse)
+	resp.Id = lastID
+
+	return resp, nil
 }
 
 // NpcRead implements SCRUD endpoints
@@ -156,6 +205,7 @@ func (s *Server) NpcUpdate(ctx context.Context, req *pb.NpcUpdateRequest) (*pb.N
 			query += fmt.Sprintf("%s %s = :%s", comma, tag, tag)
 			comma = ","
 		}
+
 	}
 	if len(args) == 1 {
 		return nil, fmt.Errorf("no valid fields provided")
