@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+//import "google/api/timestamp.proto";
+import "proto/login_account.proto";
+
+package pb;
+
+service LoginAccountService {
+    rpc LoginAccountSearch(LoginAccountSearchRequest) returns (LoginAccountSearchResponse) {
+		option (google.api.http) = {
+			get: "/v1/loginaccount/search"
+		};
+	}
+	rpc LoginAccountCreate(LoginAccountCreateRequest) returns (LoginAccountCreateResponse) {
+		option (google.api.http) = {
+			post: "/v1/loginaccount"
+			body: "*"
+		}; 
+	}
+	rpc LoginAccountRead(LoginAccountReadRequest) returns (LoginAccountReadResponse) {
+		option (google.api.http) = {
+			get: "/v1/loginaccount/{id}"
+		};
+	}
+	rpc LoginAccountUpdate(LoginAccountUpdateRequest) returns (LoginAccountUpdateResponse) {
+		option (google.api.http) = {
+			put: "/v1/loginaccount/{id}"
+			body: "*"
+		};
+	}
+	rpc LoginAccountDelete(LoginAccountDeleteRequest) returns (LoginAccountDeleteResponse) {
+		option (google.api.http) = {
+			delete: "/v1/loginaccount/{id}"
+		};
+	}
+	rpc LoginAccountPatch(LoginAccountPatchRequest) returns (LoginAccountPatchResponse) {
+		option (google.api.http) = {
+			patch: "/v1/loginaccount/{id}"
+			body: "*"
+		};
+	}
+}
+
+message LoginAccountSearchRequest {
+	map<string,string> values = 1;
+	int64 limit = 2;
+	int64 offset = 3;
+    string orderby = 4; //charactername
+	bool orderdesc = 5;
+}
+
+message LoginAccountSearchResponse {
+	repeated LoginAccount LoginAccounts = 1;
+	int64 total = 2;
+}
+
+message LoginAccountCreateRequest {
+	map<string,string> values = 2;
+}
+
+message LoginAccountCreateResponse {
+	int64 id = 1;
+}
+
+message LoginAccountReadRequest {
+	int64 id = 1;
+}
+
+message LoginAccountReadResponse {
+	LoginAccount loginAccount = 1;
+}
+
+message LoginAccountUpdateRequest {
+	int64 id = 1;
+	map<string,string> values = 2;
+}
+
+message LoginAccountUpdateResponse {
+	int64 rowsaffected = 1;
+}
+
+message LoginAccountDeleteRequest {
+	int64 id = 1;
+}
+
+message LoginAccountDeleteResponse {
+	int64 rowsaffected = 1;
+}
+
+message LoginAccountPatchRequest {
+	int64 id = 1;
+	string key = 2;
+	string value = 3;
+}
+
+message LoginAccountPatchResponse {
+	int64 rowsaffected = 1;
+}

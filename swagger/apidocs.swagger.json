@@ -1142,6 +1142,187 @@
         ]
       }
     },
+    "/v1/loginaccount": {
+      "post": {
+        "operationId": "LoginAccountCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLoginAccountCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbLoginAccountCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "LoginAccountService"
+        ]
+      }
+    },
+    "/v1/loginaccount/search": {
+      "get": {
+        "operationId": "LoginAccountSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLoginAccountSearchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderdesc",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "LoginAccountService"
+        ]
+      }
+    },
+    "/v1/loginaccount/{id}": {
+      "get": {
+        "operationId": "LoginAccountRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLoginAccountReadResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "LoginAccountService"
+        ]
+      },
+      "delete": {
+        "operationId": "LoginAccountDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLoginAccountDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "LoginAccountService"
+        ]
+      },
+      "put": {
+        "operationId": "LoginAccountUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLoginAccountUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbLoginAccountUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "LoginAccountService"
+        ]
+      },
+      "patch": {
+        "operationId": "LoginAccountPatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLoginAccountPatchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbLoginAccountPatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "LoginAccountService"
+        ]
+      }
+    },
     "/v1/npc": {
       "post": {
         "operationId": "NpcCreate",
@@ -4520,6 +4701,142 @@
       }
     },
     "pbItemUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbLoginAccount": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "accountname": {
+          "type": "string"
+        },
+        "accountpassword": {
+          "type": "string"
+        },
+        "accountemail": {
+          "type": "string"
+        },
+        "sourceloginserver": {
+          "type": "string"
+        },
+        "lastipaddress": {
+          "type": "string"
+        },
+        "lastlogindate": {
+          "type": "string",
+          "format": "int64"
+        },
+        "createdat": {
+          "type": "string",
+          "format": "int64"
+        },
+        "updatedat": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbLoginAccountCreateRequest": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbLoginAccountCreateResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbLoginAccountDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbLoginAccountPatchRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "pbLoginAccountPatchResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbLoginAccountReadResponse": {
+      "type": "object",
+      "properties": {
+        "loginAccount": {
+          "$ref": "#/definitions/pbLoginAccount"
+        }
+      }
+    },
+    "pbLoginAccountSearchResponse": {
+      "type": "object",
+      "properties": {
+        "LoginAccounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbLoginAccount"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbLoginAccountUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbLoginAccountUpdateResponse": {
       "type": "object",
       "properties": {
         "rowsaffected": {

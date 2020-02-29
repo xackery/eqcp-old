@@ -56,6 +56,7 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 	pb.RegisterCharacterServiceServer(s.gserver, s)
 	pb.RegisterHandinServiceServer(s.gserver, s)
 	pb.RegisterItemServiceServer(s.gserver, s)
+	pb.RegisterLoginAccountServiceServer(s.gserver, s)
 	pb.RegisterNpcServiceServer(s.gserver, s)
 	pb.RegisterPetitionServiceServer(s.gserver, s)
 	pb.RegisterPlayerSpeechServiceServer(s.gserver, s)
@@ -82,6 +83,10 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 	err = pb.RegisterItemServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle item")
+	}
+	err = pb.RegisterLoginAccountServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	if err != nil {
+		return nil, errors.Wrap(err, "handle loginaccount")
 	}
 	err = pb.RegisterNpcServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
 	if err != nil {

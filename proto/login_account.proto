@@ -1,0 +1,18 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto"; 
+//import "google/api/timestamp.proto";
+
+package pb;
+
+message LoginAccount {
+  int64 id = 1;
+  string accountname = 2;
+  string accountpassword = 3;
+  string accountemail = 4;
+  string sourceloginserver = 5;
+  string lastipaddress = 6;
+  int64 lastlogindate = 7;
+  int64 createdat = 8;
+  int64 updatedat = 9;
+}
