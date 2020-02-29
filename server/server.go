@@ -51,6 +51,7 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 	opts := []grpc.DialOption{grpc.WithInsecure()}
 
 	s.gserver = grpc.NewServer()
+	pb.RegisterAccountServiceServer(s.gserver, s)
 	pb.RegisterBugServiceServer(s.gserver, s)
 	pb.RegisterCharacterServiceServer(s.gserver, s)
 	pb.RegisterHandinServiceServer(s.gserver, s)
@@ -62,6 +63,10 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 	pb.RegisterZoneServiceServer(s.gserver, s)
 	s.mux = runtime.NewServeMux()
 
+	err = pb.RegisterAccountServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	if err != nil {
+		return nil, errors.Wrap(err, "handle bug")
+	}
 	err = pb.RegisterBugServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle bug")

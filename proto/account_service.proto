@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+//import "google/api/timestamp.proto";
+import "proto/account.proto";
+
+package pb;
+
+service AccountService {
+    rpc AccountSearch(AccountSearchRequest) returns (AccountSearchResponse) {
+		option (google.api.http) = {
+			get: "/v1/account/search"
+		};
+	}
+	rpc AccountCreate(AccountCreateRequest) returns (AccountCreateResponse) {
+		option (google.api.http) = {
+			post: "/v1/account"
+			body: "*"
+		}; 
+	}
+	rpc AccountRead(AccountReadRequest) returns (AccountReadResponse) {
+		option (google.api.http) = {
+			get: "/v1/account/{id}"
+		};
+	}
+	rpc AccountUpdate(AccountUpdateRequest) returns (AccountUpdateResponse) {
+		option (google.api.http) = {
+			put: "/v1/account/{id}"
+			body: "*"
+		};
+	}
+	rpc AccountDelete(AccountDeleteRequest) returns (AccountDeleteResponse) {
+		option (google.api.http) = {
+			delete: "/v1/account/{id}"
+		};
+	}
+	rpc AccountPatch(AccountPatchRequest) returns (AccountPatchResponse) {
+		option (google.api.http) = {
+			patch: "/v1/account/{id}"
+			body: "*"
+		};
+	}
+}
+
+message AccountSearchRequest {
+	map<string,string> values = 1;
+	int64 limit = 2;
+	int64 offset = 3;
+    string orderby = 4; //charactername
+	bool orderdesc = 5;
+}
+
+message AccountSearchResponse {
+	repeated Account Accounts = 1;
+	int64 total = 2;
+}
+
+message AccountCreateRequest {
+	map<string,string> values = 2;
+}
+
+message AccountCreateResponse {
+	int64 id = 1;
+}
+
+message AccountReadRequest {
+	int64 id = 1;
+}
+
+message AccountReadResponse {
+	Account account = 1;
+}
+
+message AccountUpdateRequest {
+	int64 id = 1;
+	map<string,string> values = 2;
+}
+
+message AccountUpdateResponse {
+	int64 rowsaffected = 1;
+}
+
+message AccountDeleteRequest {
+	int64 id = 1;
+}
+
+message AccountDeleteResponse {
+	int64 rowsaffected = 1;
+}
+
+message AccountPatchRequest {
+	int64 id = 1;
+	string key = 2;
+	string value = 3;
+}
+
+message AccountPatchResponse {
+	int64 rowsaffected = 1;
+}

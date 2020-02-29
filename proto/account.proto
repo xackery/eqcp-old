@@ -1,0 +1,28 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto"; 
+//import "google/api/timestamp.proto";
+
+package pb;
+
+message Account {
+  int64 id = 1; 
+  string name = 2; 
+  string charname = 3; 
+  int64 sharedplat = 4; 
+  string password = 5; 
+  int64 status = 6; 
+  string lsid = 7; 
+  int64 lsaccountid = 8; 
+  int64 gmspeed = 9; 
+  int64 revoked = 10; 
+  int64 karma = 11; 
+  string miniloginip = 12; 
+  int64 hideme = 13; 
+  int64 rulesflag = 14; 
+  int64 suspendeduntil = 15; 
+  int64 timecreation = 16; 
+  int64 expansion = 17; 
+  string banreason = 18; 
+  string suspendreason = 19; 
+}

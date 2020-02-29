@@ -16,6 +16,187 @@
     "application/json"
   ],
   "paths": {
+    "/v1/account": {
+      "post": {
+        "operationId": "AccountCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbAccountCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbAccountCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      }
+    },
+    "/v1/account/search": {
+      "get": {
+        "operationId": "AccountSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbAccountSearchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderdesc",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      }
+    },
+    "/v1/account/{id}": {
+      "get": {
+        "operationId": "AccountRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbAccountReadResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      },
+      "delete": {
+        "operationId": "AccountDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbAccountDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      },
+      "put": {
+        "operationId": "AccountUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbAccountUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbAccountUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      },
+      "patch": {
+        "operationId": "AccountPatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbAccountPatchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbAccountPatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ]
+      }
+    },
     "/v1/bug": {
       "post": {
         "operationId": "BugCreate",
@@ -1653,6 +1834,180 @@
     }
   },
   "definitions": {
+    "pbAccount": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "charname": {
+          "type": "string"
+        },
+        "sharedplat": {
+          "type": "string",
+          "format": "int64"
+        },
+        "password": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string",
+          "format": "int64"
+        },
+        "lsid": {
+          "type": "string"
+        },
+        "lsaccountid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "gmspeed": {
+          "type": "string",
+          "format": "int64"
+        },
+        "revoked": {
+          "type": "string",
+          "format": "int64"
+        },
+        "karma": {
+          "type": "string",
+          "format": "int64"
+        },
+        "miniloginip": {
+          "type": "string"
+        },
+        "hideme": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rulesflag": {
+          "type": "string",
+          "format": "int64"
+        },
+        "suspendeduntil": {
+          "type": "string",
+          "format": "int64"
+        },
+        "timecreation": {
+          "type": "string",
+          "format": "int64"
+        },
+        "expansion": {
+          "type": "string",
+          "format": "int64"
+        },
+        "banreason": {
+          "type": "string"
+        },
+        "suspendreason": {
+          "type": "string"
+        }
+      }
+    },
+    "pbAccountCreateRequest": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbAccountCreateResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbAccountDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbAccountPatchRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "pbAccountPatchResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbAccountReadResponse": {
+      "type": "object",
+      "properties": {
+        "account": {
+          "$ref": "#/definitions/pbAccount"
+        }
+      }
+    },
+    "pbAccountSearchResponse": {
+      "type": "object",
+      "properties": {
+        "Accounts": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbAccount"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbAccountUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbAccountUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "pbBug": {
       "type": "object",
       "properties": {
