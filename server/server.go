@@ -52,21 +52,31 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 
 	s.gserver = grpc.NewServer()
 	pb.RegisterBugServiceServer(s.gserver, s)
+	pb.RegisterHandinServiceServer(s.gserver, s)
 	pb.RegisterNpcServiceServer(s.gserver, s)
 	pb.RegisterPetitionServiceServer(s.gserver, s)
+	pb.RegisterTradeServiceServer(s.gserver, s)
 	s.mux = runtime.NewServeMux()
 
-	err = pb.RegisterNpcServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
-	if err != nil {
-		return nil, errors.Wrap(err, "handle npc")
-	}
 	err = pb.RegisterBugServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle bug")
 	}
+	err = pb.RegisterHandinServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	if err != nil {
+		return nil, errors.Wrap(err, "handle handin")
+	}
+	err = pb.RegisterNpcServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	if err != nil {
+		return nil, errors.Wrap(err, "handle npc")
+	}
 	err = pb.RegisterPetitionServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle petition")
+	}
+	err = pb.RegisterTradeServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	if err != nil {
+		return nil, errors.Wrap(err, "handle trade")
 	}
 
 	go s.httpServe()

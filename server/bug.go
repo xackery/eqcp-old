@@ -20,6 +20,7 @@ func (s *Server) BugSearch(ctx context.Context, req *pb.BugSearchRequest) (*pb.B
 	if req == nil {
 		return nil, fmt.Errorf("request nil")
 	}
+
 	resp := new(pb.BugSearchResponse)
 	if req.Limit < 1 {
 		req.Limit = 10
@@ -31,31 +32,52 @@ func (s *Server) BugSearch(ctx context.Context, req *pb.BugSearchRequest) (*pb.B
 		req.Offset = 0
 	}
 
-	req.Orderby = strings.ToLower(req.Orderby)
-	if req.Orderby == "" {
-		req.Orderby = "name"
-	}
-	orderByFields := []string{"name"}
+	bug := new(Bug)
 
-	query := "SELECT count(id) as total, bug_reports.* FROM bug_reports WHERE "
+	st := reflect.TypeOf(*bug)
+	sv := reflect.ValueOf(bug)
+	se := sv.Elem()
+
+	query := "SELECT {fieldMap} FROM bug_reports WHERE"
 
 	args := map[string]interface{}{}
-	if len(req.Charactername) > 0 {
-		query += "character_name LIKE :character_name"
-		args["character_name"] = fmt.Sprintf("%%%s%%", req.Charactername)
-	}
+	comma := ""
+	for i := 0; i < st.NumField(); i++ {
+		field := st.Field(i)
 
-	isValid := false
-	for _, field := range orderByFields {
-		if req.Orderby != field {
+		tag, ok := field.Tag.Lookup("db")
+		if !ok {
 			continue
 		}
-		isValid = true
+
+		if req.Orderby != "" && strings.ToLower(field.Name) == strings.ToLower(req.Orderby) {
+			req.Orderby = tag
+		}
+
+		for key, value := range req.Values {
+			if strings.ToLower(field.Name) != strings.ToLower(key) {
+				continue
+			}
+
+			if se.Field(i).Kind() == reflect.String {
+				args[tag] = fmt.Sprintf("%%%s%%", value)
+				query += fmt.Sprintf("%s %s LIKE :%s", comma, tag, tag)
+			} else {
+				args[tag] = value
+				query += fmt.Sprintf("%s %s = :%s", comma, tag, tag)
+			}
+
+			comma = " AND"
+		}
+
 	}
-	if !isValid {
-		return nil, fmt.Errorf("invalid orderby. Valid options are: %s", strings.Join(orderByFields, ","))
+	if len(args) < 1 {
+		return nil, fmt.Errorf("no valid fields provided")
 	}
 
+	if req.Orderby == "" {
+		req.Orderby = "id"
+	}
 	args["orderby"] = req.Orderby
 	query += " ORDER BY :orderby"
 	if req.Orderdesc {
@@ -68,8 +90,25 @@ func (s *Server) BugSearch(ctx context.Context, req *pb.BugSearchRequest) (*pb.B
 	args["offset"] = req.Offset
 	query += " LIMIT :limit OFFSET :offset"
 
+	queryTotal := strings.Replace(query, "{fieldMap}", "count(bug_id) as total", 1)
+	query = strings.Replace(query, "{fieldMap}", "*", 1)
+
+	rows, err := s.db.NamedQueryContext(ctx, queryTotal, args)
+	if err != nil {
+		return nil, errors.Wrap(err, "query failed")
+	}
+	for rows.Next() {
+		bug := new(Bug)
+		err = rows.StructScan(bug)
+		if err != nil {
+			return nil, errors.Wrap(err, "structscan")
+		}
+		resp.Total = bug.Total
+		break
+	}
+
 	log.Debug().Interface("args", args).Msgf("query: %s", query)
-	rows, err := s.db.NamedQueryContext(ctx, query, args)
+	rows, err = s.db.NamedQueryContext(ctx, query, args)
 	if err != nil {
 		return nil, errors.Wrap(err, "query failed")
 	}
@@ -81,7 +120,6 @@ func (s *Server) BugSearch(ctx context.Context, req *pb.BugSearchRequest) (*pb.B
 			return nil, errors.Wrap(err, "structscan")
 		}
 		resp.Bugs = append(resp.Bugs, bug.ToProto())
-		resp.Total = bug.Total
 	}
 
 	return resp, nil

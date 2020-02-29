@@ -1,0 +1,24 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto"; 
+//import "google/api/timestamp.proto";
+
+package pb;
+
+message Handin {
+	int64 handinid = 1;
+	int64 time = 2;
+	int64 questid = 3;
+	int64 charid = 4;
+	int64 charpp = 5;
+	int64 chargp = 6;
+	int64 charsp = 7;
+	int64 charcp = 8;
+	int64 charitems = 9;
+	int64 npcid = 10;
+	int64 npcpp = 11;
+	int64 npcgp = 12;
+	int64 npcsp = 13;
+	int64 npccp = 14;
+	int64 npcitems = 15;
+}

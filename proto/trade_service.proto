@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+//import "google/api/timestamp.proto";
+import "proto/trade.proto";
+
+package pb;
+
+service TradeService {
+    rpc TradeSearch(TradeSearchRequest) returns (TradeSearchResponse) {
+		option (google.api.http) = {
+			get: "/v1/trade/search/{name}"
+		};
+	}
+	rpc TradeCreate(TradeCreateRequest) returns (TradeCreateResponse) {
+		option (google.api.http) = {
+			post: "/v1/trade"
+			body: "*"
+		}; 
+	}
+	rpc TradeRead(TradeReadRequest) returns (TradeReadResponse) {
+		option (google.api.http) = {
+			get: "/v1/trade/{id}"
+		};
+	}
+	rpc TradeUpdate(TradeUpdateRequest) returns (TradeUpdateResponse) {
+		option (google.api.http) = {
+			put: "/v1/trade/{id}"
+			body: "*"
+		};
+	}
+	rpc TradeDelete(TradeDeleteRequest) returns (TradeDeleteResponse) {
+		option (google.api.http) = {
+			delete: "/v1/trade/{id}"
+		};
+	}
+	rpc TradePatch(TradePatchRequest) returns (TradePatchResponse) {
+		option (google.api.http) = {
+			patch: "/v1/trade/{id}"
+			body: "*"
+		};
+	}
+}
+
+message TradeSearchRequest {
+	string name = 1;
+	int64 limit = 2;
+	int64 offset = 3;
+    string orderby = 4; //name
+	bool orderdesc = 5;
+}
+
+message TradeSearchResponse {
+	repeated Trade Trades = 1;
+	int64 total = 2;
+}
+
+message TradeCreateRequest {
+	map<string,string> values = 2;
+}
+
+message TradeCreateResponse {
+	int64 id = 1;
+}
+
+message TradeReadRequest {
+	int64 id = 1;
+}
+
+message TradeReadResponse {
+	Trade trade = 1;
+}
+
+message TradeUpdateRequest {
+	int64 id = 1;
+	map<string,string> values = 2;
+}
+
+message TradeUpdateResponse {
+	int64 rowsaffected = 1;
+}
+
+message TradeDeleteRequest {
+	int64 id = 1;
+}
+
+message TradeDeleteResponse {
+	int64 rowsaffected = 1;
+}
+
+message TradePatchRequest {
+	int64 id = 1;
+	string key = 2;
+	string value = 3;
+}
+
+message TradePatchResponse {
+	int64 rowsaffected = 1;
+}

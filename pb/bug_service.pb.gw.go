@@ -32,30 +32,12 @@ var _ = utilities.NewDoubleArray
 var _ = descriptor.ForMessage
 
 var (
-	filter_BugService_BugSearch_0 = &utilities.DoubleArray{Encoding: map[string]int{"charactername": 0}, Base: []int{1, 1, 0}, Check: []int{0, 1, 2}}
+	filter_BugService_BugSearch_0 = &utilities.DoubleArray{Encoding: map[string]int{}, Base: []int(nil), Check: []int(nil)}
 )
 
 func request_BugService_BugSearch_0(ctx context.Context, marshaler runtime.Marshaler, client BugServiceClient, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq BugSearchRequest
 	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["charactername"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "charactername")
-	}
-
-	protoReq.Charactername, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "charactername", err)
-	}
 
 	if err := req.ParseForm(); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
@@ -72,24 +54,6 @@ func request_BugService_BugSearch_0(ctx context.Context, marshaler runtime.Marsh
 func local_request_BugService_BugSearch_0(ctx context.Context, marshaler runtime.Marshaler, server BugServiceServer, req *http.Request, pathParams map[string]string) (proto.Message, runtime.ServerMetadata, error) {
 	var protoReq BugSearchRequest
 	var metadata runtime.ServerMetadata
-
-	var (
-		val string
-		ok  bool
-		err error
-		_   = err
-	)
-
-	val, ok = pathParams["charactername"]
-	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "charactername")
-	}
-
-	protoReq.Charactername, err = runtime.String(val)
-
-	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "charactername", err)
-	}
 
 	if err := runtime.PopulateQueryParameters(&protoReq, req.URL.Query(), filter_BugService_BugSearch_0); err != nil {
 		return nil, metadata, status.Errorf(codes.InvalidArgument, "%v", err)
@@ -672,7 +636,7 @@ func RegisterBugServiceHandlerClient(ctx context.Context, mux *runtime.ServeMux,
 }
 
 var (
-	pattern_BugService_BugSearch_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2, 1, 0, 4, 1, 5, 3}, []string{"v1", "bug", "search", "charactername"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_BugService_BugSearch_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 2, 2}, []string{"v1", "bug", "search"}, "", runtime.AssumeColonVerbOpt(true)))
 
 	pattern_BugService_BugCreate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "bug"}, "", runtime.AssumeColonVerbOpt(true)))
 

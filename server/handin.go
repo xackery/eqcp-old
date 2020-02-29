@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"reflect"
 	"strings"
+	"time"
 
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
@@ -14,13 +15,13 @@ import (
 	_ "github.com/go-sql-driver/mysql"
 )
 
-// PetitionSearch implements SCRUD endpoints
-func (s *Server) PetitionSearch(ctx context.Context, req *pb.PetitionSearchRequest) (*pb.PetitionSearchResponse, error) {
+// HandinSearch implements SCRUD endpoints
+func (s *Server) HandinSearch(ctx context.Context, req *pb.HandinSearchRequest) (*pb.HandinSearchResponse, error) {
 	if req == nil {
 		return nil, fmt.Errorf("request nil")
 	}
 
-	resp := new(pb.PetitionSearchResponse)
+	resp := new(pb.HandinSearchResponse)
 	if req.Limit < 1 {
 		req.Limit = 10
 	}
@@ -31,13 +32,13 @@ func (s *Server) PetitionSearch(ctx context.Context, req *pb.PetitionSearchReque
 		req.Offset = 0
 	}
 
-	petition := new(Petition)
+	handin := new(Handin)
 
-	st := reflect.TypeOf(*petition)
-	sv := reflect.ValueOf(petition)
+	st := reflect.TypeOf(*handin)
+	sv := reflect.ValueOf(handin)
 	se := sv.Elem()
 
-	query := "SELECT {fieldMap} FROM petitions WHERE"
+	query := "SELECT {fieldMap} FROM qs_player_handin_record WHERE"
 
 	args := map[string]interface{}{}
 	comma := ""
@@ -68,13 +69,14 @@ func (s *Server) PetitionSearch(ctx context.Context, req *pb.PetitionSearchReque
 
 			comma = " AND"
 		}
+
 	}
 	if len(args) < 1 {
 		return nil, fmt.Errorf("no valid fields provided")
 	}
 
 	if req.Orderby == "" {
-		req.Orderby = "dib"
+		req.Orderby = "handin_id"
 	}
 	args["orderby"] = req.Orderby
 	query += " ORDER BY :orderby"
@@ -88,7 +90,7 @@ func (s *Server) PetitionSearch(ctx context.Context, req *pb.PetitionSearchReque
 	args["offset"] = req.Offset
 	query += " LIMIT :limit OFFSET :offset"
 
-	queryTotal := strings.Replace(query, "{fieldMap}", "count(dib) as total", 1)
+	queryTotal := strings.Replace(query, "{fieldMap}", "count(handin_id) as total", 1)
 	query = strings.Replace(query, "{fieldMap}", "*", 1)
 
 	rows, err := s.db.NamedQueryContext(ctx, queryTotal, args)
@@ -96,12 +98,12 @@ func (s *Server) PetitionSearch(ctx context.Context, req *pb.PetitionSearchReque
 		return nil, errors.Wrap(err, "query failed")
 	}
 	for rows.Next() {
-		petition := new(Petition)
-		err = rows.StructScan(petition)
+		handin := new(Handin)
+		err = rows.StructScan(handin)
 		if err != nil {
 			return nil, errors.Wrap(err, "structscan")
 		}
-		resp.Total = petition.Total
+		resp.Total = handin.Total
 		break
 	}
 
@@ -112,27 +114,27 @@ func (s *Server) PetitionSearch(ctx context.Context, req *pb.PetitionSearchReque
 	}
 
 	for rows.Next() {
-		petition := new(Petition)
-		err = rows.StructScan(petition)
+		handin := new(Handin)
+		err = rows.StructScan(handin)
 		if err != nil {
 			return nil, errors.Wrap(err, "structscan")
 		}
-		resp.Petitions = append(resp.Petitions, petition.ToProto())
+		resp.Handins = append(resp.Handins, handin.ToProto())
 	}
 
 	return resp, nil
 }
 
-// PetitionCreate implements SCRUD endpoints
-func (s *Server) PetitionCreate(ctx context.Context, req *pb.PetitionCreateRequest) (*pb.PetitionCreateResponse, error) {
+// HandinCreate implements SCRUD endpoints
+func (s *Server) HandinCreate(ctx context.Context, req *pb.HandinCreateRequest) (*pb.HandinCreateResponse, error) {
 
 	fmt.Println(req)
-	petition := new(Petition)
+	handin := new(Handin)
 
-	st := reflect.TypeOf(*petition)
+	st := reflect.TypeOf(*handin)
 
 	args := map[string]interface{}{}
-	query := "INSERT INTO petitions"
+	query := "INSERT INTO qs_player_handin_record"
 
 	comma := ""
 	insertField := ""
@@ -173,27 +175,27 @@ func (s *Server) PetitionCreate(ctx context.Context, req *pb.PetitionCreateReque
 		return nil, errors.Wrap(err, "lastinsertedid")
 	}
 
-	resp := new(pb.PetitionCreateResponse)
-	resp.Dib = lastID
+	resp := new(pb.HandinCreateResponse)
+	resp.Handinid = lastID
 
 	return resp, nil
 }
 
-// PetitionRead implements SCRUD endpoints
-func (s *Server) PetitionRead(ctx context.Context, req *pb.PetitionReadRequest) (*pb.PetitionReadResponse, error) {
+// HandinRead implements SCRUD endpoints
+func (s *Server) HandinRead(ctx context.Context, req *pb.HandinReadRequest) (*pb.HandinReadResponse, error) {
 	if req == nil {
 		return nil, fmt.Errorf("request nil")
 	}
-	resp := new(pb.PetitionReadResponse)
+	resp := new(pb.HandinReadResponse)
 
-	if req.Dib < 0 {
-		return nil, fmt.Errorf("id must be greater than 0")
+	if req.Handinid < 0 {
+		return nil, fmt.Errorf("handinid must be greater than 0")
 	}
-	query := "SELECT * FROM petitions WHERE "
+	query := "SELECT * FROM qs_player_handin_record WHERE "
 
 	args := map[string]interface{}{}
 	query += "id = :id"
-	args["id"] = req.Dib
+	args["id"] = req.Handinid
 
 	log.Debug().Interface("args", args).Msgf("query: %s", query)
 	rows, err := s.db.NamedQueryContext(ctx, query, args)
@@ -202,26 +204,26 @@ func (s *Server) PetitionRead(ctx context.Context, req *pb.PetitionReadRequest) 
 	}
 
 	for rows.Next() {
-		petition := new(Petition)
-		err = rows.StructScan(petition)
+		handin := new(Handin)
+		err = rows.StructScan(handin)
 		if err != nil {
 			return nil, errors.Wrap(err, "structscan")
 		}
-		resp.Petition = petition.ToProto()
+		resp.Handin = handin.ToProto()
 	}
 	return resp, nil
 }
 
-// PetitionUpdate implements SCRUD endpoints
-func (s *Server) PetitionUpdate(ctx context.Context, req *pb.PetitionUpdateRequest) (*pb.PetitionUpdateResponse, error) {
-	petition := new(Petition)
+// HandinUpdate implements SCRUD endpoints
+func (s *Server) HandinUpdate(ctx context.Context, req *pb.HandinUpdateRequest) (*pb.HandinUpdateResponse, error) {
+	handin := new(Handin)
 
-	st := reflect.TypeOf(*petition)
+	st := reflect.TypeOf(*handin)
 
 	args := map[string]interface{}{
-		"id": req.Dib,
+		"handin_id": req.Handinid,
 	}
-	query := "UPDATE petitions SET"
+	query := "UPDATE qs_player_handin_record SET"
 
 	comma := ""
 	for i := 0; i < st.NumField(); i++ {
@@ -241,6 +243,7 @@ func (s *Server) PetitionUpdate(ctx context.Context, req *pb.PetitionUpdateReque
 			query += fmt.Sprintf("%s %s = :%s", comma, tag, tag)
 			comma = ","
 		}
+
 	}
 	if len(args) == 1 {
 		return nil, fmt.Errorf("no valid fields provided")
@@ -259,18 +262,18 @@ func (s *Server) PetitionUpdate(ctx context.Context, req *pb.PetitionUpdateReque
 	if err != nil {
 		return nil, errors.Wrap(err, "rowsaffected")
 	}
-	resp := new(pb.PetitionUpdateResponse)
+	resp := new(pb.HandinUpdateResponse)
 	resp.Rowsaffected = rowCount
 
 	return resp, nil
 }
 
-// PetitionDelete implements SCRUD endpoints
-func (s *Server) PetitionDelete(ctx context.Context, req *pb.PetitionDeleteRequest) (*pb.PetitionDeleteResponse, error) {
-	query := "DELETE FROM petitions WHERE id = :id LIMIT 1"
+// HandinDelete implements SCRUD endpoints
+func (s *Server) HandinDelete(ctx context.Context, req *pb.HandinDeleteRequest) (*pb.HandinDeleteResponse, error) {
+	query := "DELETE FROM qs_player_handin_record WHERE id = :id LIMIT 1"
 
 	args := map[string]interface{}{
-		"id": req.Dib,
+		"handin_id": req.Handinid,
 	}
 
 	log.Debug().Interface("args", args).Msgf("query: %s", query)
@@ -284,36 +287,35 @@ func (s *Server) PetitionDelete(ctx context.Context, req *pb.PetitionDeleteReque
 	if err != nil {
 		return nil, errors.Wrap(err, "rowsaffected")
 	}
-	resp := new(pb.PetitionDeleteResponse)
+	resp := new(pb.HandinDeleteResponse)
 
 	resp.Rowsaffected = rowCount
 	return resp, nil
 }
 
-// PetitionPatch implements SCRUD endpoints
-func (s *Server) PetitionPatch(ctx context.Context, req *pb.PetitionPatchRequest) (*pb.PetitionPatchResponse, error) {
-	petition := new(Petition)
+// HandinPatch implements SCRUD endpoints
+func (s *Server) HandinPatch(ctx context.Context, req *pb.HandinPatchRequest) (*pb.HandinPatchResponse, error) {
+	handin := new(Handin)
 
-	st := reflect.TypeOf(*petition)
+	st := reflect.TypeOf(*handin)
 
 	args := map[string]interface{}{
-		"dib": req.Dib,
+		"handin_id": req.Handinid,
 	}
-	query := "UPDATE petitions SET"
+	query := "UPDATE qs_player_handin_record SET"
 
 	comma := ""
 	for i := 0; i < st.NumField(); i++ {
 		field := st.Field(i)
-
-		if strings.ToLower(field.Name) != strings.ToLower(req.Key) {
-			continue
-		}
 
 		tag, ok := field.Tag.Lookup("db")
 		if !ok {
 			continue
 		}
 
+		if strings.ToLower(tag) != strings.ToLower(req.Key) {
+			continue
+		}
 		args[tag] = req.Value
 
 		query += fmt.Sprintf("%s %s = :%s", comma, tag, tag)
@@ -323,7 +325,7 @@ func (s *Server) PetitionPatch(ctx context.Context, req *pb.PetitionPatchRequest
 		return nil, fmt.Errorf("no valid fields provided")
 	}
 
-	query += " WHERE dib = :dib LIMIT 1"
+	query += " WHERE handin_id = :handin_id LIMIT 1"
 	log.Debug().Interface("args", args).Msgf("query: %s", query)
 
 	result, err := s.db.NamedExecContext(ctx, query, args)
@@ -335,51 +337,49 @@ func (s *Server) PetitionPatch(ctx context.Context, req *pb.PetitionPatchRequest
 	if err != nil {
 		return nil, errors.Wrap(err, "rowsaffected")
 	}
-	resp := new(pb.PetitionPatchResponse)
+	resp := new(pb.HandinPatchResponse)
 	resp.Rowsaffected = rowCount
 
 	return resp, nil
 }
 
-// Petition reports
-type Petition struct {
-	Dib          int64  `db:"dib"`          //int(10) unsigned NOT NULL AUTO_INCREMENT,
-	Petid        int64  `db:"petid"`        //int(10) unsigned NOT NULL DEFAULT '0',
-	Charname     string `db:"charname"`     //varchar(32) NOT NULL DEFAULT '',
-	Accountname  string `db:"accountname"`  //varchar(32) NOT NULL DEFAULT '',
-	Lastgm       string `db:"lastgm"`       //varchar(32) NOT NULL DEFAULT '',
-	Petitiontext string `db:"petitiontext"` //text NOT NULL,
-	Gmtext       string `db:"gmtext"`       //text,
-	Zone         string `db:"zone"`         //varchar(32) NOT NULL DEFAULT '',
-	Urgency      int64  `db:"urgency"`      //int(11) NOT NULL DEFAULT '0',
-	Charclass    int64  `db:"charclass"`    //int(11) NOT NULL DEFAULT '0',
-	Charrace     int64  `db:"charrace"`     //int(11) NOT NULL DEFAULT '0',
-	Charlevel    int64  `db:"charlevel"`    //int(11) NOT NULL DEFAULT '0',
-	Checkouts    int64  `db:"checkouts"`    //int(11) NOT NULL DEFAULT '0',
-	Unavailables int64  `db:"unavailables"` //int(11) NOT NULL DEFAULT '0',
-	Ischeckedout int64  `db:"ischeckedout"` //tinyint(4) NOT NULL DEFAULT '0',
-	Senttime     int64  `db:"senttime"`     //bigint(11) NOT NULL DEFAULT '0',
-	Total        int64  `db:"total"`
+// Handin represents an HANDIN DB binding
+type Handin struct {
+	Handinid  int64     `db:"handin_id"`  //int(11) NOT NULL AUTO_INCREMENT,
+	Time      time.Time `db:"time"`       //timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+	Questid   int64     `db:"quest_id"`   //int(11) DEFAULT '0',
+	Charid    int64     `db:"char_id"`    //int(11) DEFAULT '0',
+	Charpp    int64     `db:"char_pp"`    //int(11) DEFAULT '0',
+	Chargp    int64     `db:"char_gp"`    //int(11) DEFAULT '0',
+	Charsp    int64     `db:"char_sp"`    //int(11) DEFAULT '0',
+	Charcp    int64     `db:"char_cp"`    //int(11) DEFAULT '0',
+	Charitems int64     `db:"char_items"` //mediumint(7) DEFAULT '0',
+	Npcid     int64     `db:"npc_id"`     //int(11) DEFAULT '0',
+	Npcpp     int64     `db:"npc_pp"`     //int(11) DEFAULT '0',
+	Npcgp     int64     `db:"npc_gp"`     //int(11) DEFAULT '0',
+	Npcsp     int64     `db:"npc_sp"`     //int(11) DEFAULT '0',
+	Npccp     int64     `db:"npc_cp"`     //int(11) DEFAULT '0',
+	Npcitems  int64     `db:"npc_items"`  //mediumint(7) DEFAULT '0',
+	Total     int64     `db:"total"`
 }
 
-// ToProto converts the petition type struct to protobuf
-func (p *Petition) ToProto() *pb.Petition {
-	petition := &pb.Petition{}
-	petition.Dib = p.Dib
-	petition.Petid = p.Petid
-	petition.Charname = p.Charname
-	petition.Accountname = p.Accountname
-	petition.Lastgm = p.Lastgm
-	petition.Petitiontext = p.Petitiontext
-	petition.Gmtext = p.Gmtext
-	petition.Zone = p.Zone
-	petition.Urgency = p.Urgency
-	petition.Charclass = p.Charclass
-	petition.Charrace = p.Charrace
-	petition.Charlevel = p.Charlevel
-	petition.Checkouts = p.Checkouts
-	petition.Unavailables = p.Unavailables
-	petition.Ischeckedout = p.Ischeckedout
-	petition.Senttime = p.Senttime
-	return petition
+// ToProto converts the handin type struct to protobuf
+func (h *Handin) ToProto() *pb.Handin {
+	handin := &pb.Handin{}
+	handin.Handinid = h.Handinid
+	handin.Time = h.Time.Unix()
+	handin.Questid = h.Questid
+	handin.Charid = h.Charid
+	handin.Charpp = h.Charpp
+	handin.Chargp = h.Chargp
+	handin.Charsp = h.Charsp
+	handin.Charcp = h.Charcp
+	handin.Charitems = h.Charitems
+	handin.Npcid = h.Npcid
+	handin.Npcpp = h.Npcpp
+	handin.Npcgp = h.Npcgp
+	handin.Npcsp = h.Npcsp
+	handin.Npccp = h.Npccp
+	handin.Npcitems = h.Npcitems
+	return handin
 }

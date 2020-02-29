@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+//import "google/api/timestamp.proto";
+import "proto/handin.proto";
+
+package pb;
+
+service HandinService {
+    rpc HandinSearch(HandinSearchRequest) returns (HandinSearchResponse) {
+		option (google.api.http) = {
+			get: "/v1/handin/search"
+		};
+	}
+	rpc HandinCreate(HandinCreateRequest) returns (HandinCreateResponse) {
+		option (google.api.http) = {
+			post: "/v1/handin"
+			body: "*"
+		}; 
+	}
+	rpc HandinRead(HandinReadRequest) returns (HandinReadResponse) {
+		option (google.api.http) = {
+			get: "/v1/handin/{handinid}"
+		};
+	}
+	rpc HandinUpdate(HandinUpdateRequest) returns (HandinUpdateResponse) {
+		option (google.api.http) = {
+			put: "/v1/handin/{handinid}"
+			body: "*"
+		};
+	}
+	rpc HandinDelete(HandinDeleteRequest) returns (HandinDeleteResponse) {
+		option (google.api.http) = {
+			delete: "/v1/handin/{handinid}"
+		};
+	}
+	rpc HandinPatch(HandinPatchRequest) returns (HandinPatchResponse) {
+		option (google.api.http) = {
+			patch: "/v1/handin/{handinid}"
+			body: "*"
+		};
+	}
+}
+
+message HandinSearchRequest {
+	map<string,string> values = 1;
+	int64 limit = 2;
+	int64 offset = 3;
+    string orderby = 4; //npcid
+	bool orderdesc = 5;
+}
+
+message HandinSearchResponse {
+	repeated Handin Handins = 1;
+	int64 total = 2;
+}
+
+message HandinCreateRequest {
+	map<string,string> values = 2;
+}
+
+message HandinCreateResponse {
+	int64 handinid = 1;
+}
+
+message HandinReadRequest {
+	int64 handinid = 1;
+}
+
+message HandinReadResponse {
+	Handin handin = 1;
+}
+
+message HandinUpdateRequest {
+	int64 handinid = 1;
+	map<string,string> values = 2;
+}
+
+message HandinUpdateResponse {
+	int64 rowsaffected = 1;
+}
+
+message HandinDeleteRequest {
+	int64 handinid = 1;
+}
+
+message HandinDeleteResponse {
+	int64 rowsaffected = 1;
+}
+
+message HandinPatchRequest {
+	int64 handinid = 1;
+	string key = 2;
+	string value = 3;
+}
+
+message HandinPatchResponse {
+	int64 rowsaffected = 1;
+}

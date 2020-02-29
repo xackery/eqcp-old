@@ -42,7 +42,7 @@
         ]
       }
     },
-    "/v1/bug/search/{charactername}": {
+    "/v1/bug/search": {
       "get": {
         "operationId": "BugSearch",
         "responses": {
@@ -54,12 +54,6 @@
           }
         },
         "parameters": [
-          {
-            "name": "charactername",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "limit",
             "in": "query",
@@ -203,6 +197,187 @@
         ]
       }
     },
+    "/v1/handin": {
+      "post": {
+        "operationId": "HandinCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbHandinCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbHandinCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "HandinService"
+        ]
+      }
+    },
+    "/v1/handin/search": {
+      "get": {
+        "operationId": "HandinSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbHandinSearchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderdesc",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "HandinService"
+        ]
+      }
+    },
+    "/v1/handin/{handinid}": {
+      "get": {
+        "operationId": "HandinRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbHandinReadResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "handinid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "HandinService"
+        ]
+      },
+      "delete": {
+        "operationId": "HandinDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbHandinDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "handinid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "HandinService"
+        ]
+      },
+      "put": {
+        "operationId": "HandinUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbHandinUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "handinid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbHandinUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "HandinService"
+        ]
+      },
+      "patch": {
+        "operationId": "HandinPatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbHandinPatchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "handinid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbHandinPatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "HandinService"
+        ]
+      }
+    },
     "/v1/npc": {
       "post": {
         "operationId": "NpcCreate",
@@ -229,7 +404,7 @@
         ]
       }
     },
-    "/v1/npc/search/{name}": {
+    "/v1/npc/search": {
       "get": {
         "operationId": "NpcSearch",
         "responses": {
@@ -241,12 +416,6 @@
           }
         },
         "parameters": [
-          {
-            "name": "name",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "limit",
             "in": "query",
@@ -416,7 +585,7 @@
         ]
       }
     },
-    "/v1/petition/search/{charname}": {
+    "/v1/petition/search": {
       "get": {
         "operationId": "PetitionSearch",
         "responses": {
@@ -428,12 +597,6 @@
           }
         },
         "parameters": [
-          {
-            "name": "charname",
-            "in": "path",
-            "required": true,
-            "type": "string"
-          },
           {
             "name": "limit",
             "in": "query",
@@ -574,6 +737,193 @@
         ],
         "tags": [
           "PetitionService"
+        ]
+      }
+    },
+    "/v1/trade": {
+      "post": {
+        "operationId": "TradeCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbTradeCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbTradeCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TradeService"
+        ]
+      }
+    },
+    "/v1/trade/search/{name}": {
+      "get": {
+        "operationId": "TradeSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbTradeSearchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "name",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderdesc",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "TradeService"
+        ]
+      }
+    },
+    "/v1/trade/{id}": {
+      "get": {
+        "operationId": "TradeRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbTradeReadResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TradeService"
+        ]
+      },
+      "delete": {
+        "operationId": "TradeDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbTradeDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "TradeService"
+        ]
+      },
+      "put": {
+        "operationId": "TradeUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbTradeUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbTradeUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TradeService"
+        ]
+      },
+      "patch": {
+        "operationId": "TradePatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbTradePatchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbTradePatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "TradeService"
         ]
       }
     }
@@ -793,6 +1143,171 @@
       }
     },
     "pbBugUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbHandin": {
+      "type": "object",
+      "properties": {
+        "handinid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "time": {
+          "type": "string",
+          "format": "int64"
+        },
+        "questid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charpp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "chargp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charsp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charcp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charitems": {
+          "type": "string",
+          "format": "int64"
+        },
+        "npcid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "npcpp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "npcgp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "npcsp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "npccp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "npcitems": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbHandinCreateRequest": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbHandinCreateResponse": {
+      "type": "object",
+      "properties": {
+        "handinid": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbHandinDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbHandinPatchRequest": {
+      "type": "object",
+      "properties": {
+        "handinid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "pbHandinPatchResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbHandinReadResponse": {
+      "type": "object",
+      "properties": {
+        "handin": {
+          "$ref": "#/definitions/pbHandin"
+        }
+      }
+    },
+    "pbHandinSearchResponse": {
+      "type": "object",
+      "properties": {
+        "Handins": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbHandin"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbHandinUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "handinid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbHandinUpdateResponse": {
       "type": "object",
       "properties": {
         "rowsaffected": {
@@ -1543,6 +2058,167 @@
       }
     },
     "pbPetitionUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbTrade": {
+      "type": "object",
+      "properties": {
+        "tradeid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "time": {
+          "type": "string",
+          "format": "int64"
+        },
+        "char1id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "char1pp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "char1gp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "char1sp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "char1cp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "char1items": {
+          "type": "string",
+          "format": "int64"
+        },
+        "char2id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "char2pp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "char2gp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "char2sp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "char2cp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "char2items": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbTradeCreateRequest": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbTradeCreateResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbTradeDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbTradePatchRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "pbTradePatchResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbTradeReadResponse": {
+      "type": "object",
+      "properties": {
+        "trade": {
+          "$ref": "#/definitions/pbTrade"
+        }
+      }
+    },
+    "pbTradeSearchResponse": {
+      "type": "object",
+      "properties": {
+        "Trades": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbTrade"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbTradeUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbTradeUpdateResponse": {
       "type": "object",
       "properties": {
         "rowsaffected": {

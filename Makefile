@@ -9,7 +9,6 @@ init:
 	-rm -rf db/
 	-mkdir tmp
 	wget http://edit.projecteq.net/weekly/peq_beta.zip -O tmp/peq_beta.zip
-	cd tmp/
 	cd tmp && unzip -o peq_beta.zip	
 	cd tmp && rm drop*.sql *.zip data_tables.sql load_* source_views.sql
 	docker-compose up -d
@@ -26,9 +25,12 @@ up:
 down:
 	@-rm -rf tmp/
 	@docker-compose down
+.PHONY: logs-mariadb
+logs-mariadb:
+	@docker-compose logs mariadb
 .PHONY: build-all
 build-all: proto sanitize
-	@echo "Preparing talkeq ${VERSION}"
+	@echo "Preparing ${NAME} ${VERSION}"
 	@rm -rf bin/*
 	@-mkdir -p bin/
 	@echo "Building Linux"

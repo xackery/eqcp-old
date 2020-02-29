@@ -9,7 +9,7 @@ package pb;
 service BugService {
     rpc BugSearch(BugSearchRequest) returns (BugSearchResponse) {
 		option (google.api.http) = {
-			get: "/v1/bug/search/{charactername}"
+			get: "/v1/bug/search"
 		};
 	}
 	rpc BugCreate(BugCreateRequest) returns (BugCreateResponse) {
@@ -43,7 +43,7 @@ service BugService {
 }
 
 message BugSearchRequest {
-	string charactername = 1;
+	map<string,string> values = 1;
 	int64 limit = 2;
 	int64 offset = 3;
     string orderby = 4; //charactername

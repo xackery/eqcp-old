@@ -9,7 +9,7 @@ package pb;
 service NpcService {
     rpc NpcSearch(NpcSearchRequest) returns (NpcSearchResponse) {
 		option (google.api.http) = {
-			get: "/v1/npc/search/{name}"
+			get: "/v1/npc/search"
 		};
 	}
 	rpc NpcCreate(NpcCreateRequest) returns (NpcCreateResponse) {
@@ -43,7 +43,7 @@ service NpcService {
 }
 
 message NpcSearchRequest {
-	string name = 1;
+	map<string,string> values = 1;
 	int64 limit = 2;
 	int64 offset = 3;
     string orderby = 4; //name
