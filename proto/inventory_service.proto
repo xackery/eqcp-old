@@ -1,0 +1,106 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+//import "google/api/timestamp.proto";
+import "proto/inventory.proto";
+
+package pb;
+
+service InventoryService {
+    rpc InventorySearch(InventorySearchRequest) returns (InventorySearchResponse) {
+		option (google.api.http) = {
+			get: "/v1/inventory/search"
+		};
+	}
+	rpc InventoryCreate(InventoryCreateRequest) returns (InventoryCreateResponse) {
+		option (google.api.http) = {
+			post: "/v1/inventory/{charid}/{slotid}"
+			body: "*"
+		}; 
+	}
+	rpc InventoryRead(InventoryReadRequest) returns (InventoryReadResponse) {
+		option (google.api.http) = {
+			get: "/v1/inventory/{charid}/{slotid}"
+		};
+	}
+	rpc InventoryUpdate(InventoryUpdateRequest) returns (InventoryUpdateResponse) {
+		option (google.api.http) = {
+			put: "/v1/inventory/{charid}/{slotid}"
+			body: "*"
+		};
+	}
+	rpc InventoryDelete(InventoryDeleteRequest) returns (InventoryDeleteResponse) {
+		option (google.api.http) = {
+			delete: "/v1/inventory/{charid}/{slotid}"
+		};
+	}
+	rpc InventoryPatch(InventoryPatchRequest) returns (InventoryPatchResponse) {
+		option (google.api.http) = {
+			patch: "/v1/inventory/{charid}/{slotid}"
+			body: "*"
+		};
+	}
+}
+
+message InventorySearchRequest {
+	map<string,string> values = 1;
+	int64 limit = 2;
+	int64 offset = 3;
+    string orderby = 4; //charactername
+	bool orderdesc = 5;
+}
+
+message InventorySearchResponse {
+	repeated Inventory Inventorys = 1;
+	int64 total = 2;
+}
+
+message InventoryCreateRequest {
+	int64 charid = 1;
+	int64 slotid = 2;
+	map<string,string> values = 3;
+}
+
+message InventoryCreateResponse {
+	int64 charid = 1;
+	int64 slotid = 2;
+}
+
+message InventoryReadRequest {
+	int64 charid = 1;
+	int64 slotid = 2;
+}
+
+message InventoryReadResponse {
+	Inventory inventory = 1;
+}
+
+message InventoryUpdateRequest {
+	int64 charid = 1;
+	int64 slotid = 2;
+	map<string,string> values = 3;
+}
+
+message InventoryUpdateResponse {
+	int64 rowsaffected = 1;
+}
+
+message InventoryDeleteRequest {
+	int64 charid = 1;
+	int64 slotid = 2;
+}
+
+message InventoryDeleteResponse {
+	int64 rowsaffected = 1;
+}
+
+message InventoryPatchRequest {
+	int64 charid = 1;
+	string key = 2;
+	string value = 3;
+	int64 slotid = 4;
+}
+
+message InventoryPatchResponse {
+	int64 rowsaffected = 1;
+}

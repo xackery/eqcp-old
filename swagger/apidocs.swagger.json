@@ -740,6 +740,227 @@
         ]
       }
     },
+    "/v1/inventory/search": {
+      "get": {
+        "operationId": "InventorySearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbInventorySearchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderdesc",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "InventoryService"
+        ]
+      }
+    },
+    "/v1/inventory/{charid}/{slotid}": {
+      "get": {
+        "operationId": "InventoryRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbInventoryReadResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "charid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "slotid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "InventoryService"
+        ]
+      },
+      "delete": {
+        "operationId": "InventoryDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbInventoryDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "charid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "slotid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "InventoryService"
+        ]
+      },
+      "post": {
+        "operationId": "InventoryCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbInventoryCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "charid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "slotid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbInventoryCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "InventoryService"
+        ]
+      },
+      "put": {
+        "operationId": "InventoryUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbInventoryUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "charid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "slotid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbInventoryUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "InventoryService"
+        ]
+      },
+      "patch": {
+        "operationId": "InventoryPatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbInventoryPatchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "charid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "slotid",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbInventoryPatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "InventoryService"
+        ]
+      }
+    },
     "/v1/item": {
       "post": {
         "operationId": "ItemCreate",
@@ -2891,6 +3112,194 @@
       }
     },
     "pbHandinUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbInventory": {
+      "type": "object",
+      "properties": {
+        "charid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slotid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "itemid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "charges": {
+          "type": "string",
+          "format": "int64"
+        },
+        "color": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot5": {
+          "type": "string",
+          "format": "int64"
+        },
+        "augslot6": {
+          "type": "string",
+          "format": "int64"
+        },
+        "instnodrop": {
+          "type": "string",
+          "format": "int64"
+        },
+        "customdata": {
+          "type": "string"
+        },
+        "ornamenticon": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ornamentidfile": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ornamentheromodel": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbInventoryCreateRequest": {
+      "type": "object",
+      "properties": {
+        "charid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slotid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbInventoryCreateResponse": {
+      "type": "object",
+      "properties": {
+        "charid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slotid": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbInventoryDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbInventoryPatchRequest": {
+      "type": "object",
+      "properties": {
+        "charid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        },
+        "slotid": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbInventoryPatchResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbInventoryReadResponse": {
+      "type": "object",
+      "properties": {
+        "inventory": {
+          "$ref": "#/definitions/pbInventory"
+        }
+      }
+    },
+    "pbInventorySearchResponse": {
+      "type": "object",
+      "properties": {
+        "Inventorys": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbInventory"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbInventoryUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "charid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "slotid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbInventoryUpdateResponse": {
       "type": "object",
       "properties": {
         "rowsaffected": {

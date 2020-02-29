@@ -1,0 +1,25 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto"; 
+//import "google/api/timestamp.proto";
+
+package pb;
+
+message Inventory {
+  int64 charid = 1;
+  int64 slotid = 2;
+  int64 itemid = 3;
+  int64 charges = 4;
+  int64 color = 5;
+  int64 augslot1 = 6;
+  int64 augslot2 = 7;
+  int64 augslot3 = 8;
+  int64 augslot4 = 9;
+  int64 augslot5 = 10;
+  int64 augslot6 = 11;
+  int64 instnodrop = 12;
+  string customdata = 13;
+  int64 ornamenticon = 14;
+  int64 ornamentidfile = 15;
+  int64 ornamentheromodel = 16;
+}
