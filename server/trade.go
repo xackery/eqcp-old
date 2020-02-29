@@ -110,7 +110,7 @@ func (s *Server) TradeCreate(ctx context.Context, req *pb.TradeCreateRequest) (*
 		}
 
 		for key, value := range req.Values {
-			if strings.ToLower(tag) != strings.ToLower(key) {
+			if strings.ToLower(field.Name) != strings.ToLower(key) {
 				continue
 			}
 			args[tag] = value
@@ -119,7 +119,7 @@ func (s *Server) TradeCreate(ctx context.Context, req *pb.TradeCreateRequest) (*
 			comma = ","
 		}
 	}
-	if len(args) == 1 {
+	if len(args) < 1 {
 		return nil, fmt.Errorf("no valid fields provided")
 	}
 
@@ -156,8 +156,8 @@ func (s *Server) TradeRead(ctx context.Context, req *pb.TradeReadRequest) (*pb.T
 	query := "SELECT * FROM trade_types WHERE "
 
 	args := map[string]interface{}{}
-	query += "id = :id"
-	args["id"] = req.Id
+	query += "trade_id = :trade_id"
+	args["trade_id"] = req.Id
 
 	log.Debug().Interface("args", args).Msgf("query: %s", query)
 	rows, err := s.db.NamedQueryContext(ctx, query, args)
@@ -183,7 +183,7 @@ func (s *Server) TradeUpdate(ctx context.Context, req *pb.TradeUpdateRequest) (*
 	st := reflect.TypeOf(*trade)
 
 	args := map[string]interface{}{
-		"id": req.Id,
+		"trade_id": req.Id,
 	}
 	query := "UPDATE trade_types SET"
 
@@ -197,7 +197,7 @@ func (s *Server) TradeUpdate(ctx context.Context, req *pb.TradeUpdateRequest) (*
 		}
 
 		for key, value := range req.Values {
-			if strings.ToLower(tag) != strings.ToLower(key) {
+			if strings.ToLower(field.Name) != strings.ToLower(key) {
 				continue
 			}
 			args[tag] = value
@@ -211,7 +211,7 @@ func (s *Server) TradeUpdate(ctx context.Context, req *pb.TradeUpdateRequest) (*
 		return nil, fmt.Errorf("no valid fields provided")
 	}
 
-	query += " WHERE id = :id LIMIT 1"
+	query += " WHERE trade_id = :trade_id LIMIT 1"
 
 	log.Debug().Interface("args", args).Msgf("query: %s", query)
 
@@ -232,10 +232,10 @@ func (s *Server) TradeUpdate(ctx context.Context, req *pb.TradeUpdateRequest) (*
 
 // TradeDelete implements SCRUD endpoints
 func (s *Server) TradeDelete(ctx context.Context, req *pb.TradeDeleteRequest) (*pb.TradeDeleteResponse, error) {
-	query := "DELETE FROM trade_types WHERE id = :id LIMIT 1"
+	query := "DELETE FROM trade_types WHERE trade_id = :trade_id LIMIT 1"
 
 	args := map[string]interface{}{
-		"id": req.Id,
+		"trade_id": req.Id,
 	}
 
 	log.Debug().Interface("args", args).Msgf("query: %s", query)
@@ -262,7 +262,7 @@ func (s *Server) TradePatch(ctx context.Context, req *pb.TradePatchRequest) (*pb
 	st := reflect.TypeOf(*trade)
 
 	args := map[string]interface{}{
-		"id": req.Id,
+		"trade_id": req.Id,
 	}
 	query := "UPDATE trade_types SET"
 
@@ -275,7 +275,7 @@ func (s *Server) TradePatch(ctx context.Context, req *pb.TradePatchRequest) (*pb
 			continue
 		}
 
-		if strings.ToLower(tag) != strings.ToLower(req.Key) {
+		if strings.ToLower(field.Name) != strings.ToLower(req.Key) {
 			continue
 		}
 		args[tag] = req.Value
@@ -287,7 +287,7 @@ func (s *Server) TradePatch(ctx context.Context, req *pb.TradePatchRequest) (*pb
 		return nil, fmt.Errorf("no valid fields provided")
 	}
 
-	query += " WHERE id = :id LIMIT 1"
+	query += " WHERE trade_id = :trade_id LIMIT 1"
 	log.Debug().Interface("args", args).Msgf("query: %s", query)
 
 	result, err := s.db.NamedExecContext(ctx, query, args)
@@ -307,7 +307,7 @@ func (s *Server) TradePatch(ctx context.Context, req *pb.TradePatchRequest) (*pb
 
 // Trade represents an TRADE DB binding
 type Trade struct {
-	Tradeid    int64     `db:"trade_id"`    // int(11) NOT NULL AUTO_INCREMENT,
+	ID         int64     `db:"trade_id"`    // int(11) NOT NULL AUTO_INCREMENT,
 	Time       time.Time `db:"time"`        // timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
 	Char1id    int64     `db:"char1_id"`    // int(11) DEFAULT '0',
 	Char1pp    int64     `db:"char1_pp"`    // int(11) DEFAULT '0',
@@ -327,7 +327,7 @@ type Trade struct {
 // ToProto converts the trade type struct to protobuf
 func (t *Trade) ToProto() *pb.Trade {
 	trade := &pb.Trade{}
-	trade.Tradeid = t.Tradeid
+	trade.Id = t.ID
 	trade.Time = t.Time.Unix()
 	trade.Char1Id = t.Char1id
 	trade.Char1Pp = t.Char1pp

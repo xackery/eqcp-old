@@ -109,15 +109,15 @@ func request_HandinService_HandinRead_0(ctx context.Context, marshaler runtime.M
 		_   = err
 	)
 
-	val, ok = pathParams["handinid"]
+	val, ok = pathParams["id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "handinid")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
 
-	protoReq.Handinid, err = runtime.Int64(val)
+	protoReq.Id, err = runtime.Int64(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "handinid", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
 	msg, err := client.HandinRead(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -136,15 +136,15 @@ func local_request_HandinService_HandinRead_0(ctx context.Context, marshaler run
 		_   = err
 	)
 
-	val, ok = pathParams["handinid"]
+	val, ok = pathParams["id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "handinid")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
 
-	protoReq.Handinid, err = runtime.Int64(val)
+	protoReq.Id, err = runtime.Int64(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "handinid", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
 	msg, err := server.HandinRead(ctx, &protoReq)
@@ -171,15 +171,15 @@ func request_HandinService_HandinUpdate_0(ctx context.Context, marshaler runtime
 		_   = err
 	)
 
-	val, ok = pathParams["handinid"]
+	val, ok = pathParams["id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "handinid")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
 
-	protoReq.Handinid, err = runtime.Int64(val)
+	protoReq.Id, err = runtime.Int64(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "handinid", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
 	msg, err := client.HandinUpdate(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -206,15 +206,15 @@ func local_request_HandinService_HandinUpdate_0(ctx context.Context, marshaler r
 		_   = err
 	)
 
-	val, ok = pathParams["handinid"]
+	val, ok = pathParams["id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "handinid")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
 
-	protoReq.Handinid, err = runtime.Int64(val)
+	protoReq.Id, err = runtime.Int64(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "handinid", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
 	msg, err := server.HandinUpdate(ctx, &protoReq)
@@ -233,15 +233,15 @@ func request_HandinService_HandinDelete_0(ctx context.Context, marshaler runtime
 		_   = err
 	)
 
-	val, ok = pathParams["handinid"]
+	val, ok = pathParams["id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "handinid")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
 
-	protoReq.Handinid, err = runtime.Int64(val)
+	protoReq.Id, err = runtime.Int64(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "handinid", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
 	msg, err := client.HandinDelete(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -260,15 +260,15 @@ func local_request_HandinService_HandinDelete_0(ctx context.Context, marshaler r
 		_   = err
 	)
 
-	val, ok = pathParams["handinid"]
+	val, ok = pathParams["id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "handinid")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
 
-	protoReq.Handinid, err = runtime.Int64(val)
+	protoReq.Id, err = runtime.Int64(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "handinid", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
 	msg, err := server.HandinDelete(ctx, &protoReq)
@@ -295,15 +295,15 @@ func request_HandinService_HandinPatch_0(ctx context.Context, marshaler runtime.
 		_   = err
 	)
 
-	val, ok = pathParams["handinid"]
+	val, ok = pathParams["id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "handinid")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
 
-	protoReq.Handinid, err = runtime.Int64(val)
+	protoReq.Id, err = runtime.Int64(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "handinid", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
 	msg, err := client.HandinPatch(ctx, &protoReq, grpc.Header(&metadata.HeaderMD), grpc.Trailer(&metadata.TrailerMD))
@@ -330,15 +330,15 @@ func local_request_HandinService_HandinPatch_0(ctx context.Context, marshaler ru
 		_   = err
 	)
 
-	val, ok = pathParams["handinid"]
+	val, ok = pathParams["id"]
 	if !ok {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "handinid")
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "missing parameter %s", "id")
 	}
 
-	protoReq.Handinid, err = runtime.Int64(val)
+	protoReq.Id, err = runtime.Int64(val)
 
 	if err != nil {
-		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "handinid", err)
+		return nil, metadata, status.Errorf(codes.InvalidArgument, "type mismatch, parameter: %s, error: %v", "id", err)
 	}
 
 	msg, err := server.HandinPatch(ctx, &protoReq)
@@ -640,13 +640,13 @@ var (
 
 	pattern_HandinService_HandinCreate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1}, []string{"v1", "handin"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_HandinService_HandinRead_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "handin", "handinid"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_HandinService_HandinRead_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "handin", "id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_HandinService_HandinUpdate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "handin", "handinid"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_HandinService_HandinUpdate_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "handin", "id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_HandinService_HandinDelete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "handin", "handinid"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_HandinService_HandinDelete_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "handin", "id"}, "", runtime.AssumeColonVerbOpt(true)))
 
-	pattern_HandinService_HandinPatch_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "handin", "handinid"}, "", runtime.AssumeColonVerbOpt(true)))
+	pattern_HandinService_HandinPatch_0 = runtime.MustPattern(runtime.NewPattern(1, []int{2, 0, 2, 1, 1, 0, 4, 1, 5, 2}, []string{"v1", "handin", "id"}, "", runtime.AssumeColonVerbOpt(true)))
 )
 
 var (

@@ -147,7 +147,7 @@ func (s *Server) NpcCreate(ctx context.Context, req *pb.NpcCreateRequest) (*pb.N
 		}
 
 		for key, value := range req.Values {
-			if strings.ToLower(tag) != strings.ToLower(key) {
+			if strings.ToLower(field.Name) != strings.ToLower(key) {
 				continue
 			}
 			args[tag] = value
@@ -156,7 +156,7 @@ func (s *Server) NpcCreate(ctx context.Context, req *pb.NpcCreateRequest) (*pb.N
 			comma = ","
 		}
 	}
-	if len(args) == 1 {
+	if len(args) < 1 {
 		return nil, fmt.Errorf("no valid fields provided")
 	}
 
@@ -234,7 +234,7 @@ func (s *Server) NpcUpdate(ctx context.Context, req *pb.NpcUpdateRequest) (*pb.N
 		}
 
 		for key, value := range req.Values {
-			if strings.ToLower(tag) != strings.ToLower(key) {
+			if strings.ToLower(field.Name) != strings.ToLower(key) {
 				continue
 			}
 			args[tag] = value
@@ -312,7 +312,7 @@ func (s *Server) NpcPatch(ctx context.Context, req *pb.NpcPatchRequest) (*pb.Npc
 			continue
 		}
 
-		if strings.ToLower(tag) != strings.ToLower(req.Key) {
+		if strings.ToLower(field.Name) != strings.ToLower(req.Key) {
 			continue
 		}
 		args[tag] = req.Value

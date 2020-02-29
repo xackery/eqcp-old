@@ -90,7 +90,7 @@ func (s *Server) BugSearch(ctx context.Context, req *pb.BugSearchRequest) (*pb.B
 	args["offset"] = req.Offset
 	query += " LIMIT :limit OFFSET :offset"
 
-	queryTotal := strings.Replace(query, "{fieldMap}", "count(bug_id) as total", 1)
+	queryTotal := strings.Replace(query, "{fieldMap}", "count(id) as total", 1)
 	query = strings.Replace(query, "{fieldMap}", "*", 1)
 
 	rows, err := s.db.NamedQueryContext(ctx, queryTotal, args)
@@ -148,7 +148,7 @@ func (s *Server) BugCreate(ctx context.Context, req *pb.BugCreateRequest) (*pb.B
 		}
 
 		for key, value := range req.Values {
-			if strings.ToLower(tag) != strings.ToLower(key) {
+			if strings.ToLower(field.Name) != strings.ToLower(key) {
 				continue
 			}
 			args[tag] = value
@@ -157,7 +157,7 @@ func (s *Server) BugCreate(ctx context.Context, req *pb.BugCreateRequest) (*pb.B
 			comma = ","
 		}
 	}
-	if len(args) == 1 {
+	if len(args) < 1 {
 		return nil, fmt.Errorf("no valid fields provided")
 	}
 
@@ -235,7 +235,7 @@ func (s *Server) BugUpdate(ctx context.Context, req *pb.BugUpdateRequest) (*pb.B
 		}
 
 		for key, value := range req.Values {
-			if strings.ToLower(tag) != strings.ToLower(key) {
+			if strings.ToLower(field.Name) != strings.ToLower(key) {
 				continue
 			}
 			args[tag] = value
@@ -244,7 +244,7 @@ func (s *Server) BugUpdate(ctx context.Context, req *pb.BugUpdateRequest) (*pb.B
 			comma = ","
 		}
 	}
-	if len(args) == 1 {
+	if len(args) < 2 {
 		return nil, fmt.Errorf("no valid fields provided")
 	}
 

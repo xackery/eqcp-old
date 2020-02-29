@@ -1,0 +1,99 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+//import "google/api/timestamp.proto";
+import "proto/character.proto";
+
+package pb;
+
+service CharacterService {
+    rpc CharacterSearch(CharacterSearchRequest) returns (CharacterSearchResponse) {
+		option (google.api.http) = {
+			get: "/v1/character/search"
+		};
+	}
+	rpc CharacterCreate(CharacterCreateRequest) returns (CharacterCreateResponse) {
+		option (google.api.http) = {
+			post: "/v1/character"
+			body: "*"
+		}; 
+	}
+	rpc CharacterRead(CharacterReadRequest) returns (CharacterReadResponse) {
+		option (google.api.http) = {
+			get: "/v1/character/{id}"
+		};
+	}
+	rpc CharacterUpdate(CharacterUpdateRequest) returns (CharacterUpdateResponse) {
+		option (google.api.http) = {
+			put: "/v1/character/{id}"
+			body: "*"
+		};
+	}
+	rpc CharacterDelete(CharacterDeleteRequest) returns (CharacterDeleteResponse) {
+		option (google.api.http) = {
+			delete: "/v1/character/{id}"
+		};
+	}
+	rpc CharacterPatch(CharacterPatchRequest) returns (CharacterPatchResponse) {
+		option (google.api.http) = {
+			patch: "/v1/character/{id}"
+			body: "*"
+		};
+	}
+}
+
+message CharacterSearchRequest {
+	map<string,string> values = 1;
+	int64 limit = 2;
+	int64 offset = 3;
+    string orderby = 4; //name
+	bool orderdesc = 5;
+}
+
+message CharacterSearchResponse {
+	repeated Character Characters = 1;
+	int64 total = 2;
+}
+
+message CharacterCreateRequest {
+	map<string,string> values = 2;
+}
+
+message CharacterCreateResponse {
+	int64 id = 1;
+}
+
+message CharacterReadRequest {
+	int64 id = 1;
+}
+
+message CharacterReadResponse {
+	Character character = 1;
+}
+
+message CharacterUpdateRequest {
+	int64 id = 1;
+	map<string,string> values = 2;
+}
+
+message CharacterUpdateResponse {
+	int64 rowsaffected = 1;
+}
+
+message CharacterDeleteRequest {
+	int64 id = 1;
+}
+
+message CharacterDeleteResponse {
+	int64 rowsaffected = 1;
+}
+
+message CharacterPatchRequest {
+	int64 id = 1;
+	string key = 2;
+	string value = 3;
+}
+
+message CharacterPatchResponse {
+	int64 rowsaffected = 1;
+}

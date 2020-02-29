@@ -6,7 +6,7 @@ import "google/api/annotations.proto";
 package pb;
 
 message Trade {
-	int64 tradeid = 1;
+	int64 id = 1;
 	int64 time = 2;
 	int64 char1id = 3;
 	int64 char1pp = 4;

@@ -20,23 +20,23 @@ service HandinService {
 	}
 	rpc HandinRead(HandinReadRequest) returns (HandinReadResponse) {
 		option (google.api.http) = {
-			get: "/v1/handin/{handinid}"
+			get: "/v1/handin/{id}"
 		};
 	}
 	rpc HandinUpdate(HandinUpdateRequest) returns (HandinUpdateResponse) {
 		option (google.api.http) = {
-			put: "/v1/handin/{handinid}"
+			put: "/v1/handin/{id}"
 			body: "*"
 		};
 	}
 	rpc HandinDelete(HandinDeleteRequest) returns (HandinDeleteResponse) {
 		option (google.api.http) = {
-			delete: "/v1/handin/{handinid}"
+			delete: "/v1/handin/{id}"
 		};
 	}
 	rpc HandinPatch(HandinPatchRequest) returns (HandinPatchResponse) {
 		option (google.api.http) = {
-			patch: "/v1/handin/{handinid}"
+			patch: "/v1/handin/{id}"
 			body: "*"
 		};
 	}
@@ -60,11 +60,11 @@ message HandinCreateRequest {
 }
 
 message HandinCreateResponse {
-	int64 handinid = 1;
+	int64 id = 1;
 }
 
 message HandinReadRequest {
-	int64 handinid = 1;
+	int64 id = 1;
 }
 
 message HandinReadResponse {
@@ -72,7 +72,7 @@ message HandinReadResponse {
 }
 
 message HandinUpdateRequest {
-	int64 handinid = 1;
+	int64 id = 1;
 	map<string,string> values = 2;
 }
 
@@ -81,7 +81,7 @@ message HandinUpdateResponse {
 }
 
 message HandinDeleteRequest {
-	int64 handinid = 1;
+	int64 id = 1;
 }
 
 message HandinDeleteResponse {
@@ -89,7 +89,7 @@ message HandinDeleteResponse {
 }
 
 message HandinPatchRequest {
-	int64 handinid = 1;
+	int64 id = 1;
 	string key = 2;
 	string value = 3;
 }

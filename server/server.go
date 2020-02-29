@@ -52,6 +52,7 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 
 	s.gserver = grpc.NewServer()
 	pb.RegisterBugServiceServer(s.gserver, s)
+	pb.RegisterCharacterServiceServer(s.gserver, s)
 	pb.RegisterHandinServiceServer(s.gserver, s)
 	pb.RegisterItemServiceServer(s.gserver, s)
 	pb.RegisterNpcServiceServer(s.gserver, s)
@@ -64,6 +65,10 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 	err = pb.RegisterBugServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle bug")
+	}
+	err = pb.RegisterCharacterServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	if err != nil {
+		return nil, errors.Wrap(err, "handle character")
 	}
 	err = pb.RegisterHandinServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
 	if err != nil {

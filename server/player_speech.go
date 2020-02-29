@@ -147,7 +147,7 @@ func (s *Server) PlayerSpeechCreate(ctx context.Context, req *pb.PlayerSpeechCre
 		}
 
 		for key, value := range req.Values {
-			if strings.ToLower(tag) != strings.ToLower(key) {
+			if strings.ToLower(field.Name) != strings.ToLower(key) {
 				continue
 			}
 			args[tag] = value
@@ -156,7 +156,7 @@ func (s *Server) PlayerSpeechCreate(ctx context.Context, req *pb.PlayerSpeechCre
 			comma = ","
 		}
 	}
-	if len(args) == 1 {
+	if len(args) < 1 {
 		return nil, fmt.Errorf("no valid fields provided")
 	}
 
@@ -234,7 +234,7 @@ func (s *Server) PlayerSpeechUpdate(ctx context.Context, req *pb.PlayerSpeechUpd
 		}
 
 		for key, value := range req.Values {
-			if strings.ToLower(tag) != strings.ToLower(key) {
+			if strings.ToLower(field.Name) != strings.ToLower(key) {
 				continue
 			}
 			args[tag] = value

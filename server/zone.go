@@ -148,7 +148,7 @@ func (s *Server) ZoneCreate(ctx context.Context, req *pb.ZoneCreateRequest) (*pb
 		}
 
 		for key, value := range req.Values {
-			if strings.ToLower(tag) != strings.ToLower(key) {
+			if strings.ToLower(field.Name) != strings.ToLower(key) {
 				continue
 			}
 			args[tag] = value
@@ -157,7 +157,7 @@ func (s *Server) ZoneCreate(ctx context.Context, req *pb.ZoneCreateRequest) (*pb
 			comma = ","
 		}
 	}
-	if len(args) == 1 {
+	if len(args) < 1 {
 		return nil, fmt.Errorf("no valid fields provided")
 	}
 
@@ -235,7 +235,7 @@ func (s *Server) ZoneUpdate(ctx context.Context, req *pb.ZoneUpdateRequest) (*pb
 		}
 
 		for key, value := range req.Values {
-			if strings.ToLower(tag) != strings.ToLower(key) {
+			if strings.ToLower(field.Name) != strings.ToLower(key) {
 				continue
 			}
 			args[tag] = value
@@ -313,7 +313,7 @@ func (s *Server) ZonePatch(ctx context.Context, req *pb.ZonePatchRequest) (*pb.Z
 			continue
 		}
 
-		if strings.ToLower(tag) != strings.ToLower(req.Key) {
+		if strings.ToLower(field.Name) != strings.ToLower(req.Key) {
 			continue
 		}
 		args[tag] = req.Value

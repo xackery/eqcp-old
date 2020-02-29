@@ -74,7 +74,7 @@ func (s *Server) PetitionSearch(ctx context.Context, req *pb.PetitionSearchReque
 	}
 
 	if req.Orderby == "" {
-		req.Orderby = "dib"
+		req.Orderby = "id"
 	}
 	args["orderby"] = req.Orderby
 	query += " ORDER BY :orderby"
@@ -88,7 +88,7 @@ func (s *Server) PetitionSearch(ctx context.Context, req *pb.PetitionSearchReque
 	args["offset"] = req.Offset
 	query += " LIMIT :limit OFFSET :offset"
 
-	queryTotal := strings.Replace(query, "{fieldMap}", "count(dib) as total", 1)
+	queryTotal := strings.Replace(query, "{fieldMap}", "count(id) as total", 1)
 	query = strings.Replace(query, "{fieldMap}", "*", 1)
 
 	rows, err := s.db.NamedQueryContext(ctx, queryTotal, args)
@@ -146,7 +146,7 @@ func (s *Server) PetitionCreate(ctx context.Context, req *pb.PetitionCreateReque
 		}
 
 		for key, value := range req.Values {
-			if strings.ToLower(tag) != strings.ToLower(key) {
+			if strings.ToLower(field.Name) != strings.ToLower(key) {
 				continue
 			}
 			args[tag] = value
@@ -155,7 +155,7 @@ func (s *Server) PetitionCreate(ctx context.Context, req *pb.PetitionCreateReque
 			comma = ","
 		}
 	}
-	if len(args) == 1 {
+	if len(args) < 1 {
 		return nil, fmt.Errorf("no valid fields provided")
 	}
 
@@ -174,7 +174,7 @@ func (s *Server) PetitionCreate(ctx context.Context, req *pb.PetitionCreateReque
 	}
 
 	resp := new(pb.PetitionCreateResponse)
-	resp.Dib = lastID
+	resp.Id = lastID
 
 	return resp, nil
 }
@@ -186,14 +186,14 @@ func (s *Server) PetitionRead(ctx context.Context, req *pb.PetitionReadRequest) 
 	}
 	resp := new(pb.PetitionReadResponse)
 
-	if req.Dib < 0 {
+	if req.Id < 0 {
 		return nil, fmt.Errorf("id must be greater than 0")
 	}
 	query := "SELECT * FROM petitions WHERE "
 
 	args := map[string]interface{}{}
 	query += "id = :id"
-	args["id"] = req.Dib
+	args["id"] = req.Id
 
 	log.Debug().Interface("args", args).Msgf("query: %s", query)
 	rows, err := s.db.NamedQueryContext(ctx, query, args)
@@ -219,7 +219,7 @@ func (s *Server) PetitionUpdate(ctx context.Context, req *pb.PetitionUpdateReque
 	st := reflect.TypeOf(*petition)
 
 	args := map[string]interface{}{
-		"id": req.Dib,
+		"id": req.Id,
 	}
 	query := "UPDATE petitions SET"
 
@@ -233,7 +233,7 @@ func (s *Server) PetitionUpdate(ctx context.Context, req *pb.PetitionUpdateReque
 		}
 
 		for key, value := range req.Values {
-			if strings.ToLower(tag) != strings.ToLower(key) {
+			if strings.ToLower(field.Name) != strings.ToLower(key) {
 				continue
 			}
 			args[tag] = value
@@ -270,7 +270,7 @@ func (s *Server) PetitionDelete(ctx context.Context, req *pb.PetitionDeleteReque
 	query := "DELETE FROM petitions WHERE id = :id LIMIT 1"
 
 	args := map[string]interface{}{
-		"id": req.Dib,
+		"id": req.Id,
 	}
 
 	log.Debug().Interface("args", args).Msgf("query: %s", query)
@@ -297,7 +297,7 @@ func (s *Server) PetitionPatch(ctx context.Context, req *pb.PetitionPatchRequest
 	st := reflect.TypeOf(*petition)
 
 	args := map[string]interface{}{
-		"dib": req.Dib,
+		"id": req.Id,
 	}
 	query := "UPDATE petitions SET"
 
@@ -323,7 +323,7 @@ func (s *Server) PetitionPatch(ctx context.Context, req *pb.PetitionPatchRequest
 		return nil, fmt.Errorf("no valid fields provided")
 	}
 
-	query += " WHERE dib = :dib LIMIT 1"
+	query += " WHERE id = :id LIMIT 1"
 	log.Debug().Interface("args", args).Msgf("query: %s", query)
 
 	result, err := s.db.NamedExecContext(ctx, query, args)
@@ -343,7 +343,7 @@ func (s *Server) PetitionPatch(ctx context.Context, req *pb.PetitionPatchRequest
 
 // Petition reports
 type Petition struct {
-	Dib          int64  `db:"dib"`          //int(10) unsigned NOT NULL AUTO_INCREMENT,
+	ID           int64  `db:"dib"`          //int(10) unsigned NOT NULL AUTO_INCREMENT,
 	Petid        int64  `db:"petid"`        //int(10) unsigned NOT NULL DEFAULT '0',
 	Charname     string `db:"charname"`     //varchar(32) NOT NULL DEFAULT '',
 	Accountname  string `db:"accountname"`  //varchar(32) NOT NULL DEFAULT '',
@@ -365,7 +365,7 @@ type Petition struct {
 // ToProto converts the petition type struct to protobuf
 func (p *Petition) ToProto() *pb.Petition {
 	petition := &pb.Petition{}
-	petition.Dib = p.Dib
+	petition.Id = p.ID
 	petition.Petid = p.Petid
 	petition.Charname = p.Charname
 	petition.Accountname = p.Accountname

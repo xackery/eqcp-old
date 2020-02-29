@@ -5,23 +5,12 @@ import (
 	"fmt"
 	"testing"
 
-	"github.com/stretchr/testify/assert"
 	"github.com/xackery/eqcp/pb"
-	"github.com/xackery/eqcp/server"
-	"github.com/xackery/eqemuconfig"
 )
 
 func TestPlayerSpeechSCRUD(t *testing.T) {
-	assert := assert.New(t)
-	cfg, err := eqemuconfig.GetConfig()
-	if !assert.NoError(err) {
-		t.Fatal(err)
-	}
-	ctx, cancel := context.WithCancel(context.Background())
-	s, err := server.New(ctx, cancel, "127.0.0.1:9090", cfg)
-	if !assert.NoError(err) {
-		t.Fatal(err)
-	}
+	ctx := context.Background()
+	s := serverSetup(t)
 
 	//create
 	respC, err := s.PlayerSpeechCreate(ctx, &pb.PlayerSpeechCreateRequest{Values: map[string]string{
@@ -29,7 +18,7 @@ func TestPlayerSpeechSCRUD(t *testing.T) {
 		"to":      "totest",
 		"message": "messageTest",
 	}})
-	if !assert.NoError(err) {
+	if err != nil {
 		t.Fatal(err)
 	}
 

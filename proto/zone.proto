@@ -7,7 +7,7 @@ package pb;
 
 message Zone {
     string shortname = 1; 
-    int64 id = 2; 
+    int64 id = 2;
     string filename = 3; 
     string longname = 4; 
     string mapfilename = 5; 

@@ -20,23 +20,23 @@ service PetitionService {
 	}
 	rpc PetitionRead(PetitionReadRequest) returns (PetitionReadResponse) {
 		option (google.api.http) = {
-			get: "/v1/petition/{dib}"
+			get: "/v1/petition/{id}"
 		};
 	}
 	rpc PetitionUpdate(PetitionUpdateRequest) returns (PetitionUpdateResponse) {
 		option (google.api.http) = {
-			put: "/v1/petition/{dib}"
+			put: "/v1/petition/{id}"
 			body: "*"
 		};
 	}
 	rpc PetitionDelete(PetitionDeleteRequest) returns (PetitionDeleteResponse) {
 		option (google.api.http) = {
-			delete: "/v1/petition/{dib}"
+			delete: "/v1/petition/{id}"
 		};
 	}
 	rpc PetitionPatch(PetitionPatchRequest) returns (PetitionPatchResponse) {
 		option (google.api.http) = {
-			patch: "/v1/petition/{dib}"
+			patch: "/v1/petition/{id}"
 			body: "*"
 		};
 	}
@@ -60,11 +60,11 @@ message PetitionCreateRequest {
 }
 
 message PetitionCreateResponse {
-	int64 dib = 1;
+	int64 id = 1;
 }
 
 message PetitionReadRequest {
-	int64 dib = 1;
+	int64 id = 1;
 }
 
 message PetitionReadResponse {
@@ -72,7 +72,7 @@ message PetitionReadResponse {
 }
 
 message PetitionUpdateRequest {
-	int64 dib = 1;
+	int64 id = 1;
 	map<string,string> values = 2;
 }
 
@@ -81,7 +81,7 @@ message PetitionUpdateResponse {
 }
 
 message PetitionDeleteRequest {
-	int64 dib = 1;
+	int64 id = 1;
 }
 
 message PetitionDeleteResponse {
@@ -89,7 +89,7 @@ message PetitionDeleteResponse {
 }
 
 message PetitionPatchRequest {
-	int64 dib = 1;
+	int64 id = 1;
 	string key = 2;
 	string value = 3;
 }

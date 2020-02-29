@@ -197,6 +197,187 @@
         ]
       }
     },
+    "/v1/character": {
+      "post": {
+        "operationId": "CharacterCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCharacterCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCharacterCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CharacterService"
+        ]
+      }
+    },
+    "/v1/character/search": {
+      "get": {
+        "operationId": "CharacterSearch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCharacterSearchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderdesc",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "CharacterService"
+        ]
+      }
+    },
+    "/v1/character/{id}": {
+      "get": {
+        "operationId": "CharacterRead",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCharacterReadResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "CharacterService"
+        ]
+      },
+      "delete": {
+        "operationId": "CharacterDelete",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCharacterDeleteResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "CharacterService"
+        ]
+      },
+      "put": {
+        "operationId": "CharacterUpdate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCharacterUpdateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCharacterUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CharacterService"
+        ]
+      },
+      "patch": {
+        "operationId": "CharacterPatch",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbCharacterPatchResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbCharacterPatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "CharacterService"
+        ]
+      }
+    },
     "/v1/handin": {
       "post": {
         "operationId": "HandinCreate",
@@ -268,7 +449,7 @@
         ]
       }
     },
-    "/v1/handin/{handinid}": {
+    "/v1/handin/{id}": {
       "get": {
         "operationId": "HandinRead",
         "responses": {
@@ -281,7 +462,7 @@
         },
         "parameters": [
           {
-            "name": "handinid",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
@@ -304,7 +485,7 @@
         },
         "parameters": [
           {
-            "name": "handinid",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
@@ -327,7 +508,7 @@
         },
         "parameters": [
           {
-            "name": "handinid",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
@@ -358,7 +539,7 @@
         },
         "parameters": [
           {
-            "name": "handinid",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
@@ -811,7 +992,7 @@
         ]
       }
     },
-    "/v1/petition/{dib}": {
+    "/v1/petition/{id}": {
       "get": {
         "operationId": "PetitionRead",
         "responses": {
@@ -824,7 +1005,7 @@
         },
         "parameters": [
           {
-            "name": "dib",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
@@ -847,7 +1028,7 @@
         },
         "parameters": [
           {
-            "name": "dib",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
@@ -870,7 +1051,7 @@
         },
         "parameters": [
           {
-            "name": "dib",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
@@ -901,7 +1082,7 @@
         },
         "parameters": [
           {
-            "name": "dib",
+            "name": "id",
             "in": "path",
             "required": true,
             "type": "string",
@@ -1694,10 +1875,514 @@
         }
       }
     },
+    "pbCharacter": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "accountid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "suffix": {
+          "type": "string"
+        },
+        "zoneid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "zoneinstance": {
+          "type": "string",
+          "format": "int64"
+        },
+        "y": {
+          "type": "string",
+          "format": "int64"
+        },
+        "x": {
+          "type": "string",
+          "format": "int64"
+        },
+        "z": {
+          "type": "string",
+          "format": "int64"
+        },
+        "heading": {
+          "type": "string",
+          "format": "int64"
+        },
+        "gender": {
+          "type": "string",
+          "format": "int64"
+        },
+        "race": {
+          "type": "string",
+          "format": "int64"
+        },
+        "class": {
+          "type": "string",
+          "format": "int64"
+        },
+        "level": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deity": {
+          "type": "string",
+          "format": "int64"
+        },
+        "birthday": {
+          "type": "string",
+          "format": "int64"
+        },
+        "lastlogin": {
+          "type": "string",
+          "format": "int64"
+        },
+        "timeplayed": {
+          "type": "string",
+          "format": "int64"
+        },
+        "level2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "anon": {
+          "type": "string",
+          "format": "int64"
+        },
+        "gm": {
+          "type": "string",
+          "format": "int64"
+        },
+        "face": {
+          "type": "string",
+          "format": "int64"
+        },
+        "haircolor": {
+          "type": "string",
+          "format": "int64"
+        },
+        "hairstyle": {
+          "type": "string",
+          "format": "int64"
+        },
+        "beard": {
+          "type": "string",
+          "format": "int64"
+        },
+        "beardcolor": {
+          "type": "string",
+          "format": "int64"
+        },
+        "eyecolor1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "eyecolor2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "drakkinheritage": {
+          "type": "string",
+          "format": "int64"
+        },
+        "drakkintattoo": {
+          "type": "string",
+          "format": "int64"
+        },
+        "drakkindetails": {
+          "type": "string",
+          "format": "int64"
+        },
+        "abilitytimeseconds": {
+          "type": "string",
+          "format": "int64"
+        },
+        "abilitynumber": {
+          "type": "string",
+          "format": "int64"
+        },
+        "abilitytimeminutes": {
+          "type": "string",
+          "format": "int64"
+        },
+        "abilitytimehours": {
+          "type": "string",
+          "format": "int64"
+        },
+        "exp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "aapointsspent": {
+          "type": "string",
+          "format": "int64"
+        },
+        "aaexp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "aapoints": {
+          "type": "string",
+          "format": "int64"
+        },
+        "groupleadershipexp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "raidleadershipexp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "groupleadershippoints": {
+          "type": "string",
+          "format": "int64"
+        },
+        "raidleadershippoints": {
+          "type": "string",
+          "format": "int64"
+        },
+        "points": {
+          "type": "string",
+          "format": "int64"
+        },
+        "curhp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "mana": {
+          "type": "string",
+          "format": "int64"
+        },
+        "endurance": {
+          "type": "string",
+          "format": "int64"
+        },
+        "intoxication": {
+          "type": "string",
+          "format": "int64"
+        },
+        "str": {
+          "type": "string",
+          "format": "int64"
+        },
+        "sta": {
+          "type": "string",
+          "format": "int64"
+        },
+        "cha": {
+          "type": "string",
+          "format": "int64"
+        },
+        "dex": {
+          "type": "string",
+          "format": "int64"
+        },
+        "int": {
+          "type": "string",
+          "format": "int64"
+        },
+        "agi": {
+          "type": "string",
+          "format": "int64"
+        },
+        "wis": {
+          "type": "string",
+          "format": "int64"
+        },
+        "zonechangecount": {
+          "type": "string",
+          "format": "int64"
+        },
+        "toxicity": {
+          "type": "string",
+          "format": "int64"
+        },
+        "hungerlevel": {
+          "type": "string",
+          "format": "int64"
+        },
+        "thirstlevel": {
+          "type": "string",
+          "format": "int64"
+        },
+        "abilityup": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ldonpointsguk": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ldonpointsmir": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ldonpointsmmc": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ldonpointsruj": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ldonpointstak": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ldonpointsavailable": {
+          "type": "string",
+          "format": "int64"
+        },
+        "tributetimeremaining": {
+          "type": "string",
+          "format": "int64"
+        },
+        "careertributepoints": {
+          "type": "string",
+          "format": "int64"
+        },
+        "tributepoints": {
+          "type": "string",
+          "format": "int64"
+        },
+        "tributeactive": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pvpstatus": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pvpkills": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pvpdeaths": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pvpcurrentpoints": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pvpcareerpoints": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pvpbestkillstreak": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pvpworstdeathstreak": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pvpcurrentkillstreak": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pvp2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pvptype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "showhelm": {
+          "type": "string",
+          "format": "int64"
+        },
+        "groupautoconsent": {
+          "type": "string",
+          "format": "int64"
+        },
+        "raidautoconsent": {
+          "type": "string",
+          "format": "int64"
+        },
+        "guildautoconsent": {
+          "type": "string",
+          "format": "int64"
+        },
+        "leadershipexpon": {
+          "type": "string",
+          "format": "int64"
+        },
+        "RestTimer": {
+          "type": "string",
+          "format": "int64"
+        },
+        "airremaining": {
+          "type": "string",
+          "format": "int64"
+        },
+        "autosplitenabled": {
+          "type": "string",
+          "format": "int64"
+        },
+        "lfp": {
+          "type": "string",
+          "format": "int64"
+        },
+        "lfg": {
+          "type": "string",
+          "format": "int64"
+        },
+        "mailkey": {
+          "type": "string"
+        },
+        "xtargets": {
+          "type": "string",
+          "format": "int64"
+        },
+        "firstlogon": {
+          "type": "string",
+          "format": "int64"
+        },
+        "eaaeffects": {
+          "type": "string",
+          "format": "int64"
+        },
+        "epercenttoaa": {
+          "type": "string",
+          "format": "int64"
+        },
+        "eexpendedaaspent": {
+          "type": "string",
+          "format": "int64"
+        },
+        "aapointsspentold": {
+          "type": "string",
+          "format": "int64"
+        },
+        "aapointsold": {
+          "type": "string",
+          "format": "int64"
+        },
+        "elastinvsnapshot": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbCharacterCreateRequest": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbCharacterCreateResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbCharacterDeleteResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbCharacterPatchRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "pbCharacterPatchResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbCharacterReadResponse": {
+      "type": "object",
+      "properties": {
+        "character": {
+          "$ref": "#/definitions/pbCharacter"
+        }
+      }
+    },
+    "pbCharacterSearchResponse": {
+      "type": "object",
+      "properties": {
+        "Characters": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbCharacter"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbCharacterUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbCharacterUpdateResponse": {
+      "type": "object",
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
     "pbHandin": {
       "type": "object",
       "properties": {
-        "handinid": {
+        "id": {
           "type": "string",
           "format": "int64"
         },
@@ -1773,7 +2458,7 @@
     "pbHandinCreateResponse": {
       "type": "object",
       "properties": {
-        "handinid": {
+        "id": {
           "type": "string",
           "format": "int64"
         }
@@ -1791,7 +2476,7 @@
     "pbHandinPatchRequest": {
       "type": "object",
       "properties": {
-        "handinid": {
+        "id": {
           "type": "string",
           "format": "int64"
         },
@@ -1838,7 +2523,7 @@
     "pbHandinUpdateRequest": {
       "type": "object",
       "properties": {
-        "handinid": {
+        "id": {
           "type": "string",
           "format": "int64"
         },
@@ -3669,7 +4354,7 @@
     "pbPetition": {
       "type": "object",
       "properties": {
-        "dib": {
+        "id": {
           "type": "string",
           "format": "int64"
         },
@@ -3743,7 +4428,7 @@
     "pbPetitionCreateResponse": {
       "type": "object",
       "properties": {
-        "dib": {
+        "id": {
           "type": "string",
           "format": "int64"
         }
@@ -3761,7 +4446,7 @@
     "pbPetitionPatchRequest": {
       "type": "object",
       "properties": {
-        "dib": {
+        "id": {
           "type": "string",
           "format": "int64"
         },
@@ -3808,7 +4493,7 @@
     "pbPetitionUpdateRequest": {
       "type": "object",
       "properties": {
-        "dib": {
+        "id": {
           "type": "string",
           "format": "int64"
         },
@@ -3966,7 +4651,7 @@
     "pbTrade": {
       "type": "object",
       "properties": {
-        "tradeid": {
+        "id": {
           "type": "string",
           "format": "int64"
         },

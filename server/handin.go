@@ -2,10 +2,10 @@ package server
 
 import (
 	"context"
+	"database/sql"
 	"fmt"
 	"reflect"
 	"strings"
-	"time"
 
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
@@ -148,7 +148,7 @@ func (s *Server) HandinCreate(ctx context.Context, req *pb.HandinCreateRequest) 
 		}
 
 		for key, value := range req.Values {
-			if strings.ToLower(tag) != strings.ToLower(key) {
+			if strings.ToLower(field.Name) != strings.ToLower(key) {
 				continue
 			}
 			args[tag] = value
@@ -157,7 +157,7 @@ func (s *Server) HandinCreate(ctx context.Context, req *pb.HandinCreateRequest) 
 			comma = ","
 		}
 	}
-	if len(args) == 1 {
+	if len(args) < 1 {
 		return nil, fmt.Errorf("no valid fields provided")
 	}
 
@@ -176,7 +176,7 @@ func (s *Server) HandinCreate(ctx context.Context, req *pb.HandinCreateRequest) 
 	}
 
 	resp := new(pb.HandinCreateResponse)
-	resp.Handinid = lastID
+	resp.Id = lastID
 
 	return resp, nil
 }
@@ -188,14 +188,14 @@ func (s *Server) HandinRead(ctx context.Context, req *pb.HandinReadRequest) (*pb
 	}
 	resp := new(pb.HandinReadResponse)
 
-	if req.Handinid < 0 {
-		return nil, fmt.Errorf("handinid must be greater than 0")
+	if req.Id < 0 {
+		return nil, fmt.Errorf("Id must be greater than 0")
 	}
 	query := "SELECT * FROM qs_player_handin_record WHERE "
 
 	args := map[string]interface{}{}
-	query += "id = :id"
-	args["id"] = req.Handinid
+	query += "handin_id = :handin_id"
+	args["handin_id"] = req.Id
 
 	log.Debug().Interface("args", args).Msgf("query: %s", query)
 	rows, err := s.db.NamedQueryContext(ctx, query, args)
@@ -221,7 +221,7 @@ func (s *Server) HandinUpdate(ctx context.Context, req *pb.HandinUpdateRequest) 
 	st := reflect.TypeOf(*handin)
 
 	args := map[string]interface{}{
-		"handin_id": req.Handinid,
+		"handin_id": req.Id,
 	}
 	query := "UPDATE qs_player_handin_record SET"
 
@@ -235,7 +235,7 @@ func (s *Server) HandinUpdate(ctx context.Context, req *pb.HandinUpdateRequest) 
 		}
 
 		for key, value := range req.Values {
-			if strings.ToLower(tag) != strings.ToLower(key) {
+			if strings.ToLower(field.Name) != strings.ToLower(key) {
 				continue
 			}
 			args[tag] = value
@@ -249,7 +249,7 @@ func (s *Server) HandinUpdate(ctx context.Context, req *pb.HandinUpdateRequest) 
 		return nil, fmt.Errorf("no valid fields provided")
 	}
 
-	query += " WHERE id = :id LIMIT 1"
+	query += " WHERE handin_id = :handin_id LIMIT 1"
 
 	log.Debug().Interface("args", args).Msgf("query: %s", query)
 
@@ -270,10 +270,10 @@ func (s *Server) HandinUpdate(ctx context.Context, req *pb.HandinUpdateRequest) 
 
 // HandinDelete implements SCRUD endpoints
 func (s *Server) HandinDelete(ctx context.Context, req *pb.HandinDeleteRequest) (*pb.HandinDeleteResponse, error) {
-	query := "DELETE FROM qs_player_handin_record WHERE id = :id LIMIT 1"
+	query := "DELETE FROM qs_player_handin_record WHERE handin_id = :handin_id LIMIT 1"
 
 	args := map[string]interface{}{
-		"handin_id": req.Handinid,
+		"handin_id": req.Id,
 	}
 
 	log.Debug().Interface("args", args).Msgf("query: %s", query)
@@ -300,7 +300,7 @@ func (s *Server) HandinPatch(ctx context.Context, req *pb.HandinPatchRequest) (*
 	st := reflect.TypeOf(*handin)
 
 	args := map[string]interface{}{
-		"handin_id": req.Handinid,
+		"handin_id": req.Id,
 	}
 	query := "UPDATE qs_player_handin_record SET"
 
@@ -313,7 +313,7 @@ func (s *Server) HandinPatch(ctx context.Context, req *pb.HandinPatchRequest) (*
 			continue
 		}
 
-		if strings.ToLower(tag) != strings.ToLower(req.Key) {
+		if strings.ToLower(field.Name) != strings.ToLower(req.Key) {
 			continue
 		}
 		args[tag] = req.Value
@@ -345,29 +345,29 @@ func (s *Server) HandinPatch(ctx context.Context, req *pb.HandinPatchRequest) (*
 
 // Handin represents an HANDIN DB binding
 type Handin struct {
-	Handinid  int64     `db:"handin_id"`  //int(11) NOT NULL AUTO_INCREMENT,
-	Time      time.Time `db:"time"`       //timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
-	Questid   int64     `db:"quest_id"`   //int(11) DEFAULT '0',
-	Charid    int64     `db:"char_id"`    //int(11) DEFAULT '0',
-	Charpp    int64     `db:"char_pp"`    //int(11) DEFAULT '0',
-	Chargp    int64     `db:"char_gp"`    //int(11) DEFAULT '0',
-	Charsp    int64     `db:"char_sp"`    //int(11) DEFAULT '0',
-	Charcp    int64     `db:"char_cp"`    //int(11) DEFAULT '0',
-	Charitems int64     `db:"char_items"` //mediumint(7) DEFAULT '0',
-	Npcid     int64     `db:"npc_id"`     //int(11) DEFAULT '0',
-	Npcpp     int64     `db:"npc_pp"`     //int(11) DEFAULT '0',
-	Npcgp     int64     `db:"npc_gp"`     //int(11) DEFAULT '0',
-	Npcsp     int64     `db:"npc_sp"`     //int(11) DEFAULT '0',
-	Npccp     int64     `db:"npc_cp"`     //int(11) DEFAULT '0',
-	Npcitems  int64     `db:"npc_items"`  //mediumint(7) DEFAULT '0',
-	Total     int64     `db:"total"`
+	ID        int64        `db:"handin_id"`  //int(11) NOT NULL AUTO_INCREMENT,
+	Time      sql.NullTime `db:"time"`       //timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
+	Questid   int64        `db:"quest_id"`   //int(11) DEFAULT '0',
+	Charid    int64        `db:"char_id"`    //int(11) DEFAULT '0',
+	Charpp    int64        `db:"char_pp"`    //int(11) DEFAULT '0',
+	Chargp    int64        `db:"char_gp"`    //int(11) DEFAULT '0',
+	Charsp    int64        `db:"char_sp"`    //int(11) DEFAULT '0',
+	Charcp    int64        `db:"char_cp"`    //int(11) DEFAULT '0',
+	Charitems int64        `db:"char_items"` //mediumint(7) DEFAULT '0',
+	Npcid     int64        `db:"npc_id"`     //int(11) DEFAULT '0',
+	Npcpp     int64        `db:"npc_pp"`     //int(11) DEFAULT '0',
+	Npcgp     int64        `db:"npc_gp"`     //int(11) DEFAULT '0',
+	Npcsp     int64        `db:"npc_sp"`     //int(11) DEFAULT '0',
+	Npccp     int64        `db:"npc_cp"`     //int(11) DEFAULT '0',
+	Npcitems  int64        `db:"npc_items"`  //mediumint(7) DEFAULT '0',
+	Total     int64        `db:"total"`
 }
 
 // ToProto converts the handin type struct to protobuf
 func (h *Handin) ToProto() *pb.Handin {
 	handin := &pb.Handin{}
-	handin.Handinid = h.Handinid
-	handin.Time = h.Time.Unix()
+	handin.Id = h.ID
+	handin.Time = h.Time.Time.Unix()
 	handin.Questid = h.Questid
 	handin.Charid = h.Charid
 	handin.Charpp = h.Charpp
