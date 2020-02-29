@@ -70,3 +70,4 @@ proto: proto-clean ## Generate protobuf files
 	--go_out=plugins=grpc+retag:$(PROTO_OUT))
 	@(mv pb/proto/* pb/)
 	@(rm -rf pb/proto)
+	@$(MAKE) sanitize
