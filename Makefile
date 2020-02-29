@@ -7,21 +7,25 @@ init:
 	@echo "Priming a fresh database"
 	-docker-compose down
 	-rm -rf db/
-	-docker-compose up -d
-	@echo "Waiting ~10 seconds for DB to be up..."
-	sleep 10
 	-mkdir tmp
 	wget http://edit.projecteq.net/weekly/peq_beta.zip -O tmp/peq_beta.zip
 	cd tmp/
-	cd tmp && unzip -o peq_beta.zip
-	mysql -h 127.0.0.1 -uroot -e "drop database eqemu;"
-	mysql -h 127.0.0.1 -uroot -e "CREATE DATABASE eqemu;"
-	mysql -h 127.0.0.1 -uroot eqemu < tmp/peqbeta.sql
-	mysql -h 127.0.0.1 -uroot eqemu < tmp/player_tables.sql
-	rm -rf tmp/
+	cd tmp && unzip -o peq_beta.zip	
+	cd tmp && rm drop*.sql *.zip data_tables.sql load_* source_views.sql
+	docker-compose up -d
+	@docker-compose logs mariadb
+	@echo "Wait a bit for database to be injected." 
+	@echo "you can run 'docker-compose logs mariadb' to check status of import"
+	@echo "host: 127.0.0.1:3306 db: eqemu, user: eqemu, pass: eqemupass"
 .PHONY: up
 up:
+	@# I delete tmp/ so that the initializer scripts don't happen again
+	@-rm -rf tmp/
 	@docker-compose up -d
+.PHONY: down
+down:
+	@-rm -rf tmp/
+	@docker-compose down
 .PHONY: build-all
 build-all: proto sanitize
 	@echo "Preparing talkeq ${VERSION}"
