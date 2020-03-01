@@ -1323,6 +1323,100 @@
         ]
       }
     },
+    "/v1/loginserver/create": {
+      "post": {
+        "operationId": "LoginServerCreate",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLoginServerCreateResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbLoginServerCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "LoginServerService"
+        ]
+      }
+    },
+    "/v1/loginserver/list": {
+      "get": {
+        "operationId": "LoginServerList",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLoginServerListResponse"
+            }
+          }
+        },
+        "tags": [
+          "LoginServerService"
+        ]
+      }
+    },
+    "/v1/loginserver/login": {
+      "post": {
+        "operationId": "LoginServerLogin",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLoginServerLoginResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbLoginServerLoginRequest"
+            }
+          }
+        ],
+        "tags": [
+          "LoginServerService"
+        ]
+      }
+    },
+    "/v1/loginserver/logout": {
+      "post": {
+        "operationId": "LoginServerLogout",
+        "responses": {
+          "200": {
+            "description": "A successful response.",
+            "schema": {
+              "$ref": "#/definitions/pbLoginServerLogoutResponse"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbLoginServerLogoutRequest"
+            }
+          }
+        ],
+        "tags": [
+          "LoginServerService"
+        ]
+      }
+    },
     "/v1/npc": {
       "post": {
         "operationId": "NpcCreate",
@@ -3914,8 +4008,8 @@
           "format": "int64"
         },
         "sellrate": {
-          "type": "string",
-          "format": "int64"
+          "type": "number",
+          "format": "float"
         },
         "shielding": {
           "type": "string",
@@ -4845,6 +4939,59 @@
         }
       }
     },
+    "pbLoginServerCreateRequest": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        }
+      }
+    },
+    "pbLoginServerCreateResponse": {
+      "type": "object"
+    },
+    "pbLoginServerListResponse": {
+      "type": "object",
+      "properties": {
+        "servers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbServer"
+          }
+        }
+      }
+    },
+    "pbLoginServerLoginRequest": {
+      "type": "object",
+      "properties": {
+        "username": {
+          "type": "string"
+        },
+        "password": {
+          "type": "string"
+        }
+      }
+    },
+    "pbLoginServerLoginResponse": {
+      "type": "object",
+      "properties": {
+        "token": {
+          "type": "string"
+        }
+      }
+    },
+    "pbLoginServerLogoutRequest": {
+      "type": "object"
+    },
+    "pbLoginServerLogoutResponse": {
+      "type": "object"
+    },
     "pbNpc": {
       "type": "object",
       "properties": {
@@ -5724,6 +5871,39 @@
       "type": "object",
       "properties": {
         "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbServer": {
+      "type": "object",
+      "properties": {
+        "localip": {
+          "type": "string"
+        },
+        "playersonline": {
+          "type": "string",
+          "format": "int64"
+        },
+        "remoteip": {
+          "type": "string"
+        },
+        "serverlistid": {
+          "type": "string",
+          "format": "int64"
+        },
+        "serverlongname": {
+          "type": "string"
+        },
+        "servershortname": {
+          "type": "string"
+        },
+        "serverstatus": {
+          "type": "string",
+          "format": "int64"
+        },
+        "zonesbooted": {
           "type": "string",
           "format": "int64"
         }
