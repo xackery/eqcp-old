@@ -1,7 +1,6 @@
 syntax = "proto3";
 
 import "google/api/annotations.proto";
-//import "google/api/timestamp.proto";
 import "proto/login_account.proto";
 
 package pb;

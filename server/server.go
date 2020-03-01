@@ -2,32 +2,37 @@ package server
 
 import (
 	"context"
+	"crypto/rsa"
 	"fmt"
+	"io/ioutil"
 	"net"
 	"net/http"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog/log"
+	"github.com/xackery/eqcp/config"
 	"github.com/xackery/eqcp/pb"
-	"github.com/xackery/eqemuconfig"
 	"google.golang.org/grpc"
 )
 
 // Server represents a general server
 type Server struct {
-	ctx     context.Context
-	cancel  context.CancelFunc
-	mux     *runtime.ServeMux
-	gserver *grpc.Server
-	gconn   net.Listener
-	cfg     *eqemuconfig.Config
-	db      *sqlx.DB
+	ctx        context.Context
+	cancel     context.CancelFunc
+	mux        *runtime.ServeMux
+	gserver    *grpc.Server
+	gconn      net.Listener
+	cfg        *config.Config
+	db         *sqlx.DB
+	publicKey  *rsa.PublicKey
+	privateKey *rsa.PrivateKey
 }
 
 // New creates a new server
-func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemuconfig.Config) (*Server, error) {
+func New(ctx context.Context, cancel context.CancelFunc, cfg *config.Config) (*Server, error) {
 	var err error
 	s := &Server{
 		ctx:    ctx,
@@ -35,15 +40,35 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 		cfg:    cfg,
 	}
 
+	signBytes, err := ioutil.ReadFile(cfg.Jwt.PrivateKeyPath)
+	if err != nil {
+		return nil, errors.Wrapf(err, "read jwt.private_key_path")
+	}
+
+	s.privateKey, err = jwt.ParseRSAPrivateKeyFromPEM(signBytes)
+	if err != nil {
+		return nil, errors.Wrapf(err, "parse jwt.private_key_path")
+	}
+
+	signBytes, err = ioutil.ReadFile(cfg.Jwt.PublicKeyPath)
+	if err != nil {
+		return nil, errors.Wrapf(err, "read jwt.public_key_path")
+	}
+
+	s.publicKey, err = jwt.ParseRSAPublicKeyFromPEM(signBytes)
+	if err != nil {
+		return nil, errors.Wrapf(err, "parse jwt.public_key_path")
+	}
+
 	conn := fmt.Sprintf("%s:%s@tcp(%s:%s)/%s?parseTime=true", cfg.Database.Username, cfg.Database.Password, cfg.Database.Host, cfg.Database.Port, cfg.Database.Db)
 	s.db, err = sqlx.Open("mysql", conn)
 	if err != nil {
 		return nil, errors.Wrap(err, "sql open")
 	}
-	log.Debug().Msgf("connected to %s:%s %s", cfg.Database.Host, cfg.Database.Port, cfg.Database.Db)
+	log.Debug().Msgf("sql connected to %s:%s %s", cfg.Database.Host, cfg.Database.Port, cfg.Database.Db)
 
-	log.Debug().Msgf("grpc listening on %s", host)
-	s.gconn, err = net.Listen("tcp", host)
+	log.Debug().Msgf("grpc listening on %s", cfg.Grpc.Host)
+	s.gconn, err = net.Listen("tcp", cfg.Grpc.Host)
 	if err != nil {
 		return nil, errors.Wrap(err, "net listen")
 	}
@@ -60,51 +85,56 @@ func New(ctx context.Context, cancel context.CancelFunc, host string, cfg *eqemu
 	pb.RegisterNpcServiceServer(s.gserver, s)
 	pb.RegisterPetitionServiceServer(s.gserver, s)
 	pb.RegisterPlayerSpeechServiceServer(s.gserver, s)
+	pb.RegisterLoginServerServiceServer(s.gserver, s)
 	pb.RegisterTradeServiceServer(s.gserver, s)
 	pb.RegisterZoneServiceServer(s.gserver, s)
 	s.mux = runtime.NewServeMux()
 
-	err = pb.RegisterAccountServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	err = pb.RegisterAccountServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle bug")
 	}
-	err = pb.RegisterBugServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	err = pb.RegisterBugServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle bug")
 	}
-	err = pb.RegisterCharacterServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	err = pb.RegisterCharacterServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle character")
 	}
-	err = pb.RegisterHandinServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	err = pb.RegisterHandinServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle handin")
 	}
-	err = pb.RegisterItemServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	err = pb.RegisterItemServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle item")
 	}
-	err = pb.RegisterLoginAccountServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	err = pb.RegisterLoginAccountServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle loginaccount")
 	}
-	err = pb.RegisterNpcServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	err = pb.RegisterNpcServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle npc")
 	}
-	err = pb.RegisterPetitionServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	err = pb.RegisterPetitionServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle petition")
 	}
-	err = pb.RegisterPlayerSpeechServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	err = pb.RegisterPlayerSpeechServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle playerspeech")
 	}
-	err = pb.RegisterTradeServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	err = pb.RegisterLoginServerServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
+	if err != nil {
+		return nil, errors.Wrap(err, "handle server")
+	}
+	err = pb.RegisterTradeServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle trade")
 	}
-	err = pb.RegisterZoneServiceHandlerFromEndpoint(ctx, s.mux, host, opts)
+	err = pb.RegisterZoneServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle zone")
 	}
@@ -120,9 +150,8 @@ func (s *Server) Close() {
 }
 
 func (s *Server) httpServe() {
-
-	log.Debug().Str("url", fmt.Sprintf("http://127.0.0.1:8081")).Msgf("rest listening on %s", ":8081")
-	err := http.ListenAndServe(":8081", s.mux)
+	log.Debug().Msgf("api listening on %s", s.cfg.API.Host)
+	err := http.ListenAndServe(s.cfg.API.Host, s.mux)
 	if err != nil {
 		log.Error().Err(err).Msg("http server died")
 	}

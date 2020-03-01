@@ -1,0 +1,63 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "proto/login_server.proto";
+
+package pb;
+
+service LoginServerService {
+	rpc LoginServerList(LoginServerListRequest) returns (LoginServerListResponse) {
+		option (google.api.http) = {
+			get: "/v1/loginserver/list"
+		};
+	}
+	rpc LoginServerLogin(LoginServerLoginRequest) returns (LoginServerLoginResponse) {
+		option (google.api.http) = {
+			post: "/v1/loginserver/login"
+			body: "*"
+		};
+	}
+	rpc LoginServerLogout(LoginServerLogoutRequest) returns (LoginServerLogoutResponse) {
+		option (google.api.http) = {
+			post: "/v1/loginserver/logout"
+			body: "*"
+		};
+	}
+	rpc LoginServerCreate(LoginServerCreateRequest) returns (LoginServerCreateResponse) {
+		option (google.api.http) = {
+			post: "/v1/loginserver/create"
+			body: "*"
+		};
+	}
+}
+
+message LoginServerListRequest {
+}
+
+message LoginServerListResponse {
+	repeated Server servers = 1;
+}
+
+message LoginServerLoginRequest {
+	string username = 1;
+	string password = 2;
+}
+
+message LoginServerLoginResponse {
+	string token = 1;
+}
+
+message LoginServerLogoutRequest {
+}
+
+message LoginServerLogoutResponse {
+}
+
+message LoginServerCreateRequest {
+	string username = 1;
+	string password = 2;
+	string email = 3;
+}
+
+message LoginServerCreateResponse {
+}

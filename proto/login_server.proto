@@ -1,0 +1,16 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+
+package pb;
+
+message Server {
+   string localip = 1;
+   int64 playersonline = 2;
+   string remoteip = 3;
+   int64 serverlistid = 4;
+   string serverlongname = 5;
+   string servershortname = 6;
+   int64 serverstatus = 7;
+   int64 zonesbooted = 8;
+}

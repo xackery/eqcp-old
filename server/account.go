@@ -22,6 +22,15 @@ func (s *Server) AccountSearch(ctx context.Context, req *pb.AccountSearchRequest
 		return nil, fmt.Errorf("request nil")
 	}
 
+	dc, err := s.AuthFromContext(ctx)
+	if err != nil {
+		return nil, err
+	}
+	if dc == nil {
+		return nil, fmt.Errorf("account not found")
+	}
+	fmt.Println(dc)
+
 	resp := new(pb.AccountSearchResponse)
 	if req.Limit < 1 {
 		req.Limit = 10
