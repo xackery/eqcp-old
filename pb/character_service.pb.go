@@ -576,7 +576,9 @@ func init() {
 	proto.RegisterType((*CharacterPatchResponse)(nil), "pb.CharacterPatchResponse")
 }
 
-func init() { proto.RegisterFile("proto/character_service.proto", fileDescriptor_f06857beef2bbaf7) }
+func init() {
+	proto.RegisterFile("proto/character_service.proto", fileDescriptor_f06857beef2bbaf7)
+}
 
 var fileDescriptor_f06857beef2bbaf7 = []byte{
 	// 603 bytes of a gzipped FileDescriptorProto

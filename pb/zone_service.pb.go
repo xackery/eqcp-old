@@ -576,7 +576,9 @@ func init() {
 	proto.RegisterType((*ZonePatchResponse)(nil), "pb.ZonePatchResponse")
 }
 
-func init() { proto.RegisterFile("proto/zone_service.proto", fileDescriptor_3a2d2fdbcf763886) }
+func init() {
+	proto.RegisterFile("proto/zone_service.proto", fileDescriptor_3a2d2fdbcf763886)
+}
 
 var fileDescriptor_3a2d2fdbcf763886 = []byte{
 	// 594 bytes of a gzipped FileDescriptorProto

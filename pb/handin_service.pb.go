@@ -576,7 +576,9 @@ func init() {
 	proto.RegisterType((*HandinPatchResponse)(nil), "pb.HandinPatchResponse")
 }
 
-func init() { proto.RegisterFile("proto/handin_service.proto", fileDescriptor_751de55a9220f1f4) }
+func init() {
+	proto.RegisterFile("proto/handin_service.proto", fileDescriptor_751de55a9220f1f4)
+}
 
 var fileDescriptor_751de55a9220f1f4 = []byte{
 	// 602 bytes of a gzipped FileDescriptorProto

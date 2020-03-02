@@ -13,6 +13,10 @@ curl --request GET "localhost:8081/v1/bug/search/test"
 curl --request GET "localhost:8081/v1/bug/1"
 
 curl localhost:8081/v1/item/search?values[classes]=8
+
+curl --request POST "localhost:8081/v1/loginserver/login" -d '{"username":test", "password":"test"}'
+
+curl "localhost:8081/v1/inventory/search?values[charid]=693603"
 ```
 
 

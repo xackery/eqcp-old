@@ -576,7 +576,9 @@ func init() {
 	proto.RegisterType((*NpcPatchResponse)(nil), "pb.NpcPatchResponse")
 }
 
-func init() { proto.RegisterFile("proto/npc_service.proto", fileDescriptor_bb39d325093f256a) }
+func init() {
+	proto.RegisterFile("proto/npc_service.proto", fileDescriptor_bb39d325093f256a)
+}
 
 var fileDescriptor_bb39d325093f256a = []byte{
 	// 593 bytes of a gzipped FileDescriptorProto

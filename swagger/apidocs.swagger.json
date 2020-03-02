@@ -18,12 +18,20 @@
   "paths": {
     "/v1/account": {
       "post": {
+        "summary": "Create new account",
+        "description": "Create a new account. Not recommended! use loginserver/create instead\nPermission based on: #mysql (default: 255)",
         "operationId": "AccountCreate",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "id of account created",
             "schema": {
               "$ref": "#/definitions/pbAccountCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -39,17 +47,30 @@
         ],
         "tags": [
           "AccountService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       }
     },
     "/v1/account/search": {
       "get": {
+        "summary": "Search accounts",
+        "description": "Search accounts with provided queries.\nPermission based on: #petitioninfo (default: 20)",
         "operationId": "AccountSearch",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "accounts details",
             "schema": {
               "$ref": "#/definitions/pbAccountSearchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -84,40 +105,30 @@
         ],
         "tags": [
           "AccountService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       }
     },
     "/v1/account/{id}": {
       "get": {
+        "summary": "Read account info",
+        "description": "Read account details.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on #petitioninfo (default: 20)",
         "operationId": "AccountRead",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "account details",
             "schema": {
               "$ref": "#/definitions/pbAccountReadResponse"
             }
-          }
-        },
-        "parameters": [
-          {
-            "name": "id",
-            "in": "path",
-            "required": true,
-            "type": "string",
-            "format": "int64"
-          }
-        ],
-        "tags": [
-          "AccountService"
-        ]
-      },
-      "delete": {
-        "operationId": "AccountDelete",
-        "responses": {
-          "200": {
-            "description": "A successful response.",
+          },
+          "default": {
+            "description": "An unexpected error response",
             "schema": {
-              "$ref": "#/definitions/pbAccountDeleteResponse"
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -132,15 +143,64 @@
         ],
         "tags": [
           "AccountService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
+        ]
+      },
+      "delete": {
+        "summary": "Delete an account",
+        "description": "Delete an account.\nPermission based on: #mysql (default: 255)",
+        "operationId": "AccountDelete",
+        "responses": {
+          "200": {
+            "description": "rows affected",
+            "schema": {
+              "$ref": "#/definitions/pbAccountDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "AccountService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       },
       "put": {
+        "summary": "Update account details",
+        "description": "Update account details.\nPermission based on: #mysql (default: 255)",
         "operationId": "AccountUpdate",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "rows affected",
             "schema": {
               "$ref": "#/definitions/pbAccountUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -163,15 +223,28 @@
         ],
         "tags": [
           "AccountService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       },
       "patch": {
+        "summary": "Edit account field",
+        "description": "Edit an account field.\nPermission based on: #mysql (default: 255)",
         "operationId": "AccountPatch",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "rows affected",
             "schema": {
               "$ref": "#/definitions/pbAccountPatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -194,6 +267,11 @@
         ],
         "tags": [
           "AccountService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       }
     },
@@ -205,6 +283,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbBugCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -231,6 +315,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbBugSearchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -277,6 +367,12 @@
             "schema": {
               "$ref": "#/definitions/pbBugReadResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -300,6 +396,12 @@
             "schema": {
               "$ref": "#/definitions/pbBugDeleteResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -322,6 +424,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbBugUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -353,6 +461,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbBugPatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -387,6 +501,12 @@
             "schema": {
               "$ref": "#/definitions/pbCharacterCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -412,6 +532,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbCharacterSearchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -458,6 +584,12 @@
             "schema": {
               "$ref": "#/definitions/pbCharacterReadResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -481,6 +613,12 @@
             "schema": {
               "$ref": "#/definitions/pbCharacterDeleteResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -503,6 +641,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbCharacterUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -534,6 +678,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbCharacterPatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -568,6 +718,12 @@
             "schema": {
               "$ref": "#/definitions/pbHandinCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -593,6 +749,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbHandinSearchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -639,6 +801,12 @@
             "schema": {
               "$ref": "#/definitions/pbHandinReadResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -662,6 +830,12 @@
             "schema": {
               "$ref": "#/definitions/pbHandinDeleteResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -684,6 +858,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbHandinUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -715,6 +895,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbHandinPatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -748,6 +934,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbInventorySearchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -794,6 +986,12 @@
             "schema": {
               "$ref": "#/definitions/pbInventoryReadResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -824,6 +1022,12 @@
             "schema": {
               "$ref": "#/definitions/pbInventoryDeleteResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -853,6 +1057,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbInventoryCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -892,6 +1102,12 @@
             "schema": {
               "$ref": "#/definitions/pbInventoryUpdateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -929,6 +1145,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbInventoryPatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -970,6 +1192,12 @@
             "schema": {
               "$ref": "#/definitions/pbItemCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -995,6 +1223,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbItemSearchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1041,6 +1275,12 @@
             "schema": {
               "$ref": "#/definitions/pbItemReadResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1064,6 +1304,12 @@
             "schema": {
               "$ref": "#/definitions/pbItemDeleteResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1086,6 +1332,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbItemUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1117,6 +1369,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbItemPatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1151,6 +1409,12 @@
             "schema": {
               "$ref": "#/definitions/pbLoginAccountCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1176,6 +1440,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbLoginAccountSearchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1222,6 +1492,12 @@
             "schema": {
               "$ref": "#/definitions/pbLoginAccountReadResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1245,6 +1521,12 @@
             "schema": {
               "$ref": "#/definitions/pbLoginAccountDeleteResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1267,6 +1549,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbLoginAccountUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1298,6 +1586,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbLoginAccountPatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1332,6 +1626,12 @@
             "schema": {
               "$ref": "#/definitions/pbLoginServerCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1358,6 +1658,12 @@
             "schema": {
               "$ref": "#/definitions/pbLoginServerListResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "tags": [
@@ -1373,6 +1679,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbLoginServerLoginResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1400,6 +1712,12 @@
             "schema": {
               "$ref": "#/definitions/pbLoginServerLogoutResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1426,6 +1744,12 @@
             "schema": {
               "$ref": "#/definitions/pbNpcCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1451,6 +1775,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbNpcSearchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1497,6 +1827,12 @@
             "schema": {
               "$ref": "#/definitions/pbNpcReadResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1520,6 +1856,12 @@
             "schema": {
               "$ref": "#/definitions/pbNpcDeleteResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1542,6 +1884,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbNpcUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1573,6 +1921,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbNpcPatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1607,6 +1961,12 @@
             "schema": {
               "$ref": "#/definitions/pbPetitionCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1632,6 +1992,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbPetitionSearchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1678,6 +2044,12 @@
             "schema": {
               "$ref": "#/definitions/pbPetitionReadResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1701,6 +2073,12 @@
             "schema": {
               "$ref": "#/definitions/pbPetitionDeleteResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1723,6 +2101,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbPetitionUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1754,6 +2138,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbPetitionPatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1788,6 +2178,12 @@
             "schema": {
               "$ref": "#/definitions/pbPlayerSpeechCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1813,6 +2209,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbPlayerSpeechSearchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1859,6 +2261,12 @@
             "schema": {
               "$ref": "#/definitions/pbPlayerSpeechReadResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1882,6 +2290,12 @@
             "schema": {
               "$ref": "#/definitions/pbPlayerSpeechDeleteResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1904,6 +2318,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbPlayerSpeechUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1935,6 +2355,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbPlayerSpeechPatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -1969,6 +2395,12 @@
             "schema": {
               "$ref": "#/definitions/pbTradeCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -1994,6 +2426,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbTradeSearchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -2046,6 +2484,12 @@
             "schema": {
               "$ref": "#/definitions/pbTradeReadResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -2069,6 +2513,12 @@
             "schema": {
               "$ref": "#/definitions/pbTradeDeleteResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -2091,6 +2541,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbTradeUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -2122,6 +2578,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbTradePatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -2156,6 +2618,12 @@
             "schema": {
               "$ref": "#/definitions/pbZoneCreateResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -2181,6 +2649,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbZoneSearchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -2227,6 +2701,12 @@
             "schema": {
               "$ref": "#/definitions/pbZoneReadResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -2250,6 +2730,12 @@
             "schema": {
               "$ref": "#/definitions/pbZoneDeleteResponse"
             }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
           }
         },
         "parameters": [
@@ -2272,6 +2758,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbZoneUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -2303,6 +2795,12 @@
             "description": "A successful response.",
             "schema": {
               "$ref": "#/definitions/pbZonePatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
             }
           }
         },
@@ -2406,6 +2904,11 @@
     },
     "pbAccountCreateRequest": {
       "type": "object",
+      "example": {
+        "values": {
+          "name": "test"
+        }
+      },
       "properties": {
         "values": {
           "type": "object",
@@ -2417,6 +2920,9 @@
     },
     "pbAccountCreateResponse": {
       "type": "object",
+      "example": {
+        "id": "96006"
+      },
       "properties": {
         "id": {
           "type": "string",
@@ -2426,6 +2932,9 @@
     },
     "pbAccountDeleteResponse": {
       "type": "object",
+      "example": {
+        "rowsaffected": "1"
+      },
       "properties": {
         "rowsaffected": {
           "type": "string",
@@ -2435,6 +2944,10 @@
     },
     "pbAccountPatchRequest": {
       "type": "object",
+      "example": {
+        "key": "name",
+        "value": "test2"
+      },
       "properties": {
         "id": {
           "type": "string",
@@ -2450,6 +2963,9 @@
     },
     "pbAccountPatchResponse": {
       "type": "object",
+      "example": {
+        "rowsaffected": "1"
+      },
       "properties": {
         "rowsaffected": {
           "type": "string",
@@ -2459,6 +2975,16 @@
     },
     "pbAccountReadResponse": {
       "type": "object",
+      "example": {
+        "account": {
+          "id": "96004",
+          "name": "test",
+          "lsid": "local",
+          "lsaccountid": "1",
+          "suspendeduntil": "-62135596800",
+          "timecreation": "1583038515"
+        }
+      },
       "properties": {
         "account": {
           "$ref": "#/definitions/pbAccount"
@@ -2467,6 +2993,19 @@
     },
     "pbAccountSearchResponse": {
       "type": "object",
+      "example": {
+        "Accounts": [
+          {
+            "id": "96004",
+            "name": "test",
+            "lsid": "local",
+            "lsaccountid": "1",
+            "suspendeduntil": "-62135596800",
+            "timecreation": "1583038515"
+          }
+        ],
+        "total": "1"
+      },
       "properties": {
         "Accounts": {
           "type": "array",
@@ -2482,6 +3021,11 @@
     },
     "pbAccountUpdateRequest": {
       "type": "object",
+      "example": {
+        "values": {
+          "name": "test2"
+        }
+      },
       "properties": {
         "id": {
           "type": "string",
@@ -2497,6 +3041,9 @@
     },
     "pbAccountUpdateResponse": {
       "type": "object",
+      "example": {
+        "rowsaffected": "1"
+      },
       "properties": {
         "rowsaffected": {
           "type": "string",
@@ -6512,6 +7059,49 @@
           "format": "int64"
         }
       }
+    },
+    "protobufAny": {
+      "type": "object",
+      "properties": {
+        "type_url": {
+          "type": "string",
+          "description": "A URL/resource name that uniquely identifies the type of the serialized\nprotocol buffer message. This string must contain at least\none \"/\" character. The last segment of the URL's path must represent\nthe fully qualified name of the type (as in\n`path/google.protobuf.Duration`). The name should be in a canonical form\n(e.g., leading \".\" is not accepted).\n\nIn practice, teams usually precompile into the binary all types that they\nexpect it to use in the context of Any. However, for URLs which use the\nscheme `http`, `https`, or no scheme, one can optionally set up a type\nserver that maps type URLs to message definitions as follows:\n\n* If no scheme is provided, `https` is assumed.\n* An HTTP GET on the URL must yield a [google.protobuf.Type][]\n  value in binary format, or produce an error.\n* Applications are allowed to cache lookup results based on the\n  URL, or have them precompiled into a binary to avoid any\n  lookup. Therefore, binary compatibility needs to be preserved\n  on changes to types. (Use versioned type names to manage\n  breaking changes.)\n\nNote: this functionality is not currently available in the official\nprotobuf release, and it is not used for type URLs beginning with\ntype.googleapis.com.\n\nSchemes other than `http`, `https` (or the empty scheme) might be\nused with implementation specific semantics."
+        },
+        "value": {
+          "type": "string",
+          "format": "byte",
+          "description": "Must be a valid serialized protocol buffer of the above specified type."
+        }
+      },
+      "description": "`Any` contains an arbitrary serialized protocol buffer message along with a\nURL that describes the type of the serialized message.\n\nProtobuf library provides support to pack/unpack Any values in the form\nof utility functions or additional generated methods of the Any type.\n\nExample 1: Pack and unpack a message in C++.\n\n    Foo foo = ...;\n    Any any;\n    any.PackFrom(foo);\n    ...\n    if (any.UnpackTo(\u0026foo)) {\n      ...\n    }\n\nExample 2: Pack and unpack a message in Java.\n\n    Foo foo = ...;\n    Any any = Any.pack(foo);\n    ...\n    if (any.is(Foo.class)) {\n      foo = any.unpack(Foo.class);\n    }\n\n Example 3: Pack and unpack a message in Python.\n\n    foo = Foo(...)\n    any = Any()\n    any.Pack(foo)\n    ...\n    if any.Is(Foo.DESCRIPTOR):\n      any.Unpack(foo)\n      ...\n\n Example 4: Pack and unpack a message in Go\n\n     foo := \u0026pb.Foo{...}\n     any, err := ptypes.MarshalAny(foo)\n     ...\n     foo := \u0026pb.Foo{}\n     if err := ptypes.UnmarshalAny(any, foo); err != nil {\n       ...\n     }\n\nThe pack methods provided by protobuf library will by default use\n'type.googleapis.com/full.type.name' as the type URL and the unpack\nmethods only use the fully qualified type name after the last '/'\nin the type URL, for example \"foo.bar.com/x/y.z\" will yield type\nname \"y.z\".\n\n\nJSON\n====\nThe JSON representation of an `Any` value uses the regular\nrepresentation of the deserialized, embedded message, with an\nadditional field `@type` which contains the type URL. Example:\n\n    package google.profile;\n    message Person {\n      string first_name = 1;\n      string last_name = 2;\n    }\n\n    {\n      \"@type\": \"type.googleapis.com/google.profile.Person\",\n      \"firstName\": \u003cstring\u003e,\n      \"lastName\": \u003cstring\u003e\n    }\n\nIf the embedded message type is well-known and has a custom JSON\nrepresentation, that representation will be embedded adding a field\n`value` which holds the custom JSON in addition to the `@type`\nfield. Example (for message [google.protobuf.Duration][]):\n\n    {\n      \"@type\": \"type.googleapis.com/google.protobuf.Duration\",\n      \"value\": \"1.212s\"\n    }"
+    },
+    "runtimeError": {
+      "type": "object",
+      "properties": {
+        "error": {
+          "type": "string"
+        },
+        "code": {
+          "type": "integer",
+          "format": "int32"
+        },
+        "message": {
+          "type": "string"
+        },
+        "details": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/protobufAny"
+          }
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Token": {
+      "type": "apiKey",
+      "name": "Authorization",
+      "in": "header"
     }
   }
 }
