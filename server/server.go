@@ -3,12 +3,14 @@ package server
 import (
 	"context"
 	"crypto/rsa"
+	"encoding/json"
 	"fmt"
 	"io/ioutil"
 	"net"
 	"net/http"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/go-resty/resty/v2"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
 	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
@@ -20,15 +22,17 @@ import (
 
 // Server represents a general server
 type Server struct {
-	ctx        context.Context
-	cancel     context.CancelFunc
-	mux        *runtime.ServeMux
-	gserver    *grpc.Server
-	gconn      net.Listener
-	cfg        *config.Config
-	db         *sqlx.DB
-	publicKey  *rsa.PublicKey
-	privateKey *rsa.PrivateKey
+	ctx             context.Context
+	cancel          context.CancelFunc
+	mux             *runtime.ServeMux
+	gserver         *grpc.Server
+	gconn           net.Listener
+	cfg             *config.Config
+	db              *sqlx.DB
+	publicKey       *rsa.PublicKey
+	privateKey      *rsa.PrivateKey
+	resty           *resty.Client
+	isLoginServerUp bool
 }
 
 // New creates a new server
@@ -38,6 +42,29 @@ func New(ctx context.Context, cancel context.CancelFunc, cfg *config.Config) (*S
 		ctx:    ctx,
 		cancel: cancel,
 		cfg:    cfg,
+		resty:  resty.New(),
+	}
+
+	if cfg.LoginServer.IsEnabled {
+		apiResp, err := s.resty.R().
+			SetHeader("Accept", "application/json").
+			SetAuthToken(s.cfg.LoginServer.APIToken).
+			Get(fmt.Sprintf("http://%s/v1/servers/list", s.cfg.LoginServer.WebAPIHost))
+		if err != nil {
+			return nil, errors.Wrap(err, "loginserver enabled, but not up?")
+		}
+
+		if apiResp.StatusCode() != 200 {
+			var messagePayload struct {
+				Message string `json:"message"`
+			}
+
+			if err = json.Unmarshal(apiResp.Body(), &messagePayload); err != nil {
+				return nil, errors.Wrap(err, "decode response")
+			}
+			return nil, fmt.Errorf("loginserver enabled, but not running?: %s", messagePayload.Message)
+		}
+		log.Debug().Msgf("loginserver connected to %s", s.cfg.LoginServer.WebAPIHost)
 	}
 
 	signBytes, err := ioutil.ReadFile(cfg.Jwt.PrivateKeyPath)

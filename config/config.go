@@ -55,7 +55,7 @@ type Grpc struct {
 type LoginServer struct {
 	WebAPIHost string
 	APIToken   string
-	Enabled    bool
+	IsEnabled  bool `toml:"enabled"`
 }
 
 // Jwt key settings

@@ -12,8 +12,10 @@ import (
 
 // LoginServerList lists servers
 func (s *Server) LoginServerList(ctx context.Context, req *pb.LoginServerListRequest) (*pb.LoginServerListResponse, error) {
-	client := resty.New()
-	apiResp, err := client.R().
+	if !s.isLoginServerUp {
+		return nil, fmt.Errorf("loginserver api not availabile")
+	}
+	apiResp, err := s.resty.R().
 		SetHeader("Accept", "application/json").
 		SetAuthToken(s.cfg.LoginServer.APIToken).
 		Get(fmt.Sprintf("http://%s/v1/servers/list", s.cfg.LoginServer.WebAPIHost))
@@ -21,10 +23,11 @@ func (s *Server) LoginServerList(ctx context.Context, req *pb.LoginServerListReq
 		return nil, errors.Wrap(err, "loginserver api")
 	}
 
+	var messagePayload struct {
+		Message string `json:"message"`
+	}
+
 	if apiResp.StatusCode() != 200 {
-		var messagePayload struct {
-			Message string `json:"message"`
-		}
 
 		if err = json.Unmarshal(apiResp.Body(), &messagePayload); err != nil {
 			return nil, errors.Wrap(err, "decode response")
@@ -43,11 +46,18 @@ func (s *Server) LoginServerList(ctx context.Context, req *pb.LoginServerListReq
 		Zonesbooted     int64  `json:"zones_booted"`
 	}
 
+	resp := &pb.LoginServerListResponse{}
 	if err = json.Unmarshal(apiResp.Body(), &payload); err != nil {
-		return nil, errors.Wrap(err, "decode response")
+		if err = json.Unmarshal(apiResp.Body(), &messagePayload); err != nil {
+			return nil, errors.Wrap(
+				err, "decode response")
+		}
+		if messagePayload.Message != "There were no results found" {
+			return nil, fmt.Errorf("%s", messagePayload.Message)
+		}
+		return resp, nil
 	}
 
-	resp := &pb.LoginServerListResponse{}
 	for _, srv := range payload {
 		server := &pb.Server{
 			Serverlongname:  srv.Serverlongname,
@@ -67,7 +77,9 @@ func (s *Server) LoginServerList(ctx context.Context, req *pb.LoginServerListReq
 
 // LoginServerLogin does a login request
 func (s *Server) LoginServerLogin(ctx context.Context, req *pb.LoginServerLoginRequest) (*pb.LoginServerLoginResponse, error) {
-
+	if !s.isLoginServerUp {
+		return nil, fmt.Errorf("loginserver api not availabile")
+	}
 	client := resty.New()
 	apiResp, err := client.R().
 		SetHeader("Accept", "application/json").
@@ -124,6 +136,9 @@ func (s *Server) LoginServerLogout(ctx context.Context, req *pb.LoginServerLogou
 
 // LoginServerCreate makes a new account
 func (s *Server) LoginServerCreate(ctx context.Context, req *pb.LoginServerCreateRequest) (*pb.LoginServerCreateResponse, error) {
+	if !s.isLoginServerUp {
+		return nil, fmt.Errorf("loginserver api not availabile")
+	}
 	client := resty.New()
 	if req.Username == "" {
 		return nil, fmt.Errorf("username must be set")

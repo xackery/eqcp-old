@@ -84,6 +84,9 @@ func (s *Server) ItemSearch(ctx context.Context, req *pb.ItemSearchRequest) (*pb
 			if se.Field(i).Kind() == reflect.String {
 				args[tag] = fmt.Sprintf("%%%s%%", value)
 				query += fmt.Sprintf("%s %s LIKE :%s", comma, tag, tag)
+			} else if tag == "classes" || tag == "races" {
+				args[tag] = value
+				query += fmt.Sprintf("%s %s & :%s = :%s", comma, tag, tag, tag)
 			} else {
 				args[tag] = value
 				query += fmt.Sprintf("%s %s = :%s", comma, tag, tag)
@@ -210,6 +213,18 @@ AND loottable_id > 0)
 		err = rows.StructScan(item)
 		if err != nil {
 			return nil, errors.Wrap(err, "structscan")
+		}
+
+		// I'm doing deduplication since GROUP BY causes a temporary filesort
+		isDuplicate := false
+		for _, i := range resp.Items {
+			if i.Id != item.ID {
+				continue
+			}
+			isDuplicate = true
+		}
+		if isDuplicate {
+			continue
 		}
 		resp.Items = append(resp.Items, item.ToProto())
 	}
