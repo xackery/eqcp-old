@@ -2,14 +2,11 @@ syntax = "proto3";
 
 import "google/api/annotations.proto";
 import "protoc-gen-swagger/options/annotations.proto";
-
-//import "google/api/timestamp.proto";
 import "proto/account.proto";
 
 package pb;
 
 service AccountService {
-
     rpc AccountSearch(AccountSearchRequest) returns (AccountSearchResponse) {
 		option (google.api.http) = {
 			get: "/v1/account/search"

@@ -277,10 +277,12 @@
     },
     "/v1/bug": {
       "post": {
+        "summary": "Create a new bug",
+        "description": "Create a new bug.\nPermission based on: #mysql (default: 255)",
         "operationId": "BugCreate",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "id of new bug created",
             "schema": {
               "$ref": "#/definitions/pbBugCreateResponse"
             }
@@ -304,15 +306,22 @@
         ],
         "tags": [
           "BugService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       }
     },
     "/v1/bug/search": {
       "get": {
+        "summary": "Search bugs",
+        "description": "Search accounts with provided values.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on: #petitioninfo (default: 20)",
         "operationId": "BugSearch",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "bugs details",
             "schema": {
               "$ref": "#/definitions/pbBugSearchResponse"
             }
@@ -355,15 +364,22 @@
         ],
         "tags": [
           "BugService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       }
     },
     "/v1/bug/{id}": {
       "get": {
+        "summary": "Read bug info",
+        "description": "Read bug details.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on #petitioninfo (default: 20)",
         "operationId": "BugRead",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "bug details",
             "schema": {
               "$ref": "#/definitions/pbBugReadResponse"
             }
@@ -386,13 +402,20 @@
         ],
         "tags": [
           "BugService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       },
       "delete": {
+        "summary": "Delete a bug",
+        "description": "Delete a bug.\nPermission based on: #mysql (default: 255)",
         "operationId": "BugDelete",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "rows affected",
             "schema": {
               "$ref": "#/definitions/pbBugDeleteResponse"
             }
@@ -415,13 +438,20 @@
         ],
         "tags": [
           "BugService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       },
       "put": {
+        "summary": "Update bug details",
+        "description": "Update bug details.\nPermission based on: #mysql (default: 255)",
         "operationId": "BugUpdate",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "rows affected",
             "schema": {
               "$ref": "#/definitions/pbBugUpdateResponse"
             }
@@ -452,13 +482,20 @@
         ],
         "tags": [
           "BugService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       },
       "patch": {
+        "summary": "Edit bug field",
+        "description": "Edit a bug field.\nPermission based on: #mysql (default: 255)",
         "operationId": "BugPatch",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "rows affected",
             "schema": {
               "$ref": "#/definitions/pbBugPatchResponse"
             }
@@ -489,15 +526,22 @@
         ],
         "tags": [
           "BugService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       }
     },
     "/v1/character": {
       "post": {
+        "summary": "Create a new character",
+        "description": "Create a new character.\nIn nearly all situations, you likely do not want to use this.\nPermission based on: #mysql (default: 255)",
         "operationId": "CharacterCreate",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "id of new character",
             "schema": {
               "$ref": "#/definitions/pbCharacterCreateResponse"
             }
@@ -521,15 +565,22 @@
         ],
         "tags": [
           "CharacterService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       }
     },
     "/v1/character/search": {
       "get": {
+        "summary": "Search characters",
+        "description": "Search characters with provided values.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on: #petitioninfo (default: 20)",
         "operationId": "CharacterSearch",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "character details",
             "schema": {
               "$ref": "#/definitions/pbCharacterSearchResponse"
             }
@@ -572,15 +623,22 @@
         ],
         "tags": [
           "CharacterService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       }
     },
     "/v1/character/{id}": {
       "get": {
+        "summary": "Read character info",
+        "description": "Read character details.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on #petitioninfo (default: 20)",
         "operationId": "CharacterRead",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "bug details",
             "schema": {
               "$ref": "#/definitions/pbCharacterReadResponse"
             }
@@ -603,13 +661,20 @@
         ],
         "tags": [
           "CharacterService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       },
       "delete": {
+        "summary": "Delete a character",
+        "description": "Delete a character.\nPermission based on: #mysql (default: 255)",
         "operationId": "CharacterDelete",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "rows affected",
             "schema": {
               "$ref": "#/definitions/pbCharacterDeleteResponse"
             }
@@ -632,13 +697,20 @@
         ],
         "tags": [
           "CharacterService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       },
       "put": {
+        "summary": "Update character details",
+        "description": "Update character details.\nPermission based on: #mysql (default: 255)",
         "operationId": "CharacterUpdate",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "rows affected",
             "schema": {
               "$ref": "#/definitions/pbCharacterUpdateResponse"
             }
@@ -669,13 +741,20 @@
         ],
         "tags": [
           "CharacterService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       },
       "patch": {
+        "summary": "Edit character field",
+        "description": "Edit a character field.\nPermission based on: #mysql (default: 255)",
         "operationId": "CharacterPatch",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "rows affected",
             "schema": {
               "$ref": "#/definitions/pbCharacterPatchResponse"
             }
@@ -706,6 +785,11 @@
         ],
         "tags": [
           "CharacterService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       }
     },

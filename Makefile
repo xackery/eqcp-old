@@ -73,7 +73,7 @@ proto: proto-clean ## Generate protobuf files
 	-I/grpc/third_party/googleapis \
 	$(PROTO_FILES) \
 	--grpc-gateway_out=logtostderr=true:$(PROTO_OUT) \
-	--swagger_out=logtostderr=true,allow_merge=true:swagger/ \
+	--swagger_out=logtostderr=true,use_go_templates=true,allow_merge=true:swagger/ \
 	--go_out=plugins=grpc+retag:$(PROTO_OUT))
 	@(mv pb/proto/* pb/)
 	@(rm -rf pb/proto)
