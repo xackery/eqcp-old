@@ -1,43 +1,146 @@
 syntax = "proto3";
 
 import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+
 //import "google/api/timestamp.proto";
 import "proto/account.proto";
 
 package pb;
 
 service AccountService {
+
     rpc AccountSearch(AccountSearchRequest) returns (AccountSearchResponse) {
 		option (google.api.http) = {
 			get: "/v1/account/search"
 		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Search accounts with provided queries.\nPermission based on: #petitioninfo (default: 20)";
+			summary: "Search accounts";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "accounts details"
+					schema: { json_schema: { ref: "#/definitions/pbAccountSearchResponse" } }
+				}
+			}
+		};
 	}
+
+
 	rpc AccountCreate(AccountCreateRequest) returns (AccountCreateResponse) {
 		option (google.api.http) = {
 			post: "/v1/account"
 			body: "*"
 		}; 
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Create a new account. Not recommended! use loginserver/create instead\nPermission based on: #mysql (default: 255)";
+			summary: "Create new account";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "id of account created"
+					schema: { json_schema: { ref: "#/definitions/pbAccountCreateResponse" } }
+				}
+			}
+		};
 	}
+
 	rpc AccountRead(AccountReadRequest) returns (AccountReadResponse) {
 		option (google.api.http) = {
 			get: "/v1/account/{id}"
 		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Read account details.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on #petitioninfo (default: 20)";
+			summary: "Read account info";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "account details"
+					schema: { json_schema: { ref: "#/definitions/pbAccountReadResponse" } }
+				}
+			}
+		};
 	}
+
 	rpc AccountUpdate(AccountUpdateRequest) returns (AccountUpdateResponse) {
 		option (google.api.http) = {
 			put: "/v1/account/{id}"
 			body: "*"
+		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Update account details.\nPermission based on: #mysql (default: 255)";
+			summary: "Update account details";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "rows affected"
+					schema: { json_schema: { ref: "#/definitions/pbAccountUpdateResponse" } }
+				}
+			}
 		};
 	}
 	rpc AccountDelete(AccountDeleteRequest) returns (AccountDeleteResponse) {
 		option (google.api.http) = {
 			delete: "/v1/account/{id}"
 		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Delete an account.\nPermission based on: #mysql (default: 255)";
+			summary: "Delete an account";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "rows affected"
+					schema: { json_schema: { ref: "#/definitions/pbAccountDeleteResponse" } }
+				}
+			}
+		};
 	}
 	rpc AccountPatch(AccountPatchRequest) returns (AccountPatchResponse) {
 		option (google.api.http) = {
 			patch: "/v1/account/{id}"
 			body: "*"
+		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Edit an account field.\nPermission based on: #mysql (default: 255)";
+			summary: "Edit account field";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "rows affected"
+					schema: { json_schema: { ref: "#/definitions/pbAccountPatchResponse" } }
+				}
+			}
 		};
 	}
 }
@@ -53,14 +156,23 @@ message AccountSearchRequest {
 message AccountSearchResponse {
 	repeated Account Accounts = 1;
 	int64 total = 2;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: { value: '{"Accounts":[{"id":"96004","name":"test","lsid":"local","lsaccountid":"1","suspendeduntil":"-62135596800","timecreation":"1583038515"}],"total":"1"}' }
+	};
 }
 
 message AccountCreateRequest {
 	map<string,string> values = 2;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: { value: '{"values": {"name":"test"}}' }
+	};
 }
 
 message AccountCreateResponse {
 	int64 id = 1;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: { value: '{"id":"96006"}' }
+	};
 }
 
 message AccountReadRequest {
@@ -69,15 +181,24 @@ message AccountReadRequest {
 
 message AccountReadResponse {
 	Account account = 1;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: { value: '{"account":{"id":"96004","name":"test","lsid":"local","lsaccountid":"1","suspendeduntil":"-62135596800","timecreation":"1583038515"}}' }
+	};
 }
 
 message AccountUpdateRequest {
 	int64 id = 1;
 	map<string,string> values = 2;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: { value: '{"values":{"name":"test2"}}' }
+	};
 }
 
 message AccountUpdateResponse {
 	int64 rowsaffected = 1;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: { value: '{"rowsaffected":"1"}' }
+	};
 }
 
 message AccountDeleteRequest {
@@ -86,14 +207,23 @@ message AccountDeleteRequest {
 
 message AccountDeleteResponse {
 	int64 rowsaffected = 1;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: {  value: '{"rowsaffected":"1"}' }
+	};
 }
 
 message AccountPatchRequest {
 	int64 id = 1;
 	string key = 2;
 	string value = 3;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: { value: '{"key":"name", "value":"test2"}' }
+	};
 }
 
 message AccountPatchResponse {
 	int64 rowsaffected = 1;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: {  value: '{"rowsaffected":"1"}' }
+	};
 }

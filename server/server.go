@@ -8,6 +8,7 @@ import (
 	"io/ioutil"
 	"net"
 	"net/http"
+	"sync"
 
 	"github.com/dgrijalva/jwt-go"
 	"github.com/go-resty/resty/v2"
@@ -33,16 +34,19 @@ type Server struct {
 	privateKey      *rsa.PrivateKey
 	resty           *resty.Client
 	isLoginServerUp bool
+	// embedded into auth
+	loginPermissions *sync.Map
 }
 
 // New creates a new server
 func New(ctx context.Context, cancel context.CancelFunc, cfg *config.Config) (*Server, error) {
 	var err error
 	s := &Server{
-		ctx:    ctx,
-		cancel: cancel,
-		cfg:    cfg,
-		resty:  resty.New(),
+		ctx:              ctx,
+		cancel:           cancel,
+		cfg:              cfg,
+		resty:            resty.New(),
+		loginPermissions: new(sync.Map),
 	}
 
 	if cfg.LoginServer.IsEnabled {
@@ -107,6 +111,7 @@ func New(ctx context.Context, cancel context.CancelFunc, cfg *config.Config) (*S
 	pb.RegisterBugServiceServer(s.gserver, s)
 	pb.RegisterCharacterServiceServer(s.gserver, s)
 	pb.RegisterHandinServiceServer(s.gserver, s)
+	pb.RegisterInventoryServiceServer(s.gserver, s)
 	pb.RegisterItemServiceServer(s.gserver, s)
 	pb.RegisterLoginAccountServiceServer(s.gserver, s)
 	pb.RegisterNpcServiceServer(s.gserver, s)
@@ -132,6 +137,10 @@ func New(ctx context.Context, cancel context.CancelFunc, cfg *config.Config) (*S
 	err = pb.RegisterHandinServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle handin")
+	}
+	err = pb.RegisterInventoryServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
+	if err != nil {
+		return nil, errors.Wrap(err, "handle inventory")
 	}
 	err = pb.RegisterItemServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {

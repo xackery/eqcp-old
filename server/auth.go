@@ -3,9 +3,11 @@ package server
 import (
 	"context"
 	"fmt"
+	"strings"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
+	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc/metadata"
 )
@@ -15,8 +17,26 @@ type AuthData struct {
 	AccountID int64
 }
 
+// AuthPermission is used internally to map access rights
+type AuthPermission struct {
+	dataClaim *DataClaim
+	accountID int64
+	status    int64
+	commands  []string
+}
+
+func (ap *AuthPermission) hasCommand(command string) bool {
+	command = strings.ToLower(command)
+	for _, cmd := range ap.commands {
+		if command == cmd {
+			return true
+		}
+	}
+	return false
+}
+
 // AuthFromContext returns a claim if auth is passed
-func (s *Server) AuthFromContext(ctx context.Context) (*DataClaim, error) {
+func (s *Server) AuthFromContext(ctx context.Context) (*AuthPermission, error) {
 	var token string
 	md, ok := metadata.FromIncomingContext(ctx)
 	if ok && len(md["authorization"]) > 0 {
@@ -30,7 +50,42 @@ func (s *Server) AuthFromContext(ctx context.Context) (*DataClaim, error) {
 	if err != nil {
 		return nil, errors.Wrap(err, "read")
 	}
-	return dc, nil
+
+	var rows *sqlx.Rows
+	var ap *AuthPermission
+	val, ok := s.loginPermissions.Load(dc.Data["AccountID"])
+	if ok {
+		ap, ok = val.(*AuthPermission)
+		if !ok {
+			return nil, fmt.Errorf("permission invalid")
+		}
+		return ap, nil
+	}
+
+	ap = new(AuthPermission)
+	ap.accountID = dc.Data["AccountID"].(int64)
+	if ap.accountID < 1 {
+		return nil, fmt.Errorf("token invalid (accountID not set)")
+	}
+
+	if err = s.db.GetContext(ctx, ap.status, "SELECT status FROM account WHERE id = ?", ap.accountID); err != nil {
+		return nil, fmt.Errorf("failed to get account status")
+	}
+
+	rows, err = s.db.QueryxContext(ctx, "SELECT command, access FROM comand_settings WHERE access <= ?", ap.status)
+	if err != nil {
+		return nil, fmt.Errorf("failed to get command_settings")
+	}
+	for rows.Next() {
+		command := ""
+		if err = rows.Scan(command); err != nil {
+			return nil, fmt.Errorf("scan command_sttings")
+		}
+		ap.commands = append(ap.commands, strings.ToLower(command))
+	}
+
+	s.loginPermissions.Store(ap.accountID, ap)
+	return ap, nil
 }
 
 // AuthCreate generates a new token with a 24 hour timeout, returning the token as a string
