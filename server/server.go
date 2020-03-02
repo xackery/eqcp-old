@@ -114,10 +114,11 @@ func New(ctx context.Context, cancel context.CancelFunc, cfg *config.Config) (*S
 	pb.RegisterInventoryServiceServer(s.gserver, s)
 	pb.RegisterItemServiceServer(s.gserver, s)
 	pb.RegisterLoginAccountServiceServer(s.gserver, s)
+	pb.RegisterLoginServerServiceServer(s.gserver, s)
 	pb.RegisterNpcServiceServer(s.gserver, s)
 	pb.RegisterPetitionServiceServer(s.gserver, s)
 	pb.RegisterPlayerSpeechServiceServer(s.gserver, s)
-	pb.RegisterLoginServerServiceServer(s.gserver, s)
+	pb.RegisterSpellServiceServer(s.gserver, s)
 	pb.RegisterTradeServiceServer(s.gserver, s)
 	pb.RegisterZoneServiceServer(s.gserver, s)
 	s.mux = runtime.NewServeMux()
@@ -150,6 +151,10 @@ func New(ctx context.Context, cancel context.CancelFunc, cfg *config.Config) (*S
 	if err != nil {
 		return nil, errors.Wrap(err, "handle loginaccount")
 	}
+	err = pb.RegisterLoginServerServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
+	if err != nil {
+		return nil, errors.Wrap(err, "handle server")
+	}
 	err = pb.RegisterNpcServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {
 		return nil, errors.Wrap(err, "handle npc")
@@ -162,9 +167,9 @@ func New(ctx context.Context, cancel context.CancelFunc, cfg *config.Config) (*S
 	if err != nil {
 		return nil, errors.Wrap(err, "handle playerspeech")
 	}
-	err = pb.RegisterLoginServerServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
+	err = pb.RegisterSpellServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {
-		return nil, errors.Wrap(err, "handle server")
+		return nil, errors.Wrap(err, "handle spell")
 	}
 	err = pb.RegisterTradeServiceHandlerFromEndpoint(ctx, s.mux, cfg.Grpc.Host, opts)
 	if err != nil {

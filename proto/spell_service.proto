@@ -1,0 +1,216 @@
+syntax = "proto3";
+
+import "google/api/annotations.proto";
+import "protoc-gen-swagger/options/annotations.proto";
+import "proto/spell.proto";
+
+package pb;
+
+service SpellService {
+    rpc SpellSearch(SpellSearchRequest) returns (SpellSearchResponse) {
+		option (google.api.http) = {
+			get: "/v1/spell/search"
+		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Search spells with provided queries.";
+			summary: "Search spells";
+			responses: {
+				key: "200"
+				value: {
+					description: "spells details"
+					schema: { json_schema: { ref: "#/definitions/pbSpellSearchResponse" } }
+				}
+			}
+		};
+	}
+
+
+	rpc SpellCreate(SpellCreateRequest) returns (SpellCreateResponse) {
+		option (google.api.http) = {
+			post: "/v1/spell"
+			body: "*"
+		}; 
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Create a new spell.\nPermission based on: #mysql (default: 255)";
+			summary: "Create new spell";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "id of spell created"
+					schema: { json_schema: { ref: "#/definitions/pbSpellCreateResponse" } }
+				}
+			}
+		};
+	}
+
+	rpc SpellRead(SpellReadRequest) returns (SpellReadResponse) {
+		option (google.api.http) = {
+			get: "/v1/spell/{id}"
+		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Read spell details.";
+			summary: "Read spell info";
+			responses: {
+				key: "200"
+				value: {
+					description: "spell details"
+					schema: { json_schema: { ref: "#/definitions/pbSpellReadResponse" } }
+				}
+			}
+		};
+	}
+
+	rpc SpellUpdate(SpellUpdateRequest) returns (SpellUpdateResponse) {
+		option (google.api.http) = {
+			put: "/v1/spell/{id}"
+			body: "*"
+		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Update spell details.\nPermission based on: #mysql (default: 255)";
+			summary: "Update spell details";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "rows affected"
+					schema: { json_schema: { ref: "#/definitions/pbSpellUpdateResponse" } }
+				}
+			}
+		};
+	}
+	rpc SpellDelete(SpellDeleteRequest) returns (SpellDeleteResponse) {
+		option (google.api.http) = {
+			delete: "/v1/spell/{id}"
+		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Delete an spell.\nPermission based on: #mysql (default: 255)";
+			summary: "Delete an spell";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "rows affected"
+					schema: { json_schema: { ref: "#/definitions/pbSpellDeleteResponse" } }
+				}
+			}
+		};
+	}
+	rpc SpellPatch(SpellPatchRequest) returns (SpellPatchResponse) {
+		option (google.api.http) = {
+			patch: "/v1/spell/{id}"
+			body: "*"
+		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Edit an spell field.\nPermission based on: #mysql (default: 255)";
+			summary: "Edit spell field";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "rows affected"
+					schema: { json_schema: { ref: "#/definitions/pbSpellPatchResponse" } }
+				}
+			}
+		};
+	}
+}
+
+message SpellSearchRequest {
+	map<string,string> values = 1;
+	int64 limit = 2;
+	int64 offset = 3;
+    string orderby = 4; //charactername
+	bool orderdesc = 5;
+}
+
+message SpellSearchResponse {
+	repeated Spell Spells = 1;
+	int64 total = 2;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: { value: '' }
+	};
+}
+
+message SpellCreateRequest {
+	map<string,string> values = 2;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: { value: '' }
+	};
+}
+
+message SpellCreateResponse {
+	int64 id = 1;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: { value: '' }
+	};
+}
+
+message SpellReadRequest {
+	int64 id = 1;
+}
+
+message SpellReadResponse {
+	Spell spell = 1;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: { value: '{"spell":{"id":"100","name":"Summon Throwing Dagger","player1":"PLAYER_1","casttime":"4000","recoverytime":"1500","recasttime":"1500","mana":"20","effectbasevalue1":"8317","max1":"20","icon":"2512","memicon":"2106","components1":"-1","components2":"-1","components3":"-1","components4":"-1","componentcounts1":"1","componentcounts2":"1","componentcounts3":"1","componentcounts4":"1","noexpendreagent1":"-1","noexpendreagent2":"-1","noexpendreagent3":"-1","noexpendreagent4":"-1","formula1":"109","formula2":"100","formula3":"100","formula4":"100","formula5":"100","formula6":"100","formula7":"100","formula8":"100","formula9":"100","formula10":"100","formula11":"100","formula12":"100","goodeffect":"1","effectid1":"32","effectid2":"254","effectid3":"254","effectid4":"254","effectid5":"254","effectid6":"254","effectid7":"254","effectid8":"254","effectid9":"254","effectid10":"254","effectid11":"254","effectid12":"254","targettype":"6","basediff":"25","skill":"14","zonetype":"-1","classes1":"255","classes2":"255","classes3":"255","classes4":"255","classes5":"255","classes6":"255","classes7":"255","classes8":"255","classes9":"255","classes10":"255","classes11":"255","classes12":"255","classes13":"15","classes14":"255","classes15":"255","classes16":"255","castinganim":"43","spellaffectindex":"4","field142":"100","newicon":"2","spellanim":"305","deleteable":"1","descnum":"100","typedescnum":"18","effectdescnum":"110","field163":"100","pvpresistbase":"5","pvpresistcalc":"101","pvpresistcap":"18","spellcategory":"217","npcusefulness":"50","suspendable":"1","field206":"-1","field210":"1","incombat":"1","outofcombat":"1","field215":"1","field217":"-1","field221":"7","field222":"35","field223":"-1","field225":"1","mindistmod":1,"maxdistmod":1}}' }
+	};
+}
+
+message SpellUpdateRequest {
+	int64 id = 1;
+	map<string,string> values = 2;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: { value: '' }
+	};
+}
+
+message SpellUpdateResponse {
+	int64 rowsaffected = 1;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: { value: '{"rowsaffected":"1"}' }
+	};
+}
+
+message SpellDeleteRequest {
+	int64 id = 1;
+}
+
+message SpellDeleteResponse {
+	int64 rowsaffected = 1;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: {  value: '{"rowsaffected":"1"}' }
+	};
+}
+
+message SpellPatchRequest {
+	int64 id = 1;
+	string key = 2;
+	string value = 3;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: { value: '' }
+	};
+}
+
+message SpellPatchResponse {
+	int64 rowsaffected = 1;
+	option (grpc.gateway.protoc_gen_swagger.options.openapiv2_schema) = {
+		example: {  value: '{"rowsaffected":"1"}' }
+	};
+}

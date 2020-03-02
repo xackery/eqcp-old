@@ -2470,6 +2470,255 @@
         ]
       }
     },
+    "/v1/spell": {
+      "post": {
+        "summary": "Create new spell",
+        "description": "Create a new spell.\nPermission based on: #mysql (default: 255)",
+        "operationId": "SpellCreate",
+        "responses": {
+          "200": {
+            "description": "id of spell created",
+            "schema": {
+              "$ref": "#/definitions/pbSpellCreateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbSpellCreateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SpellService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
+        ]
+      }
+    },
+    "/v1/spell/search": {
+      "get": {
+        "summary": "Search spells",
+        "description": "Search spells with provided queries.",
+        "operationId": "SpellSearch",
+        "responses": {
+          "200": {
+            "description": "spells details",
+            "schema": {
+              "$ref": "#/definitions/pbSpellSearchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "limit",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "required": false,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "orderby",
+            "in": "query",
+            "required": false,
+            "type": "string"
+          },
+          {
+            "name": "orderdesc",
+            "in": "query",
+            "required": false,
+            "type": "boolean",
+            "format": "boolean"
+          }
+        ],
+        "tags": [
+          "SpellService"
+        ]
+      }
+    },
+    "/v1/spell/{id}": {
+      "get": {
+        "summary": "Read spell info",
+        "description": "Read spell details.",
+        "operationId": "SpellRead",
+        "responses": {
+          "200": {
+            "description": "spell details",
+            "schema": {
+              "$ref": "#/definitions/pbSpellReadResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "SpellService"
+        ]
+      },
+      "delete": {
+        "summary": "Delete an spell",
+        "description": "Delete an spell.\nPermission based on: #mysql (default: 255)",
+        "operationId": "SpellDelete",
+        "responses": {
+          "200": {
+            "description": "rows affected",
+            "schema": {
+              "$ref": "#/definitions/pbSpellDeleteResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          }
+        ],
+        "tags": [
+          "SpellService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
+        ]
+      },
+      "put": {
+        "summary": "Update spell details",
+        "description": "Update spell details.\nPermission based on: #mysql (default: 255)",
+        "operationId": "SpellUpdate",
+        "responses": {
+          "200": {
+            "description": "rows affected",
+            "schema": {
+              "$ref": "#/definitions/pbSpellUpdateResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbSpellUpdateRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SpellService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
+        ]
+      },
+      "patch": {
+        "summary": "Edit spell field",
+        "description": "Edit an spell field.\nPermission based on: #mysql (default: 255)",
+        "operationId": "SpellPatch",
+        "responses": {
+          "200": {
+            "description": "rows affected",
+            "schema": {
+              "$ref": "#/definitions/pbSpellPatchResponse"
+            }
+          },
+          "default": {
+            "description": "An unexpected error response",
+            "schema": {
+              "$ref": "#/definitions/runtimeError"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string",
+            "format": "int64"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "$ref": "#/definitions/pbSpellPatchRequest"
+            }
+          }
+        ],
+        "tags": [
+          "SpellService"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
+        ]
+      }
+    },
     "/v1/trade": {
       "post": {
         "operationId": "TradeCreate",
@@ -6535,6 +6784,1160 @@
           "format": "int64"
         },
         "zonesbooted": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbSpell": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "name": {
+          "type": "string"
+        },
+        "player1": {
+          "type": "string"
+        },
+        "teleportzone": {
+          "type": "string"
+        },
+        "youcast": {
+          "type": "string"
+        },
+        "othercasts": {
+          "type": "string"
+        },
+        "castonyou": {
+          "type": "string"
+        },
+        "castonother": {
+          "type": "string"
+        },
+        "spellfades": {
+          "type": "string"
+        },
+        "range": {
+          "type": "string",
+          "format": "int64"
+        },
+        "aoerange": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pushback": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pushup": {
+          "type": "string",
+          "format": "int64"
+        },
+        "casttime": {
+          "type": "string",
+          "format": "int64"
+        },
+        "recoverytime": {
+          "type": "string",
+          "format": "int64"
+        },
+        "recasttime": {
+          "type": "string",
+          "format": "int64"
+        },
+        "buffdurationformula": {
+          "type": "string",
+          "format": "int64"
+        },
+        "buffduration": {
+          "type": "string",
+          "format": "int64"
+        },
+        "aeduration": {
+          "type": "string",
+          "format": "int64"
+        },
+        "mana": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectbasevalue1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectbasevalue2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectbasevalue3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectbasevalue4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectbasevalue5": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectbasevalue6": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectbasevalue7": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectbasevalue8": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectbasevalue9": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectbasevalue10": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectbasevalue11": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectbasevalue12": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectlimitvalue1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectlimitvalue2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectlimitvalue3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectlimitvalue4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectlimitvalue5": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectlimitvalue6": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectlimitvalue7": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectlimitvalue8": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectlimitvalue9": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectlimitvalue10": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectlimitvalue11": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectlimitvalue12": {
+          "type": "string",
+          "format": "int64"
+        },
+        "max1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "max2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "max3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "max4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "max5": {
+          "type": "string",
+          "format": "int64"
+        },
+        "max6": {
+          "type": "string",
+          "format": "int64"
+        },
+        "max7": {
+          "type": "string",
+          "format": "int64"
+        },
+        "max8": {
+          "type": "string",
+          "format": "int64"
+        },
+        "max9": {
+          "type": "string",
+          "format": "int64"
+        },
+        "max10": {
+          "type": "string",
+          "format": "int64"
+        },
+        "max11": {
+          "type": "string",
+          "format": "int64"
+        },
+        "max12": {
+          "type": "string",
+          "format": "int64"
+        },
+        "icon": {
+          "type": "string",
+          "format": "int64"
+        },
+        "memicon": {
+          "type": "string",
+          "format": "int64"
+        },
+        "components1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "components2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "components3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "components4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "componentcounts1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "componentcounts2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "componentcounts3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "componentcounts4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "noexpendreagent1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "noexpendreagent2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "noexpendreagent3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "noexpendreagent4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "formula1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "formula2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "formula3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "formula4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "formula5": {
+          "type": "string",
+          "format": "int64"
+        },
+        "formula6": {
+          "type": "string",
+          "format": "int64"
+        },
+        "formula7": {
+          "type": "string",
+          "format": "int64"
+        },
+        "formula8": {
+          "type": "string",
+          "format": "int64"
+        },
+        "formula9": {
+          "type": "string",
+          "format": "int64"
+        },
+        "formula10": {
+          "type": "string",
+          "format": "int64"
+        },
+        "formula11": {
+          "type": "string",
+          "format": "int64"
+        },
+        "formula12": {
+          "type": "string",
+          "format": "int64"
+        },
+        "lighttype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "goodeffect": {
+          "type": "string",
+          "format": "int64"
+        },
+        "activated": {
+          "type": "string",
+          "format": "int64"
+        },
+        "resisttype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectid1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectid2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectid3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectid4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectid5": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectid6": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectid7": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectid8": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectid9": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectid10": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectid11": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectid12": {
+          "type": "string",
+          "format": "int64"
+        },
+        "targettype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "basediff": {
+          "type": "string",
+          "format": "int64"
+        },
+        "skill": {
+          "type": "string",
+          "format": "int64"
+        },
+        "zonetype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "environmenttype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "timeofday": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes5": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes6": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes7": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes8": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes9": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes10": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes11": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes12": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes13": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes14": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes15": {
+          "type": "string",
+          "format": "int64"
+        },
+        "classes16": {
+          "type": "string",
+          "format": "int64"
+        },
+        "castinganim": {
+          "type": "string",
+          "format": "int64"
+        },
+        "targetanim": {
+          "type": "string",
+          "format": "int64"
+        },
+        "traveltype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "spellaffectindex": {
+          "type": "string",
+          "format": "int64"
+        },
+        "disallowsit": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities0": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities1": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities3": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities4": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities5": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities6": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities7": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities8": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities9": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities10": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities11": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities12": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities13": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities14": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities15": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deities16": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field142": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field143": {
+          "type": "string",
+          "format": "int64"
+        },
+        "newicon": {
+          "type": "string",
+          "format": "int64"
+        },
+        "spellanim": {
+          "type": "string",
+          "format": "int64"
+        },
+        "uninterruptable": {
+          "type": "string",
+          "format": "int64"
+        },
+        "resistdiff": {
+          "type": "string",
+          "format": "int64"
+        },
+        "dotstackingexempt": {
+          "type": "string",
+          "format": "int64"
+        },
+        "deleteable": {
+          "type": "string",
+          "format": "int64"
+        },
+        "recourselink": {
+          "type": "string",
+          "format": "int64"
+        },
+        "nopartialresist": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field152": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field153": {
+          "type": "string",
+          "format": "int64"
+        },
+        "shortbuffbox": {
+          "type": "string",
+          "format": "int64"
+        },
+        "descnum": {
+          "type": "string",
+          "format": "int64"
+        },
+        "typedescnum": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectdescnum": {
+          "type": "string",
+          "format": "int64"
+        },
+        "effectdescnum2": {
+          "type": "string",
+          "format": "int64"
+        },
+        "npcnolos": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field160": {
+          "type": "string",
+          "format": "int64"
+        },
+        "reflectable": {
+          "type": "string",
+          "format": "int64"
+        },
+        "bonushate": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field163": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field164": {
+          "type": "string",
+          "format": "int64"
+        },
+        "ldontrap": {
+          "type": "string",
+          "format": "int64"
+        },
+        "endurcost": {
+          "type": "string",
+          "format": "int64"
+        },
+        "endurtimerindex": {
+          "type": "string",
+          "format": "int64"
+        },
+        "isdiscipline": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field169": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field170": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field171": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field172": {
+          "type": "string",
+          "format": "int64"
+        },
+        "hateadded": {
+          "type": "string",
+          "format": "int64"
+        },
+        "endurupkeep": {
+          "type": "string",
+          "format": "int64"
+        },
+        "numhitstype": {
+          "type": "string",
+          "format": "int64"
+        },
+        "numhits": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pvpresistbase": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pvpresistcalc": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pvpresistcap": {
+          "type": "string",
+          "format": "int64"
+        },
+        "spellcategory": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field181": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field182": {
+          "type": "string",
+          "format": "int64"
+        },
+        "pcnpconlyflag": {
+          "type": "string",
+          "format": "int64"
+        },
+        "castnotstanding": {
+          "type": "string",
+          "format": "int64"
+        },
+        "canmgb": {
+          "type": "string",
+          "format": "int64"
+        },
+        "nodispell": {
+          "type": "string",
+          "format": "int64"
+        },
+        "npccategory": {
+          "type": "string",
+          "format": "int64"
+        },
+        "npcusefulness": {
+          "type": "string",
+          "format": "int64"
+        },
+        "minresist": {
+          "type": "string",
+          "format": "int64"
+        },
+        "maxresist": {
+          "type": "string",
+          "format": "int64"
+        },
+        "viraltargets": {
+          "type": "string",
+          "format": "int64"
+        },
+        "viraltimer": {
+          "type": "string",
+          "format": "int64"
+        },
+        "nimbuseffect": {
+          "type": "string",
+          "format": "int64"
+        },
+        "conestartangle": {
+          "type": "string",
+          "format": "int64"
+        },
+        "conestopangle": {
+          "type": "string",
+          "format": "int64"
+        },
+        "sneaking": {
+          "type": "string",
+          "format": "int64"
+        },
+        "notextendable": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field198": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field199": {
+          "type": "string",
+          "format": "int64"
+        },
+        "suspendable": {
+          "type": "string",
+          "format": "int64"
+        },
+        "viralrange": {
+          "type": "string",
+          "format": "int64"
+        },
+        "songcap": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field203": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field204": {
+          "type": "string",
+          "format": "int64"
+        },
+        "noblock": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field206": {
+          "type": "string",
+          "format": "int64"
+        },
+        "spellgroup": {
+          "type": "string",
+          "format": "int64"
+        },
+        "rank": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field209": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field210": {
+          "type": "string",
+          "format": "int64"
+        },
+        "castrestriction": {
+          "type": "string",
+          "format": "int64"
+        },
+        "allowrest": {
+          "type": "string",
+          "format": "int64"
+        },
+        "incombat": {
+          "type": "string",
+          "format": "int64"
+        },
+        "outofcombat": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field215": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field216": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field217": {
+          "type": "string",
+          "format": "int64"
+        },
+        "aemaxtargets": {
+          "type": "string",
+          "format": "int64"
+        },
+        "maxtargets": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field220": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field221": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field222": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field223": {
+          "type": "string",
+          "format": "int64"
+        },
+        "persistdeath": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field225": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field226": {
+          "type": "string",
+          "format": "int64"
+        },
+        "mindist": {
+          "type": "number",
+          "format": "float"
+        },
+        "mindistmod": {
+          "type": "number",
+          "format": "float"
+        },
+        "maxdist": {
+          "type": "number",
+          "format": "float"
+        },
+        "maxdistmod": {
+          "type": "number",
+          "format": "float"
+        },
+        "minrange": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field232": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field233": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field234": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field235": {
+          "type": "string",
+          "format": "int64"
+        },
+        "field236": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbSpellCreateRequest": {
+      "type": "object",
+      "properties": {
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbSpellCreateResponse": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbSpellDeleteResponse": {
+      "type": "object",
+      "example": {
+        "rowsaffected": "1"
+      },
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbSpellPatchRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "key": {
+          "type": "string"
+        },
+        "value": {
+          "type": "string"
+        }
+      }
+    },
+    "pbSpellPatchResponse": {
+      "type": "object",
+      "example": {
+        "rowsaffected": "1"
+      },
+      "properties": {
+        "rowsaffected": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbSpellReadResponse": {
+      "type": "object",
+      "example": {
+        "spell": {
+          "id": "100",
+          "name": "Summon Throwing Dagger",
+          "player1": "PLAYER_1",
+          "casttime": "4000",
+          "recoverytime": "1500",
+          "recasttime": "1500",
+          "mana": "20",
+          "effectbasevalue1": "8317",
+          "max1": "20",
+          "icon": "2512",
+          "memicon": "2106",
+          "components1": "-1",
+          "components2": "-1",
+          "components3": "-1",
+          "components4": "-1",
+          "componentcounts1": "1",
+          "componentcounts2": "1",
+          "componentcounts3": "1",
+          "componentcounts4": "1",
+          "noexpendreagent1": "-1",
+          "noexpendreagent2": "-1",
+          "noexpendreagent3": "-1",
+          "noexpendreagent4": "-1",
+          "formula1": "109",
+          "formula2": "100",
+          "formula3": "100",
+          "formula4": "100",
+          "formula5": "100",
+          "formula6": "100",
+          "formula7": "100",
+          "formula8": "100",
+          "formula9": "100",
+          "formula10": "100",
+          "formula11": "100",
+          "formula12": "100",
+          "goodeffect": "1",
+          "effectid1": "32",
+          "effectid2": "254",
+          "effectid3": "254",
+          "effectid4": "254",
+          "effectid5": "254",
+          "effectid6": "254",
+          "effectid7": "254",
+          "effectid8": "254",
+          "effectid9": "254",
+          "effectid10": "254",
+          "effectid11": "254",
+          "effectid12": "254",
+          "targettype": "6",
+          "basediff": "25",
+          "skill": "14",
+          "zonetype": "-1",
+          "classes1": "255",
+          "classes2": "255",
+          "classes3": "255",
+          "classes4": "255",
+          "classes5": "255",
+          "classes6": "255",
+          "classes7": "255",
+          "classes8": "255",
+          "classes9": "255",
+          "classes10": "255",
+          "classes11": "255",
+          "classes12": "255",
+          "classes13": "15",
+          "classes14": "255",
+          "classes15": "255",
+          "classes16": "255",
+          "castinganim": "43",
+          "spellaffectindex": "4",
+          "field142": "100",
+          "newicon": "2",
+          "spellanim": "305",
+          "deleteable": "1",
+          "descnum": "100",
+          "typedescnum": "18",
+          "effectdescnum": "110",
+          "field163": "100",
+          "pvpresistbase": "5",
+          "pvpresistcalc": "101",
+          "pvpresistcap": "18",
+          "spellcategory": "217",
+          "npcusefulness": "50",
+          "suspendable": "1",
+          "field206": "-1",
+          "field210": "1",
+          "incombat": "1",
+          "outofcombat": "1",
+          "field215": "1",
+          "field217": "-1",
+          "field221": "7",
+          "field222": "35",
+          "field223": "-1",
+          "field225": "1",
+          "mindistmod": 1,
+          "maxdistmod": 1
+        }
+      },
+      "properties": {
+        "spell": {
+          "$ref": "#/definitions/pbSpell"
+        }
+      }
+    },
+    "pbSpellSearchResponse": {
+      "type": "object",
+      "properties": {
+        "Spells": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/pbSpell"
+          }
+        },
+        "total": {
+          "type": "string",
+          "format": "int64"
+        }
+      }
+    },
+    "pbSpellUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "format": "int64"
+        },
+        "values": {
+          "type": "object",
+          "additionalProperties": {
+            "type": "string"
+          }
+        }
+      }
+    },
+    "pbSpellUpdateResponse": {
+      "type": "object",
+      "example": {
+        "rowsaffected": "1"
+      },
+      "properties": {
+        "rowsaffected": {
           "type": "string",
           "format": "int64"
         }

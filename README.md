@@ -28,5 +28,15 @@ SELECT * FROM spawnentry se
 INNER JOIN spawn2 s2 ON s2.`spawngroupid` = se.`spawngroupID` 
 INNER JOIN npc_types n ON n.id = se.npcid
 WHERE s2.enabled = 1 AND s2.zone = "qeynos" 
+
+
+SELECT item_id FROM lootdrop_entries WHERE lootdrop_id IN
+(SELECT lootdrop_id FROM loottable_entries WHERE loottable_id IN
+(SELECT n.loottable_id FROM spawnentry se 
+INNER JOIN spawn2 s2 ON s2.`spawngroupid` = se.`spawngroupID` 
+INNER JOIN npc_types n ON n.id = se.npcid
+WHERE s2.enabled = 1 AND s2.zone = "qeynos"
+)
+)
 ```
 
