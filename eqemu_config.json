@@ -53,7 +53,7 @@
 				"port": "3306",
 				"username": "eqemu",
 				"password": "eqemupass",
-				"db": "eqemu"
+				"db": "peq"
 			},
 			"qsdatabase": {
 				"host": "127.0.0.1",

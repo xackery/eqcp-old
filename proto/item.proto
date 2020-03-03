@@ -1,8 +1,5 @@
 syntax = "proto3";
 
-import "google/api/annotations.proto"; 
-//import "google/api/timestamp.proto";
-
 package pb;
 
 message Item {
@@ -113,7 +110,7 @@ message Item {
   int64 reclevel = 106;
   int64 recskill = 107;
   int64 reqlevel = 108;
-  int64 sellrate = 109;
+  float sellrate = 109;
   int64 shielding = 110;
   int64 size = 111;
   int64 skillmodtype = 112;

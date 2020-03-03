@@ -20,6 +20,16 @@ func (s *Server) CharacterSearch(ctx context.Context, req *pb.CharacterSearchReq
 		return nil, fmt.Errorf("request nil")
 	}
 
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+
+	if req.Values["accountid"] != fmt.Sprintf("%d", ap.accountID) && !ap.hasCommand("petitioninfo") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
+
 	resp := new(pb.CharacterSearchResponse)
 	if req.Limit < 1 {
 		req.Limit = 10
@@ -127,6 +137,16 @@ func (s *Server) CharacterSearch(ctx context.Context, req *pb.CharacterSearchReq
 // CharacterCreate implements SCRUD endpoints
 func (s *Server) CharacterCreate(ctx context.Context, req *pb.CharacterCreateRequest) (*pb.CharacterCreateResponse, error) {
 
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+
+	if !ap.hasCommand("mysql") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
+
 	character := new(Character)
 
 	st := reflect.TypeOf(*character)
@@ -184,6 +204,15 @@ func (s *Server) CharacterRead(ctx context.Context, req *pb.CharacterReadRequest
 	if req == nil {
 		return nil, fmt.Errorf("request nil")
 	}
+
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+
+	args := map[string]interface{}{}
+
 	resp := new(pb.CharacterReadResponse)
 
 	if req.Id < 0 {
@@ -191,9 +220,14 @@ func (s *Server) CharacterRead(ctx context.Context, req *pb.CharacterReadRequest
 	}
 	query := "SELECT * FROM character_data WHERE "
 
-	args := map[string]interface{}{}
 	query += "id = :id"
 	args["id"] = req.Id
+
+	if !ap.hasCommand("petitioninfo") {
+		//return nil, fmt.Errorf("you do not have permissions to this endpoint")
+		args["account_id"] = ap.accountID
+		query += " AND account_id = :account_id"
+	}
 
 	log.Debug().Interface("args", args).Msgf("query: %s", query)
 	rows, err := s.db.NamedQueryContext(ctx, query, args)
@@ -214,6 +248,17 @@ func (s *Server) CharacterRead(ctx context.Context, req *pb.CharacterReadRequest
 
 // CharacterUpdate implements SCRUD endpoints
 func (s *Server) CharacterUpdate(ctx context.Context, req *pb.CharacterUpdateRequest) (*pb.CharacterUpdateResponse, error) {
+
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+
+	if !ap.hasCommand("mysql") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
+
 	character := new(Character)
 
 	st := reflect.TypeOf(*character)
@@ -268,6 +313,17 @@ func (s *Server) CharacterUpdate(ctx context.Context, req *pb.CharacterUpdateReq
 
 // CharacterDelete implements SCRUD endpoints
 func (s *Server) CharacterDelete(ctx context.Context, req *pb.CharacterDeleteRequest) (*pb.CharacterDeleteResponse, error) {
+
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+
+	if !ap.hasCommand("mysql") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
+
 	query := "DELETE FROM character_data WHERE id = :id LIMIT 1"
 
 	args := map[string]interface{}{
@@ -293,6 +349,17 @@ func (s *Server) CharacterDelete(ctx context.Context, req *pb.CharacterDeleteReq
 
 // CharacterPatch implements SCRUD endpoints
 func (s *Server) CharacterPatch(ctx context.Context, req *pb.CharacterPatchRequest) (*pb.CharacterPatchResponse, error) {
+
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+
+	if !ap.hasCommand("mysql") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
+
 	character := new(Character)
 
 	st := reflect.TypeOf(*character)

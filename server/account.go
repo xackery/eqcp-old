@@ -22,6 +22,15 @@ func (s *Server) AccountSearch(ctx context.Context, req *pb.AccountSearchRequest
 		return nil, fmt.Errorf("request nil")
 	}
 
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+	if !ap.hasCommand("petitioninfo") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
+
 	resp := new(pb.AccountSearchResponse)
 	if req.Limit < 1 {
 		req.Limit = 10
@@ -129,6 +138,15 @@ func (s *Server) AccountSearch(ctx context.Context, req *pb.AccountSearchRequest
 // AccountCreate implements SCRUD endpoints
 func (s *Server) AccountCreate(ctx context.Context, req *pb.AccountCreateRequest) (*pb.AccountCreateResponse, error) {
 
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+	if !ap.hasCommand("mysql") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
+
 	account := new(Account)
 
 	st := reflect.TypeOf(*account)
@@ -183,6 +201,17 @@ func (s *Server) AccountCreate(ctx context.Context, req *pb.AccountCreateRequest
 
 // AccountRead implements SCRUD endpoints
 func (s *Server) AccountRead(ctx context.Context, req *pb.AccountReadRequest) (*pb.AccountReadResponse, error) {
+
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+
+	if ap.accountID != req.Id && !ap.hasCommand("petitioninfo") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
+
 	if req == nil {
 		return nil, fmt.Errorf("request nil")
 	}
@@ -216,6 +245,16 @@ func (s *Server) AccountRead(ctx context.Context, req *pb.AccountReadRequest) (*
 
 // AccountUpdate implements SCRUD endpoints
 func (s *Server) AccountUpdate(ctx context.Context, req *pb.AccountUpdateRequest) (*pb.AccountUpdateResponse, error) {
+
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+	if !ap.hasCommand("petitioninfo") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
+
 	account := new(Account)
 
 	st := reflect.TypeOf(*account)
@@ -270,6 +309,15 @@ func (s *Server) AccountUpdate(ctx context.Context, req *pb.AccountUpdateRequest
 
 // AccountDelete implements SCRUD endpoints
 func (s *Server) AccountDelete(ctx context.Context, req *pb.AccountDeleteRequest) (*pb.AccountDeleteResponse, error) {
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+	if !ap.hasCommand("mysql") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
+
 	query := "DELETE FROM account WHERE id = :id LIMIT 1"
 
 	args := map[string]interface{}{
@@ -295,6 +343,15 @@ func (s *Server) AccountDelete(ctx context.Context, req *pb.AccountDeleteRequest
 
 // AccountPatch implements SCRUD endpoints
 func (s *Server) AccountPatch(ctx context.Context, req *pb.AccountPatchRequest) (*pb.AccountPatchResponse, error) {
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+	if !ap.hasCommand("mysql") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
+
 	account := new(Account)
 
 	st := reflect.TypeOf(*account)

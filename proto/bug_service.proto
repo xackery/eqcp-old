@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 import "google/api/annotations.proto";
-//import "google/api/timestamp.proto";
+import "protoc-gen-swagger/options/annotations.proto";
 import "proto/bug.proto";
 
 package pb;
@@ -11,33 +11,134 @@ service BugService {
 		option (google.api.http) = {
 			get: "/v1/bug/search"
 		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Search accounts with provided values.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on: #petitioninfo (default: 20)";
+			summary: "Search bugs";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "bugs details"
+					schema: { json_schema: { ref: "#/definitions/pbBugSearchResponse" } }
+				}
+			}
+		};
 	}
+
 	rpc BugCreate(BugCreateRequest) returns (BugCreateResponse) {
 		option (google.api.http) = {
 			post: "/v1/bug"
 			body: "*"
 		}; 
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Create a new bug.\nPermission based on: #mysql (default: 255)";
+			summary: "Create a new bug";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "id of new bug created"
+					schema: { json_schema: { ref: "#/definitions/pbBugCreateResponse" } }
+				}
+			}
+		};
 	}
+
 	rpc BugRead(BugReadRequest) returns (BugReadResponse) {
 		option (google.api.http) = {
 			get: "/v1/bug/{id}"
 		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Read bug details.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on #petitioninfo (default: 20)";
+			summary: "Read bug info";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "bug details"
+					schema: { json_schema: { ref: "#/definitions/pbBugReadResponse" } }
+				}
+			}
+		};
 	}
+
 	rpc BugUpdate(BugUpdateRequest) returns (BugUpdateResponse) {
 		option (google.api.http) = {
 			put: "/v1/bug/{id}"
 			body: "*"
 		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Update bug details.\nPermission based on: #mysql (default: 255)";
+			summary: "Update bug details";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "rows affected"
+					schema: { json_schema: { ref: "#/definitions/pbBugUpdateResponse" } }
+				}
+			}
+		};
 	}
+
 	rpc BugDelete(BugDeleteRequest) returns (BugDeleteResponse) {
 		option (google.api.http) = {
 			delete: "/v1/bug/{id}"
 		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Delete a bug.\nPermission based on: #mysql (default: 255)";
+			summary: "Delete a bug";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "rows affected"
+					schema: { json_schema: { ref: "#/definitions/pbBugDeleteResponse" } }
+				}
+			}
+		};
 	}
+
 	rpc BugPatch(BugPatchRequest) returns (BugPatchResponse) {
 		option (google.api.http) = {
 			patch: "/v1/bug/{id}"
 			body: "*"
+		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Edit a bug field.\nPermission based on: #mysql (default: 255)";
+			summary: "Edit bug field";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "rows affected"
+					schema: { json_schema: { ref: "#/definitions/pbBugPatchResponse" } }
+				}
+			}
 		};
 	}
 }

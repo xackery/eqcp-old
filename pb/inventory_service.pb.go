@@ -632,7 +632,9 @@ func init() {
 	proto.RegisterType((*InventoryPatchResponse)(nil), "pb.InventoryPatchResponse")
 }
 
-func init() { proto.RegisterFile("proto/inventory_service.proto", fileDescriptor_d2d7d2d6cd9edf07) }
+func init() {
+	proto.RegisterFile("proto/inventory_service.proto", fileDescriptor_d2d7d2d6cd9edf07)
+}
 
 var fileDescriptor_d2d7d2d6cd9edf07 = []byte{
 	// 626 bytes of a gzipped FileDescriptorProto

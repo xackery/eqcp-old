@@ -22,6 +22,8 @@ func (s *Server) ItemSearch(ctx context.Context, req *pb.ItemSearchRequest) (*pb
 		return nil, fmt.Errorf("request nil")
 	}
 
+	ignores := []string{"total"}
+
 	resp := new(pb.ItemSearchResponse)
 	if req.Limit < 1 {
 		req.Limit = 10
@@ -42,27 +44,49 @@ func (s *Server) ItemSearch(ctx context.Context, req *pb.ItemSearchRequest) (*pb
 	query := "SELECT {fieldMap} FROM items WHERE"
 
 	args := map[string]interface{}{}
+
 	comma := ""
+	isIgnored := false
 	for i := 0; i < st.NumField(); i++ {
 		field := st.Field(i)
+		name := strings.ToLower(field.Name)
 
 		tag, ok := field.Tag.Lookup("db")
 		if !ok {
 			continue
 		}
 
-		if req.Orderby != "" && strings.ToLower(field.Name) == strings.ToLower(req.Orderby) {
+		if req.Orderby != "" && strings.ToLower(name) == strings.ToLower(req.Orderby) {
 			req.Orderby = tag
 		}
 
 		for key, value := range req.Values {
-			if strings.ToLower(field.Name) != strings.ToLower(key) {
+
+			if strings.ToLower(name) != strings.ToLower(key) {
 				continue
+			}
+
+			isIgnored = false
+			for _, ignore := range ignores {
+				if name != ignore {
+					continue
+				}
+				isIgnored = true
+			}
+			if isIgnored {
+				continue
+			}
+
+			if name == "zone" { //special zone search code
+				return s.itemSearchByZone(ctx, req, value)
 			}
 
 			if se.Field(i).Kind() == reflect.String {
 				args[tag] = fmt.Sprintf("%%%s%%", value)
 				query += fmt.Sprintf("%s %s LIKE :%s", comma, tag, tag)
+			} else if tag == "classes" || tag == "races" {
+				args[tag] = value
+				query += fmt.Sprintf("%s %s & :%s = :%s", comma, tag, tag, tag)
 			} else {
 				args[tag] = value
 				query += fmt.Sprintf("%s %s = :%s", comma, tag, tag)
@@ -123,6 +147,87 @@ func (s *Server) ItemSearch(ctx context.Context, req *pb.ItemSearchRequest) (*pb
 		resp.Items = append(resp.Items, item.ToProto())
 	}
 
+	return resp, nil
+}
+
+func (s *Server) itemSearchByZone(ctx context.Context, req *pb.ItemSearchRequest, zone string) (*pb.ItemSearchResponse, error) {
+	args := map[string]interface{}{}
+	resp := new(pb.ItemSearchResponse)
+	query := `
+SELECT {fieldMap} FROM items WHERE id IN 
+(SELECT item_id FROM lootdrop_entries 
+WHERE lootdrop_id IN 
+(SELECT lootdrop_id FROM loottable_entries 
+WHERE loottable_id IN 
+(SELECT loottable_id FROM spawnentry se 
+INNER JOIN spawn2 s2 ON s2.spawngroupid = se.spawngroupID 
+INNER JOIN npc_types n ON n.id = se.npcid
+WHERE s2.enabled = 1 
+AND s2.zone = :zone 
+AND loottable_id > 0)
+)
+)`
+
+	args["zone"] = zone
+
+	if req.Orderby == "" {
+		req.Orderby = "id"
+	}
+	args["orderby"] = req.Orderby
+	query += " ORDER BY :orderby"
+	if req.Orderdesc {
+		query += " DESC"
+	} else {
+		query += " ASC"
+	}
+
+	args["limit"] = req.Limit
+	args["offset"] = req.Offset
+	query += " LIMIT :limit OFFSET :offset"
+
+	queryTotal := strings.Replace(query, "{fieldMap}", "count(id) as total", 1)
+	query = strings.Replace(query, "{fieldMap}", "*", 1)
+
+	rows, err := s.db.NamedQueryContext(ctx, queryTotal, args)
+	if err != nil {
+		return nil, errors.Wrap(err, "query failed")
+	}
+	for rows.Next() {
+		item := new(Item)
+		err = rows.StructScan(item)
+		if err != nil {
+			return nil, errors.Wrap(err, "structscan")
+		}
+		resp.Total = item.Total
+		break
+	}
+
+	log.Debug().Interface("args", args).Msgf("query: %s", query)
+	rows, err = s.db.NamedQueryContext(ctx, query, args)
+	if err != nil {
+		return nil, errors.Wrap(err, "query failed")
+	}
+
+	for rows.Next() {
+		item := new(Item)
+		err = rows.StructScan(item)
+		if err != nil {
+			return nil, errors.Wrap(err, "structscan")
+		}
+
+		// I'm doing deduplication since GROUP BY causes a temporary filesort
+		isDuplicate := false
+		for _, i := range resp.Items {
+			if i.Id != item.ID {
+				continue
+			}
+			isDuplicate = true
+		}
+		if isDuplicate {
+			continue
+		}
+		resp.Items = append(resp.Items, item.ToProto())
+	}
 	return resp, nil
 }
 
@@ -452,7 +557,7 @@ type Item struct {
 	Reclevel            int64          `db:"reclevel"`            // int(11) NOT NULL DEFAULT '0',
 	Recskill            int64          `db:"recskill"`            // int(11) NOT NULL DEFAULT '0',
 	Reqlevel            int64          `db:"reqlevel"`            // int(11) NOT NULL DEFAULT '0',
-	Sellrate            int64          `db:"sellrate"`            // float NOT NULL DEFAULT '0',
+	Sellrate            float64        `db:"sellrate"`            // float NOT NULL DEFAULT '0',
 	Shielding           int64          `db:"shielding"`           // int(11) NOT NULL DEFAULT '0',
 	Size                int64          `db:"size"`                // int(11) NOT NULL DEFAULT '0',
 	Skillmodtype        int64          `db:"skillmodtype"`        // int(11) NOT NULL DEFAULT '0',
@@ -630,7 +735,8 @@ type Item struct {
 	Unk240              int64          `db:"UNK240"`              // int(11) NOT NULL DEFAULT '0',
 	Unk241              int64          `db:"UNK241"`              // int(11) NOT NULL DEFAULT '0',
 	Epicitem            int64          `db:"epicitem"`            // int(11) NOT NULL DEFAULT '0',
-	Total               int64          `db:"total"`
+	Zone                string         `db:"zone"`                //used in search, not an actual field but triggers a new query type
+	Total               int64          `db:"total"`               //used in search, item total
 }
 
 // ToProto converts the item type struct to protobuf
@@ -743,7 +849,7 @@ func (i *Item) ToProto() *pb.Item {
 	item.Reclevel = i.Reclevel
 	item.Recskill = i.Recskill
 	item.Reqlevel = i.Reqlevel
-	item.Sellrate = i.Sellrate
+	item.Sellrate = float32(i.Sellrate)
 	item.Shielding = i.Shielding
 	item.Size = i.Size
 	item.Skillmodtype = i.Skillmodtype

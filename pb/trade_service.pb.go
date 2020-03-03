@@ -575,7 +575,9 @@ func init() {
 	proto.RegisterType((*TradePatchResponse)(nil), "pb.TradePatchResponse")
 }
 
-func init() { proto.RegisterFile("proto/trade_service.proto", fileDescriptor_b3c9fc3a348d0932) }
+func init() {
+	proto.RegisterFile("proto/trade_service.proto", fileDescriptor_b3c9fc3a348d0932)
+}
 
 var fileDescriptor_b3c9fc3a348d0932 = []byte{
 	// 606 bytes of a gzipped FileDescriptorProto

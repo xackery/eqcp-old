@@ -5,14 +5,15 @@ import (
 	"fmt"
 	"io"
 	"os"
+	"os/signal"
 	"runtime"
 	"strings"
 
 	"github.com/pkg/errors"
 	"github.com/rs/zerolog"
 	"github.com/rs/zerolog/log"
+	"github.com/xackery/eqcp/config"
 	"github.com/xackery/eqcp/server"
-	"github.com/xackery/eqemuconfig"
 )
 
 var (
@@ -77,21 +78,27 @@ func run() error {
 	ctx, cancel := context.WithCancel(context.Background())
 	defer cancel()
 
+	signalChan := make(chan os.Signal, 1)
+	signal.Notify(signalChan, os.Interrupt)
+
 	log.Info().Msgf("starting eqcp %s", Version)
 
-	emucfg, err := eqemuconfig.GetConfig()
+	cfg, err := config.NewConfig(ctx)
 	if err != nil {
-		return err
+		return errors.Wrap(err, "config")
 	}
 
-	s, err := server.New(ctx, cancel, ":9090", emucfg)
+	s, err := server.New(ctx, cancel, cfg)
 	if err != nil {
 		return errors.Wrap(err, "server")
 	}
 
 	select {
 	case <-ctx.Done():
-		s.Close()
+	case <-signalChan:
+		log.Info().Msg("interrupt signal caught, exiting")
 	}
+	s.Close()
+
 	return nil
 }

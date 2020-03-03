@@ -576,7 +576,9 @@ func init() {
 	proto.RegisterType((*PlayerSpeechPatchResponse)(nil), "pb.PlayerSpeechPatchResponse")
 }
 
-func init() { proto.RegisterFile("proto/player_speech_service.proto", fileDescriptor_ba8be4399802b3cf) }
+func init() {
+	proto.RegisterFile("proto/player_speech_service.proto", fileDescriptor_ba8be4399802b3cf)
+}
 
 var fileDescriptor_ba8be4399802b3cf = []byte{
 	// 614 bytes of a gzipped FileDescriptorProto

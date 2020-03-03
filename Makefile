@@ -1,6 +1,13 @@
 # A Self-Documenting Makefile: http://marmelab.com/blog/2016/02/29/auto-documented-makefile.html
 VERSION := v0.0.1
 NAME := eqcp
+PROTO_VERSION=3.11.4
+GO_PLUGIN=bin/protoc-gen-go
+GO_PROTOBUF_REPO=github.com/golang/protobuf
+GO_PTYPES_ANY_PKG=$(GO_PROTOBUF_REPO)/ptypes/any
+SWAGGER_PLUGIN=bin/protoc-gen-swagger
+PROTO_FILES=$(shell find proto -name '*.proto')
+PROTO_OUT=/src/pb/
 
 .PHONY: init
 init:
@@ -47,13 +54,6 @@ sanitize:
 	@goimports -w .
 	@golint
 
-PROTO_VERSION=3.8.0
-GO_PLUGIN=bin/protoc-gen-go
-GO_PROTOBUF_REPO=github.com/golang/protobuf
-GO_PTYPES_ANY_PKG=$(GO_PROTOBUF_REPO)/ptypes/any
-SWAGGER_PLUGIN=bin/protoc-gen-swagger
-PROTO_FILES=$(shell find proto -name '*.proto')
-PROTO_OUT=/src/pb/
 $(GO_PLUGIN):
 	dep ensure -vendor-only
 	go install ./vendor/$(GO_PLUGIN_PKG)
@@ -73,7 +73,7 @@ proto: proto-clean ## Generate protobuf files
 	-I/grpc/third_party/googleapis \
 	$(PROTO_FILES) \
 	--grpc-gateway_out=logtostderr=true:$(PROTO_OUT) \
-	--swagger_out=logtostderr=true,allow_merge=true:swagger/ \
+	--swagger_out=logtostderr=true,use_go_templates=true,allow_merge=true:swagger/ \
 	--go_out=plugins=grpc+retag:$(PROTO_OUT))
 	@(mv pb/proto/* pb/)
 	@(rm -rf pb/proto)

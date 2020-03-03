@@ -20,3 +20,7 @@ bin/
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+eqcp.rsa
+eqcp.rsa.pub
+eqcp.conf

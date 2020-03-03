@@ -1,6 +1,5 @@
 syntax = "proto3";
 
-import "google/api/annotations.proto";
 import "protoc-gen-swagger/options/annotations.proto";
 
 package pb;
@@ -15,6 +14,16 @@ option (grpc.gateway.protoc_gen_swagger.options.openapiv2_swagger) = {
 			url: "https://github.com/xackery/eqcp";
 		};
 	};
+	security_definitions: {
+		security: {
+			key: "Token";
+			value: {
+				type: TYPE_API_KEY;
+				in: IN_HEADER;
+				name: "Authorization";
+			}		
+		}
+	}
 };
  
 service EQCP {

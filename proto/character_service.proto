@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 import "google/api/annotations.proto";
-//import "google/api/timestamp.proto";
+import "protoc-gen-swagger/options/annotations.proto";
 import "proto/character.proto";
 
 package pb;
@@ -11,16 +11,64 @@ service CharacterService {
 		option (google.api.http) = {
 			get: "/v1/character/search"
 		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Search characters with provided values.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on: #petitioninfo (default: 20)";
+			summary: "Search characters";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "character details"
+					schema: { json_schema: { ref: "#/definitions/pbCharacterSearchResponse" } }
+				}
+			}
+		};
 	}
 	rpc CharacterCreate(CharacterCreateRequest) returns (CharacterCreateResponse) {
 		option (google.api.http) = {
 			post: "/v1/character"
 			body: "*"
 		}; 
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Create a new character.\nIn nearly all situations, you likely do not want to use this.\nPermission based on: #mysql (default: 255)";
+			summary: "Create a new character";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "id of new character"
+					schema: { json_schema: { ref: "#/definitions/pbCharacterCreateResponse" } }
+				}
+			}
+		};
 	}
 	rpc CharacterRead(CharacterReadRequest) returns (CharacterReadResponse) {
 		option (google.api.http) = {
 			get: "/v1/character/{id}"
+		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Read character details.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on #petitioninfo (default: 20)";
+			summary: "Read character info";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "bug details"
+					schema: { json_schema: { ref: "#/definitions/pbCharacterReadResponse" } }
+				}
+			}
 		};
 	}
 	rpc CharacterUpdate(CharacterUpdateRequest) returns (CharacterUpdateResponse) {
@@ -28,16 +76,64 @@ service CharacterService {
 			put: "/v1/character/{id}"
 			body: "*"
 		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Update character details.\nPermission based on: #mysql (default: 255)";
+			summary: "Update character details";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "rows affected"
+					schema: { json_schema: { ref: "#/definitions/pbCharacterUpdateResponse" } }
+				}
+			}
+		};
 	}
 	rpc CharacterDelete(CharacterDeleteRequest) returns (CharacterDeleteResponse) {
 		option (google.api.http) = {
 			delete: "/v1/character/{id}"
+		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Delete a character.\nPermission based on: #mysql (default: 255)";
+			summary: "Delete a character";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "rows affected"
+					schema: { json_schema: { ref: "#/definitions/pbCharacterDeleteResponse" } }
+				}
+			}
 		};
 	}
 	rpc CharacterPatch(CharacterPatchRequest) returns (CharacterPatchResponse) {
 		option (google.api.http) = {
 			patch: "/v1/character/{id}"
 			body: "*"
+		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Edit a character field.\nPermission based on: #mysql (default: 255)";
+			summary: "Edit character field";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "rows affected"
+					schema: { json_schema: { ref: "#/definitions/pbCharacterPatchResponse" } }
+				}
+			}
 		};
 	}
 }
