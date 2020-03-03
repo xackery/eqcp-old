@@ -66,7 +66,7 @@ proto-clean:
 .PHONY: proto
 proto: proto-clean ## Generate protobuf files
 	@echo "proto > pb"
-	@(docker run --rm -v ${PWD}:/src protobuf protoc \
+	@(docker run --rm -v ${PWD}:/src xackery/protobuf:$(PROTO_VERSION) protoc \
 	-I/protobuf/src \
 	-I/src \
 	-I/grpc \
