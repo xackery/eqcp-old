@@ -66,12 +66,14 @@ proto-clean:
 .PHONY: proto
 proto: proto-clean ## Generate protobuf files
 	@echo "proto > pb"
-	@(docker run --rm -v ${PWD}:/src xackery/protobuf:$(PROTO_VERSION) protoc \
+	@(docker run --rm -v ${PWD}:/src protobuf protoc \
 	-I/protobuf/src \
 	-I/src \
 	-I/grpc \
 	-I/grpc/third_party/googleapis \
 	$(PROTO_FILES) \
+	--js_out=import_style=commonjs,binary:/src/client \
+	--ts_out=/src/client \
 	--grpc-gateway_out=logtostderr=true:$(PROTO_OUT) \
 	--swagger_out=logtostderr=true,use_go_templates=true,allow_merge=true:swagger/ \
 	--go_out=plugins=grpc+retag:$(PROTO_OUT))
