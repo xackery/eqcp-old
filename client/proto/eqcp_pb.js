@@ -12,5 +12,5 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
-var protoc$gen$swagger_options_annotations_pb = require('../protoc-gen-swagger/options/annotations_pb.js');
-goog.object.extend(proto, protoc$gen$swagger_options_annotations_pb);
+
+

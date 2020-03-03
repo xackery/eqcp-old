@@ -12,8 +12,8 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
-var google_api_annotations_pb = require('../google/api/annotations_pb.js');
-goog.object.extend(proto, google_api_annotations_pb);
+
+
 var proto_player_speech_pb = require('../proto/player_speech_pb.js');
 goog.object.extend(proto, proto_player_speech_pb);
 goog.exportSymbol('proto.pb.PlayerSpeechCreateRequest', null, global);

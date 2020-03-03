@@ -88,7 +88,12 @@ proto: proto-clean ## Generate protobuf files
 	--go_out=plugins=grpc+retag:$(PROTO_OUT) \
 	&& cd client/proto \
 	&& replace -s 'import * as google_api_annotations_pb from "../google/api/annotations_pb";' '' -- *.ts \
-	&& replace -s 'import * as protoc_gen_swagger_options_annotations_pb from "../protoc-gen-swagger/options/annotations_pb";' '' -- *.ts
+	&& replace -s 'import * as protoc_gen_swagger_options_annotations_pb from "../protoc-gen-swagger/options/annotations_pb";' '' -- *.ts \
+	&& replace -s "var google_api_annotations_pb = require('../google/api/annotations_pb.js');" '' -- *.js \
+	&& replace -s 'goog.object.extend(proto, google_api_annotations_pb);' '' -- *.js \
+	&& replace -s "var protoc\$$gen\$$swagger_options_annotations_pb = require('../protoc-gen-swagger/options/annotations_pb.js');" '' -- *.js \
+	&& replace -s "goog.object.extend(proto, protoc\$$gen\$$swagger_options_annotations_pb);" '' -- *.js
+
 	@(mv pb/proto/* pb/)
 	@(rm -rf pb/proto)
 	@$(MAKE) sanitize

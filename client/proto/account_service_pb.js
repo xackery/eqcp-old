@@ -12,10 +12,10 @@ var jspb = require('google-protobuf');
 var goog = jspb;
 var global = Function('return this')();
 
-var google_api_annotations_pb = require('../google/api/annotations_pb.js');
-goog.object.extend(proto, google_api_annotations_pb);
-var protoc$gen$swagger_options_annotations_pb = require('../protoc-gen-swagger/options/annotations_pb.js');
-goog.object.extend(proto, protoc$gen$swagger_options_annotations_pb);
+
+
+
+
 var proto_account_pb = require('../proto/account_pb.js');
 goog.object.extend(proto, proto_account_pb);
 goog.exportSymbol('proto.pb.AccountCreateRequest', null, global);
