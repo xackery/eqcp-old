@@ -9,6 +9,15 @@ SWAGGER_PLUGIN=bin/protoc-gen-swagger
 PROTO_FILES=$(shell find proto -name '*.proto')
 PROTO_OUT=/src/pb/
 
+.PHONY: client
+client:
+	@cd client && yarn && yarn dev
+.PHONY: client-build
+client-build:
+	@cd client && yarn build
+.PHONY: client-ssr
+client-ssr:
+	@cd client && NODE_ENV=production yarn start
 .PHONY: init
 init:
 	@echo "Priming a fresh database"
