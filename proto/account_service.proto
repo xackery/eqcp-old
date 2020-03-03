@@ -14,6 +14,7 @@ service AccountService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Search accounts with provided queries.\nPermission based on: #petitioninfo (default: 20)";
 			summary: "Search accounts";
+			tags: "Account";
 			security: {
 				security_requirement: {
 					key: "Token";	
@@ -38,6 +39,7 @@ service AccountService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Create a new account. Not recommended! use loginserver/create instead\nPermission based on: #mysql (default: 255)";
 			summary: "Create new account";
+			tags: "Account";
 			security: {
 				security_requirement: {
 					key: "Token";	
@@ -60,6 +62,7 @@ service AccountService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Read account details.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on #petitioninfo (default: 20)";
 			summary: "Read account info";
+			tags: "Account";
 			security: {
 				security_requirement: {
 					key: "Token";	
@@ -83,6 +86,7 @@ service AccountService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Update account details.\nPermission based on: #mysql (default: 255)";
 			summary: "Update account details";
+			tags: "Account";
 			security: {
 				security_requirement: {
 					key: "Token";	
@@ -104,6 +108,7 @@ service AccountService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Delete an account.\nPermission based on: #mysql (default: 255)";
 			summary: "Delete an account";
+			tags: "Account";
 			security: {
 				security_requirement: {
 					key: "Token";	
@@ -126,6 +131,7 @@ service AccountService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Edit an account field.\nPermission based on: #mysql (default: 255)";
 			summary: "Edit account field";
+			tags: "Account";
 			security: {
 				security_requirement: {
 					key: "Token";	

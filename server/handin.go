@@ -21,6 +21,16 @@ func (s *Server) HandinSearch(ctx context.Context, req *pb.HandinSearchRequest) 
 		return nil, fmt.Errorf("request nil")
 	}
 
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+
+	if !ap.hasCommand("petitioninfo") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
+
 	resp := new(pb.HandinSearchResponse)
 	if req.Limit < 1 {
 		req.Limit = 10
@@ -127,8 +137,15 @@ func (s *Server) HandinSearch(ctx context.Context, req *pb.HandinSearchRequest) 
 
 // HandinCreate implements SCRUD endpoints
 func (s *Server) HandinCreate(ctx context.Context, req *pb.HandinCreateRequest) (*pb.HandinCreateResponse, error) {
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
 
-	fmt.Println(req)
+	if !ap.hasCommand("mysql") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
 	handin := new(Handin)
 
 	st := reflect.TypeOf(*handin)
@@ -186,6 +203,16 @@ func (s *Server) HandinRead(ctx context.Context, req *pb.HandinReadRequest) (*pb
 	if req == nil {
 		return nil, fmt.Errorf("request nil")
 	}
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+
+	if !ap.hasCommand("petitioninfo") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
+
 	resp := new(pb.HandinReadResponse)
 
 	if req.Id < 0 {
@@ -217,6 +244,15 @@ func (s *Server) HandinRead(ctx context.Context, req *pb.HandinReadRequest) (*pb
 // HandinUpdate implements SCRUD endpoints
 func (s *Server) HandinUpdate(ctx context.Context, req *pb.HandinUpdateRequest) (*pb.HandinUpdateResponse, error) {
 	handin := new(Handin)
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+
+	if !ap.hasCommand("mysql") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
 
 	st := reflect.TypeOf(*handin)
 
@@ -270,6 +306,15 @@ func (s *Server) HandinUpdate(ctx context.Context, req *pb.HandinUpdateRequest) 
 
 // HandinDelete implements SCRUD endpoints
 func (s *Server) HandinDelete(ctx context.Context, req *pb.HandinDeleteRequest) (*pb.HandinDeleteResponse, error) {
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+
+	if !ap.hasCommand("mysql") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
 	query := "DELETE FROM qs_player_handin_record WHERE handin_id = :handin_id LIMIT 1"
 
 	args := map[string]interface{}{
@@ -295,6 +340,15 @@ func (s *Server) HandinDelete(ctx context.Context, req *pb.HandinDeleteRequest) 
 
 // HandinPatch implements SCRUD endpoints
 func (s *Server) HandinPatch(ctx context.Context, req *pb.HandinPatchRequest) (*pb.HandinPatchResponse, error) {
+	ap, err := s.AuthFromContext(ctx)
+	if err != nil {
+		log.Debug().Err(err).Msg("authfromcontext")
+		return nil, fmt.Errorf("permission denied")
+	}
+
+	if !ap.hasCommand("mysql") {
+		return nil, fmt.Errorf("you do not have permissions to this endpoint")
+	}
 	handin := new(Handin)
 
 	st := reflect.TypeOf(*handin)

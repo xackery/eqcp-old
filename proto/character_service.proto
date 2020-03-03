@@ -14,6 +14,7 @@ service CharacterService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Search characters with provided values.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on: #petitioninfo (default: 20)";
 			summary: "Search characters";
+			tags: "Character";
 			security: {
 				security_requirement: {
 					key: "Token";	
@@ -36,6 +37,7 @@ service CharacterService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Create a new character.\nIn nearly all situations, you likely do not want to use this.\nPermission based on: #mysql (default: 255)";
 			summary: "Create a new character";
+			tags: "Character";
 			security: {
 				security_requirement: {
 					key: "Token";	
@@ -57,6 +59,7 @@ service CharacterService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Read character details.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on #petitioninfo (default: 20)";
 			summary: "Read character info";
+			tags: "Character";
 			security: {
 				security_requirement: {
 					key: "Token";	
@@ -79,6 +82,7 @@ service CharacterService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Update character details.\nPermission based on: #mysql (default: 255)";
 			summary: "Update character details";
+			tags: "Character";
 			security: {
 				security_requirement: {
 					key: "Token";	
@@ -100,6 +104,7 @@ service CharacterService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Delete a character.\nPermission based on: #mysql (default: 255)";
 			summary: "Delete a character";
+			tags: "Character";
 			security: {
 				security_requirement: {
 					key: "Token";	
@@ -122,6 +127,7 @@ service CharacterService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Edit a character field.\nPermission based on: #mysql (default: 255)";
 			summary: "Edit character field";
+			tags: "Character";
 			security: {
 				security_requirement: {
 					key: "Token";	

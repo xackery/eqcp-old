@@ -1,7 +1,7 @@
 syntax = "proto3";
 
 import "google/api/annotations.proto";
-//import "google/api/timestamp.proto";
+import "protoc-gen-swagger/options/annotations.proto";
 import "proto/handin.proto";
 
 package pb;
@@ -11,16 +11,67 @@ service HandinService {
 		option (google.api.http) = {
 			get: "/v1/handin/search"
 		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Search hand ins with provided queries.\nPermission based on: #petitioninfo (default: 20)";
+			summary: "Search hand ins";
+			tags: "Hand In";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "hand in details"
+					schema: { json_schema: { ref: "#/definitions/pbHandinSearchResponse" } }
+				}
+			}
+		};
 	}
 	rpc HandinCreate(HandinCreateRequest) returns (HandinCreateResponse) {
 		option (google.api.http) = {
 			post: "/v1/handin"
 			body: "*"
 		}; 
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Create a new handin.\nPermission based on: #mysql (default: 255)";
+			summary: "Search handins";
+			tags: "Hand In";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "handins details"
+					schema: { json_schema: { ref: "#/definitions/pbHandinSearchResponse" } }
+				}
+			}
+		};
 	}
 	rpc HandinRead(HandinReadRequest) returns (HandinReadResponse) {
 		option (google.api.http) = {
 			get: "/v1/handin/{id}"
+		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Search handins with provided queries.\nPermission based on: #petitioninfo (default: 20)";
+			summary: "Search handins";
+			tags: "Hand In";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "handins details"
+					schema: { json_schema: { ref: "#/definitions/pbHandinSearchResponse" } }
+				}
+			}
 		};
 	}
 	rpc HandinUpdate(HandinUpdateRequest) returns (HandinUpdateResponse) {
@@ -28,16 +79,67 @@ service HandinService {
 			put: "/v1/handin/{id}"
 			body: "*"
 		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Search handins with provided queries.\nPermission based on: #mysql (default: 255)";
+			summary: "Search handins";
+			tags: "Hand In";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "handins details"
+					schema: { json_schema: { ref: "#/definitions/pbHandinSearchResponse" } }
+				}
+			}
+		};
 	}
 	rpc HandinDelete(HandinDeleteRequest) returns (HandinDeleteResponse) {
 		option (google.api.http) = {
 			delete: "/v1/handin/{id}"
+		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Search handins with provided queries.\nPermission based on: #mysql (default: 255)";
+			summary: "Search handins";
+			tags: "Hand In";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "handins details"
+					schema: { json_schema: { ref: "#/definitions/pbHandinSearchResponse" } }
+				}
+			}
 		};
 	}
 	rpc HandinPatch(HandinPatchRequest) returns (HandinPatchResponse) {
 		option (google.api.http) = {
 			patch: "/v1/handin/{id}"
 			body: "*"
+		};
+		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
+			description: "Search handins with provided queries.\nPermission based on: #mysql (default: 255)";
+			summary: "Search handins";
+			tags: "Hand In";
+			security: {
+				security_requirement: {
+					key: "Token";	
+				}
+			};
+			responses: {
+				key: "200"
+				value: {
+					description: "handins details"
+					schema: { json_schema: { ref: "#/definitions/pbHandinSearchResponse" } }
+				}
+			}
 		};
 	}
 }

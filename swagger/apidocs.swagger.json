@@ -46,7 +46,7 @@
           }
         ],
         "tags": [
-          "AccountService"
+          "Account"
         ],
         "security": [
           {
@@ -104,7 +104,7 @@
           }
         ],
         "tags": [
-          "AccountService"
+          "Account"
         ],
         "security": [
           {
@@ -142,7 +142,7 @@
           }
         ],
         "tags": [
-          "AccountService"
+          "Account"
         ],
         "security": [
           {
@@ -178,7 +178,7 @@
           }
         ],
         "tags": [
-          "AccountService"
+          "Account"
         ],
         "security": [
           {
@@ -222,7 +222,7 @@
           }
         ],
         "tags": [
-          "AccountService"
+          "Account"
         ],
         "security": [
           {
@@ -266,7 +266,7 @@
           }
         ],
         "tags": [
-          "AccountService"
+          "Account"
         ],
         "security": [
           {
@@ -305,7 +305,7 @@
           }
         ],
         "tags": [
-          "BugService"
+          "Bug"
         ],
         "security": [
           {
@@ -363,7 +363,7 @@
           }
         ],
         "tags": [
-          "BugService"
+          "Bug"
         ],
         "security": [
           {
@@ -401,7 +401,7 @@
           }
         ],
         "tags": [
-          "BugService"
+          "Bug"
         ],
         "security": [
           {
@@ -437,7 +437,7 @@
           }
         ],
         "tags": [
-          "BugService"
+          "Bug"
         ],
         "security": [
           {
@@ -481,7 +481,7 @@
           }
         ],
         "tags": [
-          "BugService"
+          "Bug"
         ],
         "security": [
           {
@@ -525,7 +525,7 @@
           }
         ],
         "tags": [
-          "BugService"
+          "Bug"
         ],
         "security": [
           {
@@ -564,7 +564,7 @@
           }
         ],
         "tags": [
-          "CharacterService"
+          "Character"
         ],
         "security": [
           {
@@ -622,7 +622,7 @@
           }
         ],
         "tags": [
-          "CharacterService"
+          "Character"
         ],
         "security": [
           {
@@ -660,7 +660,7 @@
           }
         ],
         "tags": [
-          "CharacterService"
+          "Character"
         ],
         "security": [
           {
@@ -696,7 +696,7 @@
           }
         ],
         "tags": [
-          "CharacterService"
+          "Character"
         ],
         "security": [
           {
@@ -740,7 +740,7 @@
           }
         ],
         "tags": [
-          "CharacterService"
+          "Character"
         ],
         "security": [
           {
@@ -784,7 +784,7 @@
           }
         ],
         "tags": [
-          "CharacterService"
+          "Character"
         ],
         "security": [
           {
@@ -795,12 +795,14 @@
     },
     "/v1/handin": {
       "post": {
+        "summary": "Search handins",
+        "description": "Create a new handin.\nPermission based on: #mysql (default: 255)",
         "operationId": "HandinCreate",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "handins details",
             "schema": {
-              "$ref": "#/definitions/pbHandinCreateResponse"
+              "$ref": "#/definitions/pbHandinSearchResponse"
             }
           },
           "default": {
@@ -821,16 +823,23 @@
           }
         ],
         "tags": [
-          "HandinService"
+          "Hand In"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       }
     },
     "/v1/handin/search": {
       "get": {
+        "summary": "Search hand ins",
+        "description": "Search hand ins with provided queries.\nPermission based on: #petitioninfo (default: 20)",
         "operationId": "HandinSearch",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "hand in details",
             "schema": {
               "$ref": "#/definitions/pbHandinSearchResponse"
             }
@@ -872,18 +881,25 @@
           }
         ],
         "tags": [
-          "HandinService"
+          "Hand In"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       }
     },
     "/v1/handin/{id}": {
       "get": {
+        "summary": "Search handins",
+        "description": "Search handins with provided queries.\nPermission based on: #petitioninfo (default: 20)",
         "operationId": "HandinRead",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "handins details",
             "schema": {
-              "$ref": "#/definitions/pbHandinReadResponse"
+              "$ref": "#/definitions/pbHandinSearchResponse"
             }
           },
           "default": {
@@ -903,16 +919,23 @@
           }
         ],
         "tags": [
-          "HandinService"
+          "Hand In"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       },
       "delete": {
+        "summary": "Search handins",
+        "description": "Search handins with provided queries.\nPermission based on: #mysql (default: 255)",
         "operationId": "HandinDelete",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "handins details",
             "schema": {
-              "$ref": "#/definitions/pbHandinDeleteResponse"
+              "$ref": "#/definitions/pbHandinSearchResponse"
             }
           },
           "default": {
@@ -932,16 +955,23 @@
           }
         ],
         "tags": [
-          "HandinService"
+          "Hand In"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       },
       "put": {
+        "summary": "Search handins",
+        "description": "Search handins with provided queries.\nPermission based on: #mysql (default: 255)",
         "operationId": "HandinUpdate",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "handins details",
             "schema": {
-              "$ref": "#/definitions/pbHandinUpdateResponse"
+              "$ref": "#/definitions/pbHandinSearchResponse"
             }
           },
           "default": {
@@ -969,16 +999,23 @@
           }
         ],
         "tags": [
-          "HandinService"
+          "Hand In"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       },
       "patch": {
+        "summary": "Search handins",
+        "description": "Search handins with provided queries.\nPermission based on: #mysql (default: 255)",
         "operationId": "HandinPatch",
         "responses": {
           "200": {
-            "description": "A successful response.",
+            "description": "handins details",
             "schema": {
-              "$ref": "#/definitions/pbHandinPatchResponse"
+              "$ref": "#/definitions/pbHandinSearchResponse"
             }
           },
           "default": {
@@ -1006,7 +1043,12 @@
           }
         ],
         "tags": [
-          "HandinService"
+          "Hand In"
+        ],
+        "security": [
+          {
+            "Token": []
+          }
         ]
       }
     },

@@ -14,6 +14,7 @@ service BugService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Search accounts with provided values.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on: #petitioninfo (default: 20)";
 			summary: "Search bugs";
+			tags: "Bug";
 			security: {
 				security_requirement: {
 					key: "Token";	
@@ -37,6 +38,7 @@ service BugService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Create a new bug.\nPermission based on: #mysql (default: 255)";
 			summary: "Create a new bug";
+			tags: "Bug";
 			security: {
 				security_requirement: {
 					key: "Token";	
@@ -59,6 +61,7 @@ service BugService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Read bug details.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on #petitioninfo (default: 20)";
 			summary: "Read bug info";
+			tags: "Bug";
 			security: {
 				security_requirement: {
 					key: "Token";	
@@ -82,6 +85,7 @@ service BugService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Update bug details.\nPermission based on: #mysql (default: 255)";
 			summary: "Update bug details";
+			tags: "Bug";
 			security: {
 				security_requirement: {
 					key: "Token";	
@@ -104,6 +108,7 @@ service BugService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Delete a bug.\nPermission based on: #mysql (default: 255)";
 			summary: "Delete a bug";
+			tags: "Bug";
 			security: {
 				security_requirement: {
 					key: "Token";	
@@ -127,6 +132,7 @@ service BugService {
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
 			description: "Edit a bug field.\nPermission based on: #mysql (default: 255)";
 			summary: "Edit bug field";
+			tags: "Bug";
 			security: {
 				security_requirement: {
 					key: "Token";	
