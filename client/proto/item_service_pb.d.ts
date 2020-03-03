@@ -2,7 +2,7 @@
 // file: proto/item_service.proto
 
 import * as jspb from "google-protobuf";
-import * as google_api_annotations_pb from "../google/api/annotations_pb";
+
 import * as proto_item_pb from "../proto/item_pb";
 
 export class ItemSearchRequest extends jspb.Message {

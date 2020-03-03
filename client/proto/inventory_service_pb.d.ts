@@ -2,7 +2,7 @@
 // file: proto/inventory_service.proto
 
 import * as jspb from "google-protobuf";
-import * as google_api_annotations_pb from "../google/api/annotations_pb";
+
 import * as proto_inventory_pb from "../proto/inventory_pb";
 
 export class InventorySearchRequest extends jspb.Message {

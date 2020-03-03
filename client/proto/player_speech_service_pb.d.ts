@@ -2,7 +2,7 @@
 // file: proto/player_speech_service.proto
 
 import * as jspb from "google-protobuf";
-import * as google_api_annotations_pb from "../google/api/annotations_pb";
+
 import * as proto_player_speech_pb from "../proto/player_speech_pb";
 
 export class PlayerSpeechSearchRequest extends jspb.Message {

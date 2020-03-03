@@ -2,8 +2,8 @@
 // file: proto/character_service.proto
 
 import * as jspb from "google-protobuf";
-import * as google_api_annotations_pb from "../google/api/annotations_pb";
-import * as protoc_gen_swagger_options_annotations_pb from "../protoc-gen-swagger/options/annotations_pb";
+
+
 import * as proto_character_pb from "../proto/character_pb";
 
 export class CharacterSearchRequest extends jspb.Message {

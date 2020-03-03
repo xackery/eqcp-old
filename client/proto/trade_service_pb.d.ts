@@ -2,7 +2,7 @@
 // file: proto/trade_service.proto
 
 import * as jspb from "google-protobuf";
-import * as google_api_annotations_pb from "../google/api/annotations_pb";
+
 import * as proto_trade_pb from "../proto/trade_pb";
 
 export class TradeSearchRequest extends jspb.Message {

@@ -2,7 +2,7 @@
 // file: proto/login_account_service.proto
 
 import * as jspb from "google-protobuf";
-import * as google_api_annotations_pb from "../google/api/annotations_pb";
+
 import * as proto_login_account_pb from "../proto/login_account_pb";
 
 export class LoginAccountSearchRequest extends jspb.Message {

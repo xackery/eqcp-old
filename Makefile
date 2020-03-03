@@ -75,17 +75,20 @@ proto-clean:
 .PHONY: proto
 proto: proto-clean ## Generate protobuf files
 	@echo "proto > pb"
-	@(docker run --rm -v ${PWD}:/src xackery/protobuf:$(PROTO_VERSION) protoc \
+	@docker run --rm -v ${PWD}:/src xackery/protobuf:$(PROTO_VERSION) protoc \
 	-I/protobuf/src \
 	-I/src \
 	-I/grpc \
 	-I/grpc/third_party/googleapis \
 	$(PROTO_FILES) \
-	--js_out=import_style=commonjs,binary:/src/client \
+	--js_out=import_style=commonjs:/src/client \
 	--ts_out=/src/client \
 	--grpc-gateway_out=logtostderr=true:$(PROTO_OUT) \
 	--swagger_out=logtostderr=true,use_go_templates=true,allow_merge=true:swagger/ \
-	--go_out=plugins=grpc+retag:$(PROTO_OUT))
+	--go_out=plugins=grpc+retag:$(PROTO_OUT) \
+	&& cd client/proto \
+	&& replace -s 'import * as google_api_annotations_pb from "../google/api/annotations_pb";' '' -- *.ts \
+	&& replace -s 'import * as protoc_gen_swagger_options_annotations_pb from "../protoc-gen-swagger/options/annotations_pb";' '' -- *.ts
 	@(mv pb/proto/* pb/)
 	@(rm -rf pb/proto)
 	@$(MAKE) sanitize
