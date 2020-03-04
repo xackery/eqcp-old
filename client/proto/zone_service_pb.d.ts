@@ -2,7 +2,7 @@
 // file: proto/zone_service.proto
 
 import * as jspb from "google-protobuf";
-import * as google_api_annotations_pb from "../google/api/annotations_pb";
+
 import * as proto_zone_pb from "../proto/zone_pb";
 
 export class ZoneSearchRequest extends jspb.Message {

@@ -12,7 +12,7 @@ service AccountService {
 			get: "/v1/account/search"
 		};
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			description: "Search accounts with provided queries.\nPermission based on: #petitioninfo (default: 20)";
+			description: "Search accounts with provided queries.";
 			summary: "Search accounts";
 			tags: "Account";
 			security: {
@@ -37,7 +37,7 @@ service AccountService {
 			body: "*"
 		}; 
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			description: "Create a new account. Not recommended! use loginserver/create instead\nPermission based on: #mysql (default: 255)";
+			description: "Create a new account.";
 			summary: "Create new account";
 			tags: "Account";
 			security: {
@@ -60,7 +60,7 @@ service AccountService {
 			get: "/v1/account/{id}"
 		};
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			description: "Read account details.\nIf your own account ID, allowed at any status.\nOtherwise, permission based on #petitioninfo (default: 20)";
+			description: "Read account details";
 			summary: "Read account info";
 			tags: "Account";
 			security: {
@@ -84,7 +84,7 @@ service AccountService {
 			body: "*"
 		};
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			description: "Update account details.\nPermission based on: #mysql (default: 255)";
+			description: "Update account details.";
 			summary: "Update account details";
 			tags: "Account";
 			security: {
@@ -106,7 +106,7 @@ service AccountService {
 			delete: "/v1/account/{id}"
 		};
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			description: "Delete an account.\nPermission based on: #mysql (default: 255)";
+			description: "Delete an account.";
 			summary: "Delete an account";
 			tags: "Account";
 			security: {
@@ -129,7 +129,7 @@ service AccountService {
 			body: "*"
 		};
 		option (grpc.gateway.protoc_gen_swagger.options.openapiv2_operation) = {
-			description: "Edit an account field.\nPermission based on: #mysql (default: 255)";
+			description: "Edit an account field.";
 			summary: "Edit account field";
 			tags: "Account";
 			security: {

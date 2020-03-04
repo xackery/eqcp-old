@@ -37,6 +37,22 @@ var defaultConfig = `# EQCP Configuration
 	# default: 127.0.0.1:9090"
 	host = "127.0.0.1:9090"
 
+# Permissions for endpoints
+[Permissions.Staff]
+	status = 20
+[Permissions.Staff.Endpoints.Account.Read]
+	fields = [ "*" ]
+[Permissions.Player]
+	status = 0
+[Permissions.Player.Endpoints.Account.Read]
+	loginNotRequired = true
+	selfOnly = true
+	fields = [ "id", "name", "timecreation", "expansion" ]
+[Permissions.Player.Endpoints.Character.Read]
+	fields = [ "*" ]
+[Permissions.Player.Endpoints.Character.Search]
+	fields = [ "*" ]
+	
 #can be ignored. eqemu_config.json settings are used by default
 #[Database]
 #	host = ""

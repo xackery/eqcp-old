@@ -25,6 +25,7 @@ import (
 type Server struct {
 	ctx             context.Context
 	cancel          context.CancelFunc
+	mutex           sync.RWMutex
 	mux             *runtime.ServeMux
 	gserver         *grpc.Server
 	gconn           net.Listener
@@ -34,19 +35,17 @@ type Server struct {
 	privateKey      *rsa.PrivateKey
 	resty           *resty.Client
 	isLoginServerUp bool
-	// embedded into auth
-	loginPermissions *sync.Map
+	authStatus      map[int64]int64
 }
 
 // New creates a new server
 func New(ctx context.Context, cancel context.CancelFunc, cfg *config.Config) (*Server, error) {
 	var err error
 	s := &Server{
-		ctx:              ctx,
-		cancel:           cancel,
-		cfg:              cfg,
-		resty:            resty.New(),
-		loginPermissions: new(sync.Map),
+		ctx:    ctx,
+		cancel: cancel,
+		cfg:    cfg,
+		resty:  resty.New(),
 	}
 
 	if cfg.LoginServer.IsEnabled {
@@ -69,6 +68,7 @@ func New(ctx context.Context, cancel context.CancelFunc, cfg *config.Config) (*S
 			return nil, fmt.Errorf("loginserver enabled, but not running?: %s", messagePayload.Message)
 		}
 		log.Debug().Msgf("loginserver connected to %s", s.cfg.LoginServer.WebAPIHost)
+		s.isLoginServerUp = true
 	}
 
 	signBytes, err := ioutil.ReadFile(cfg.Jwt.PrivateKeyPath)

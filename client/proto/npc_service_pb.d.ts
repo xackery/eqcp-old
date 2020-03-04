@@ -2,7 +2,7 @@
 // file: proto/npc_service.proto
 
 import * as jspb from "google-protobuf";
-import * as google_api_annotations_pb from "../google/api/annotations_pb";
+
 import * as proto_npc_pb from "../proto/npc_pb";
 
 export class NpcSearchRequest extends jspb.Message {

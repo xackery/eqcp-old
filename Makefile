@@ -8,7 +8,15 @@ GO_PTYPES_ANY_PKG=$(GO_PROTOBUF_REPO)/ptypes/any
 SWAGGER_PLUGIN=bin/protoc-gen-swagger
 PROTO_FILES=$(shell find proto -name '*.proto')
 PROTO_OUT=/src/pb/
-
+.PHONY: player
+player: 
+	go run main.go
+.PHONY: staff
+staff: 
+	EQCP=20 go run main.go
+.PHONY: gm
+gm: 
+	EQCP=255 go run main.go
 .PHONY: client
 client:
 	@cd client && yarn && yarn dev
@@ -75,17 +83,24 @@ proto-clean:
 .PHONY: proto
 proto: proto-clean ## Generate protobuf files
 	@echo "proto > pb"
-	@(docker run --rm -v ${PWD}:/src xackery/protobuf:$(PROTO_VERSION) protoc \
+	@docker run --rm -v ${PWD}:/src xackery/protobuf:$(PROTO_VERSION) protoc \
 	-I/protobuf/src \
 	-I/src \
 	-I/grpc \
 	-I/grpc/third_party/googleapis \
 	$(PROTO_FILES) \
-	--js_out=import_style=commonjs,binary:/src/client \
+	--js_out=import_style=commonjs:/src/client \
 	--ts_out=/src/client \
 	--grpc-gateway_out=logtostderr=true:$(PROTO_OUT) \
 	--swagger_out=logtostderr=true,use_go_templates=true,allow_merge=true:swagger/ \
-	--go_out=plugins=grpc+retag:$(PROTO_OUT))
+	--go_out=plugins=grpc+retag:$(PROTO_OUT) \
+	&& cd client/proto \
+	&& replace -s 'import * as google_api_annotations_pb from "../google/api/annotations_pb";' '' -- *.ts \
+	&& replace -s 'import * as protoc_gen_swagger_options_annotations_pb from "../protoc-gen-swagger/options/annotations_pb";' '' -- *.ts \
+	&& replace -s "var google_api_annotations_pb = require('../google/api/annotations_pb.js');" '' -- *.js \
+	&& replace -s 'goog.object.extend(proto, google_api_annotations_pb);' '' -- *.js \
+	&& replace -s "var protoc\$$gen\$$swagger_options_annotations_pb = require('../protoc-gen-swagger/options/annotations_pb.js');" '' -- *.js \
+	&& replace -s "goog.object.extend(proto, protoc\$$gen\$$swagger_options_annotations_pb);" '' -- *.js
 	@(mv pb/proto/* pb/)
 	@(rm -rf pb/proto)
 	@$(MAKE) sanitize
