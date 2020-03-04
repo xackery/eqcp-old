@@ -131,15 +131,12 @@ func (s *Server) SpellSearch(ctx context.Context, req *pb.SpellSearchRequest) (*
 // SpellCreate implements SCRUD endpoints
 func (s *Server) SpellCreate(ctx context.Context, req *pb.SpellCreateRequest) (*pb.SpellCreateResponse, error) {
 
-	ap, err := s.AuthFromContext(ctx)
+	ap, err := s.AuthFromContext(ctx, "spell", "create")
 	if err != nil {
 		log.Debug().Err(err).Msg("authfromcontext")
 		return nil, fmt.Errorf("permission denied")
 	}
-	if !ap.hasCommand("mysql") {
-		return nil, fmt.Errorf("you do not have permissions to this endpoint")
-	}
-
+	fmt.Println(ap)
 	spell := new(Spell)
 
 	st := reflect.TypeOf(*spell)
@@ -227,15 +224,12 @@ func (s *Server) SpellRead(ctx context.Context, req *pb.SpellReadRequest) (*pb.S
 
 // SpellUpdate implements SCRUD endpoints
 func (s *Server) SpellUpdate(ctx context.Context, req *pb.SpellUpdateRequest) (*pb.SpellUpdateResponse, error) {
-	ap, err := s.AuthFromContext(ctx)
+	ap, err := s.AuthFromContext(ctx, "spell", "update")
 	if err != nil {
 		log.Debug().Err(err).Msg("authfromcontext")
 		return nil, fmt.Errorf("permission denied")
 	}
-	if !ap.hasCommand("mysql") {
-		return nil, fmt.Errorf("you do not have permissions to this endpoint")
-	}
-
+	fmt.Println(ap)
 	spell := new(Spell)
 
 	st := reflect.TypeOf(*spell)
@@ -290,15 +284,12 @@ func (s *Server) SpellUpdate(ctx context.Context, req *pb.SpellUpdateRequest) (*
 
 // SpellDelete implements SCRUD endpoints
 func (s *Server) SpellDelete(ctx context.Context, req *pb.SpellDeleteRequest) (*pb.SpellDeleteResponse, error) {
-	ap, err := s.AuthFromContext(ctx)
+	ap, err := s.AuthFromContext(ctx, "spell", "delete")
 	if err != nil {
 		log.Debug().Err(err).Msg("authfromcontext")
 		return nil, fmt.Errorf("permission denied")
 	}
-	if !ap.hasCommand("mysql") {
-		return nil, fmt.Errorf("you do not have permissions to this endpoint")
-	}
-
+	fmt.Println(ap)
 	query := "DELETE FROM spells_new WHERE id = :id LIMIT 1"
 
 	args := map[string]interface{}{
@@ -324,15 +315,12 @@ func (s *Server) SpellDelete(ctx context.Context, req *pb.SpellDeleteRequest) (*
 
 // SpellPatch implements SCRUD endpoints
 func (s *Server) SpellPatch(ctx context.Context, req *pb.SpellPatchRequest) (*pb.SpellPatchResponse, error) {
-	ap, err := s.AuthFromContext(ctx)
+	ap, err := s.AuthFromContext(ctx, "spell", "patch")
 	if err != nil {
 		log.Debug().Err(err).Msg("authfromcontext")
 		return nil, fmt.Errorf("permission denied")
 	}
-	if !ap.hasCommand("mysql") {
-		return nil, fmt.Errorf("you do not have permissions to this endpoint")
-	}
-
+	fmt.Println(ap)
 	spell := new(Spell)
 
 	st := reflect.TypeOf(*spell)

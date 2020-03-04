@@ -21,16 +21,12 @@ func (s *Server) BugSearch(ctx context.Context, req *pb.BugSearchRequest) (*pb.B
 		return nil, fmt.Errorf("request nil")
 	}
 
-	ap, err := s.AuthFromContext(ctx)
+	ap, err := s.AuthFromContext(ctx, "bug", "search")
 	if err != nil {
 		log.Debug().Err(err).Msg("authfromcontext")
 		return nil, fmt.Errorf("permission denied")
 	}
-
-	if req.Values["accountid"] != fmt.Sprintf("%d", ap.accountID) && !ap.hasCommand("petitioninfo") {
-		return nil, fmt.Errorf("you do not have permissions to this endpoint")
-	}
-
+	fmt.Println(ap)
 	resp := new(pb.BugSearchResponse)
 	if req.Limit < 1 {
 		req.Limit = 10
@@ -138,15 +134,12 @@ func (s *Server) BugSearch(ctx context.Context, req *pb.BugSearchRequest) (*pb.B
 // BugCreate implements SCRUD endpoints
 func (s *Server) BugCreate(ctx context.Context, req *pb.BugCreateRequest) (*pb.BugCreateResponse, error) {
 
-	ap, err := s.AuthFromContext(ctx)
+	ap, err := s.AuthFromContext(ctx, "bug", "create")
 	if err != nil {
 		log.Debug().Err(err).Msg("authfromcontext")
 		return nil, fmt.Errorf("permission denied")
 	}
-
-	if !ap.hasCommand("mysql") {
-		return nil, fmt.Errorf("you do not have permissions to this endpoint")
-	}
+	fmt.Println(ap)
 
 	bug := new(Bug)
 
@@ -205,16 +198,12 @@ func (s *Server) BugRead(ctx context.Context, req *pb.BugReadRequest) (*pb.BugRe
 	if req == nil {
 		return nil, fmt.Errorf("request nil")
 	}
-	ap, err := s.AuthFromContext(ctx)
+	ap, err := s.AuthFromContext(ctx, "bug", "read")
 	if err != nil {
 		log.Debug().Err(err).Msg("authfromcontext")
 		return nil, fmt.Errorf("permission denied")
 	}
-
-	if ap.accountID != req.Id && !ap.hasCommand("petitioninfo") {
-		return nil, fmt.Errorf("you do not have permissions to this endpoint")
-	}
-
+	fmt.Println(ap)
 	resp := new(pb.BugReadResponse)
 
 	if req.Id < 0 {
@@ -246,15 +235,12 @@ func (s *Server) BugRead(ctx context.Context, req *pb.BugReadRequest) (*pb.BugRe
 // BugUpdate implements SCRUD endpoints
 func (s *Server) BugUpdate(ctx context.Context, req *pb.BugUpdateRequest) (*pb.BugUpdateResponse, error) {
 
-	ap, err := s.AuthFromContext(ctx)
+	ap, err := s.AuthFromContext(ctx, "bug", "update")
 	if err != nil {
 		log.Debug().Err(err).Msg("authfromcontext")
 		return nil, fmt.Errorf("permission denied")
 	}
-	if !ap.hasCommand("mysql") {
-		return nil, fmt.Errorf("you do not have permissions to this endpoint")
-	}
-
+	fmt.Println(ap)
 	bug := new(Bug)
 
 	st := reflect.TypeOf(*bug)
@@ -308,15 +294,12 @@ func (s *Server) BugUpdate(ctx context.Context, req *pb.BugUpdateRequest) (*pb.B
 
 // BugDelete implements SCRUD endpoints
 func (s *Server) BugDelete(ctx context.Context, req *pb.BugDeleteRequest) (*pb.BugDeleteResponse, error) {
-	ap, err := s.AuthFromContext(ctx)
+	ap, err := s.AuthFromContext(ctx, "bug", "delete")
 	if err != nil {
 		log.Debug().Err(err).Msg("authfromcontext")
 		return nil, fmt.Errorf("permission denied")
 	}
-	if !ap.hasCommand("mysql") {
-		return nil, fmt.Errorf("you do not have permissions to this endpoint")
-	}
-
+	fmt.Println(ap)
 	query := "DELETE FROM bug_reports WHERE id = :id LIMIT 1"
 
 	args := map[string]interface{}{

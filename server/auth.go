@@ -3,11 +3,11 @@ package server
 import (
 	"context"
 	"fmt"
-	"strings"
+	"os"
+	"strconv"
 	"time"
 
 	"github.com/dgrijalva/jwt-go"
-	"github.com/jmoiron/sqlx"
 	"github.com/pkg/errors"
 	"google.golang.org/grpc/metadata"
 )
@@ -19,72 +19,85 @@ type AuthData struct {
 
 // AuthPermission is used internally to map access rights
 type AuthPermission struct {
-	dataClaim *DataClaim
-	accountID int64
-	status    int64
-	commands  []string
-}
-
-func (ap *AuthPermission) hasCommand(command string) bool {
-	command = strings.ToLower(command)
-	for _, cmd := range ap.commands {
-		if command == cmd {
-			return true
-		}
-	}
-	return false
+	dataClaim          *DataClaim
+	accountID          int64
+	status             int64
+	label              string
+	fields             []string
+	isSelfOnly         bool
+	isLoginNotRequired bool
+	isAllFieldsOK      bool
+	name               string
 }
 
 // AuthFromContext returns a claim if auth is passed
-func (s *Server) AuthFromContext(ctx context.Context) (*AuthPermission, error) {
+func (s *Server) AuthFromContext(ctx context.Context, endpoint string, scope string) (*AuthPermission, error) {
+
+	ap := new(AuthPermission)
+	ap.name = "unknown"
+
+	if len(os.Getenv("EQCP")) > 0 {
+		status, err := strconv.Atoi(os.Getenv("EQCP"))
+		if err != nil {
+			return nil, fmt.Errorf("invalid EQCP: %w", err)
+		}
+		if status < 1 {
+			return nil, fmt.Errorf("invalid EQCP overide")
+		}
+		ap.status = int64(status)
+
+		ap.label, ap.fields, ap.isSelfOnly, ap.isLoginNotRequired, ap.isAllFieldsOK = s.cfg.Permission(endpoint, scope, ap.status)
+		if !ap.isLoginNotRequired {
+			return ap, nil
+		}
+		if ap.label == "" {
+			return nil, fmt.Errorf("permission denied")
+		}
+		return ap, nil
+	}
+
 	var token string
 	md, ok := metadata.FromIncomingContext(ctx)
 	if ok && len(md["authorization"]) > 0 {
 		token = md["authorization"][0]
 	}
+
 	if token == "" {
-		return nil, fmt.Errorf("requires token")
-	}
-
-	dc, err := s.TokenRead(token)
-	if err != nil {
-		return nil, errors.Wrap(err, "read")
-	}
-
-	var rows *sqlx.Rows
-	var ap *AuthPermission
-	val, ok := s.loginPermissions.Load(dc.Data["AccountID"])
-	if ok {
-		ap, ok = val.(*AuthPermission)
-		if !ok {
-			return nil, fmt.Errorf("permission invalid")
+		//edge case is if ap.IsLoginNotRequired is false
+		ap.label, ap.fields, ap.isSelfOnly, ap.isLoginNotRequired, ap.isAllFieldsOK = s.cfg.Permission(endpoint, scope, ap.status)
+		if !ap.isLoginNotRequired {
+			return nil, fmt.Errorf("must be logged in (no token)")
 		}
 		return ap, nil
 	}
 
-	ap = new(AuthPermission)
-	ap.accountID = dc.Data["AccountID"].(int64)
+	ad, err := s.AuthRead(token)
+	if err != nil {
+		return nil, fmt.Errorf("authread: %w", err)
+	}
+
+	ap.accountID = ad.AccountID
 	if ap.accountID < 1 {
 		return nil, fmt.Errorf("token invalid (accountID not set)")
 	}
 
-	if err = s.db.GetContext(ctx, ap.status, "SELECT status FROM account WHERE id = ?", ap.accountID); err != nil {
-		return nil, fmt.Errorf("failed to get account status")
-	}
-
-	rows, err = s.db.QueryxContext(ctx, "SELECT command, access FROM comand_settings WHERE access <= ?", ap.status)
-	if err != nil {
-		return nil, fmt.Errorf("failed to get command_settings")
-	}
-	for rows.Next() {
-		command := ""
-		if err = rows.Scan(command); err != nil {
-			return nil, fmt.Errorf("scan command_sttings")
+	s.mutex.Lock()
+	ap.status, ok = s.authStatus[ap.accountID]
+	s.mutex.Unlock()
+	if !ok {
+		if err = s.db.GetContext(ctx, &ap.status, "SELECT status FROM account WHERE lsaccount_id = ? AND ls_id = 'local'", ap.accountID); err != nil {
+			return nil, fmt.Errorf("account status: %w", err)
 		}
-		ap.commands = append(ap.commands, strings.ToLower(command))
+		s.mutex.Lock()
+		s.authStatus[ap.accountID] = ap.status
+		s.mutex.Unlock()
 	}
 
-	s.loginPermissions.Store(ap.accountID, ap)
+	ap.label, ap.fields, ap.isSelfOnly, ap.isLoginNotRequired, ap.isAllFieldsOK = s.cfg.Permission(endpoint, scope, ap.status)
+	if ap.label == "" {
+		return nil, fmt.Errorf("permission denied")
+	}
+
 	return ap, nil
 }
 
@@ -173,6 +186,9 @@ func (s *Server) TokenRead(token string) (*DataClaim, error) {
 	dc, ok := parsedToken.Claims.(*DataClaim)
 	if !ok && !parsedToken.Valid {
 		return nil, fmt.Errorf("invalid token provided")
+	}
+	if dc == nil {
+		return nil, fmt.Errorf("claim translation error")
 	}
 	return dc, nil
 }

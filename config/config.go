@@ -5,6 +5,8 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"strings"
+	"sync"
 	"time"
 
 	"github.com/BurntSushi/toml"
@@ -25,11 +27,13 @@ func (d *duration) UnmarshalText(text []byte) error {
 
 // Config represents a configuration parse
 type Config struct {
+	mutex       sync.Mutex
 	API         API
 	Jwt         Jwt
 	Grpc        Grpc
 	Database    Database
 	LoginServer LoginServer
+	Permissions map[string]Permission
 }
 
 // Database related settings
@@ -62,6 +66,19 @@ type LoginServer struct {
 type Jwt struct {
 	PrivateKeyPath string
 	PublicKeyPath  string
+}
+
+// Permission for various endpoints
+type Permission struct {
+	Status    int64
+	Endpoints map[string]map[string]PermissionEntry
+}
+
+// PermissionEntry is for each endpoint
+type PermissionEntry struct {
+	IsSelfOnly         bool `toml:"selfOnly"`
+	IsLoginNotRequired bool `toml:"loginNotRequired"`
+	Fields             []string
 }
 
 // NewConfig creates a new configuration
@@ -146,4 +163,39 @@ func NewConfig(ctx context.Context) (*Config, error) {
 		cfg.Database.Username = emucfg.Database.Username
 	}
 	return &cfg, nil
+}
+
+// Permission returns permissions of a provided field
+func (c *Config) Permission(endpoint string, scope string, status int64) (label string, fields []string, isSelfOnly bool, isLoginNotRequired bool, isAllFieldsOK bool) {
+	c.mutex.Lock()
+	defer c.mutex.Unlock()
+
+	curStatus := int64(-1)
+	for acct, entry := range c.Permissions {
+
+		if entry.Status > status {
+			continue
+		}
+		if entry.Status < curStatus {
+			continue
+		}
+		endpoint, ok := entry.Endpoints[strings.Title(endpoint)]
+		if !ok {
+			continue
+		}
+		perm, ok := endpoint[strings.Title(scope)]
+		if !ok {
+			continue
+		}
+		fields = perm.Fields
+		if len(fields) == 1 && fields[0] == "*" {
+			isAllFieldsOK = true
+		}
+		isSelfOnly = perm.IsSelfOnly
+		isLoginNotRequired = perm.IsLoginNotRequired
+		label = acct
+		return
+	}
+
+	return
 }

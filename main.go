@@ -22,9 +22,9 @@ var (
 )
 
 func main() {
-	f, err := os.Create("log.txt")
+	f, err := os.Create("eqcp.log")
 	if err != nil {
-		fmt.Println("failed to create log.txt:", err)
+		fmt.Println("failed to create eqcp.log:", err)
 		os.Exit(1)
 	}
 	defer f.Close()

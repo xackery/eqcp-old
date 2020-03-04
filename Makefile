@@ -8,7 +8,15 @@ GO_PTYPES_ANY_PKG=$(GO_PROTOBUF_REPO)/ptypes/any
 SWAGGER_PLUGIN=bin/protoc-gen-swagger
 PROTO_FILES=$(shell find proto -name '*.proto')
 PROTO_OUT=/src/pb/
-
+.PHONY: player
+player: 
+	go run main.go
+.PHONY: staff
+staff: 
+	EQCP=20 go run main.go
+.PHONY: gm
+gm: 
+	EQCP=255 go run main.go
 .PHONY: client
 client:
 	@cd client && yarn && yarn dev
@@ -93,7 +101,6 @@ proto: proto-clean ## Generate protobuf files
 	&& replace -s 'goog.object.extend(proto, google_api_annotations_pb);' '' -- *.js \
 	&& replace -s "var protoc\$$gen\$$swagger_options_annotations_pb = require('../protoc-gen-swagger/options/annotations_pb.js');" '' -- *.js \
 	&& replace -s "goog.object.extend(proto, protoc\$$gen\$$swagger_options_annotations_pb);" '' -- *.js
-
 	@(mv pb/proto/* pb/)
 	@(rm -rf pb/proto)
 	@$(MAKE) sanitize
