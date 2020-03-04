@@ -3,7 +3,7 @@ import itemdata from '../items.json' // TESTING
 import { ThemeProvider } from '../components/contexts/ThemeContext'
 import { HostProvider } from '../components/contexts/HostProvider'
 import DataGridView from '../components/data/DataGridView'
-import ClassTypeField from '../components/typefields/ClassTypeField'
+import ClassFieldRenderer from '../components/renderers/ClassFieldRenderer'
 import ThemeDefinition from '../components/definitions/ThemeDefinition'
 
 const Dev = () => (
@@ -11,7 +11,7 @@ const Dev = () => (
   <ThemeProvider value={ThemeDefinition}>
     <div className="container">
       <main>
-        <DataGridView fields={['id', {field: 'name', display: "Name"}, {field: 'classes', fieldHandler: ClassTypeField}, 'races', 'lore']} data={itemdata.Items} />
+        <DataGridView fields={['id', {field: 'name', display: "Name"}, {field: 'classes', fieldHandler: ClassFieldRenderer}, 'races', 'lore']} data={itemdata.Items} />
       </main>
 
       <style jsx>{`
