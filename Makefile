@@ -19,13 +19,13 @@ gm:
 	EQCP=255 go run main.go
 .PHONY: client
 client:
-	@cd client && yarn && yarn dev
+	@docker run -it --rm --name node -v ${PWD}/client:/usr/src/app -w /usr/src/app node:erbium npm run dev
 .PHONY: client-build
 client-build:
-	@cd client && yarn build
+	@docker run -it --rm --name node -v ${PWD}/client:/usr/src/app -w /usr/src/app node:erbium npm run build
 .PHONY: client-ssr
 client-ssr:
-	@cd client && NODE_ENV=production yarn start
+	@docker run -it --rm --name node -e NODE_ENV=production -v ${PWD}/client:/usr/src/app -w /usr/src/app node:erbium npm run start
 .PHONY: init
 init:
 	@echo "Priming a fresh database"
@@ -104,3 +104,16 @@ proto: proto-clean ## Generate protobuf files
 	@(mv pb/proto/* pb/)
 	@(rm -rf pb/proto)
 	@$(MAKE) sanitize
+.PHONY: swagger
+swagger: ## Generate swagger distribution and definitions
+	@rm -rf swagger/build/*
+	@docker run -v "${PWD}/swagger/":/usr/src --entrypoint='' swaggerapi/swagger-codegen-cli  sh -c "java -jar /opt/swagger-codegen-cli/swagger-codegen-cli.jar generate -i /usr/src/apidocs.swagger.json -l swagger-yaml -o /usr/src/build/yaml"
+	@mv swagger/build/yaml/swagger.yaml swagger/swagger.yaml
+	@mv swagger/apidocs.swagger.json swagger/dist/
+	@rm -rf swagger/build/*
+.PHONY: npm-install
+npm-install:
+	@docker run -it --rm --name node -v ${PWD}/client:/usr/src/app -w /usr/src/app node:erbium npm install
+.PHONY: npm-audit-fix
+npm-audit-fix:
+	@docker run -it --rm --name node -v ${PWD}/client:/usr/src/app -w /usr/src/app node:erbium npm audit fix
